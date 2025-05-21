@@ -1,36 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Bridge AI Bidding</title>
+  <title>Bridge AI</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <h1>Bridge Bidding Practice (1NT 16–18)</h1>
-  <div id="button-panel">
-    <button id="btn-1618">1NT 16–18</button>
-    <button id="btn-1517">1NT 15–17</button>
-    <button id="btn-2nt">2NT 20–22</button>
-  </div>
-  <div id="modal" class="hidden">
-    <div class="modal-content">
-      <p id="modal-message"></p>
-      <button onclick="closeModal()">Continue</button>
-    </div>
-  </div>
-  <script>
-    function closeModal() {
-      document.getElementById('modal').classList.add('hidden');
-    }
-
-    document.getElementById('btn-1517').onclick = () => {
-      document.getElementById('modal-message').textContent = "These modules are still in testing";
-      document.getElementById('modal').classList.remove('hidden');
-    };
-    document.getElementById('btn-2nt').onclick = () => {
-      document.getElementById('modal-message').textContent = "These modules are still in testing";
-      document.getElementById('modal').classList.remove('hidden');
-    };
-  </script>
+  <h1>Bridge AI Test Page</h1>
+  <p>If you see this, Flask is running properly.</p>
 </body>
 </html>

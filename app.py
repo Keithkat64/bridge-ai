@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -21,9 +22,6 @@ def validate_bid():
 def next_bid():
     data = request.get_json()
     return jsonify({ "nextBid": "stub" })
-
-
-import os
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
