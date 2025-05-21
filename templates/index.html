@@ -1,11 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Bridge AI</title>
+  <meta charset="UTF-8">
+  <title>Bridge Bidding Practice</title>
   <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body {
+      font-family: Lato, sans-serif;
+      background: #ffeee6;
+      text-align: center;
+      padding: 20px;
+    }
+    button {
+      font-size: 17px;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 15px;
+      border: 2px solid #333;
+      background: linear-gradient(180deg, #a3d2f0, #207cca);
+      color: white;
+      cursor: pointer;
+    }
+    .hand-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 40px;
+    }
+    .hand-box {
+      border: 1px solid #aaa;
+      padding: 10px;
+      border-radius: 10px;
+      background: white;
+      width: 200px;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    td, th {
+      padding: 10px 20px;
+      border: 1px solid #ccc;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 200px;
+      font-size: 16px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 30px;
+      border: 1px solid #888;
+      width: 300px;
+      border-radius: 10px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Bridge AI Test Page</h1>
-  <p>If you see this, Flask is running properly.</p>
+  <h1>Responding to 1NT</h1>
+  <div>
+    <button onclick="startPractice()">1NT 16–18</button>
+    <button onclick="openModal('modal1517')">1NT 15–17</button>
+    <button onclick="openModal('modal2nt')">2NT 20–22</button>
+  </div>
+
+  <div id="mode-buttons" style="display: none;">
+    <button onclick="chooseMode('Stayman')">Stayman</button>
+    <button onclick="chooseMode('Transfers')">Transfers</button>
+  </div>
+
+  <div class="hand-container" id="hands" style="display: none;">
+    <div class="hand-box" id="keith-hand"><strong>Keith (Opener):</strong><br></div>
+    <div class="hand-box" id="user-hand"><strong>You (Responder):</strong><br></div>
+  </div>
+
+  <table id="bidding-table" style="display: none;">
+    <thead>
+      <tr><th>Keith (Opener)</th><th>You (Responder)</th></tr>
+    </thead>
+    <tbody id="bids"></tbody>
+  </table>
+
+  <div id="bid-entry" style="display: none;">
+    <input type="text" id="bid-input" placeholder="Enter your bid">
+    <button onclick="submitBid()">Submit Bid</button>
+  </div>
+
+  <!-- Modal for 1NT 15–17 -->
+  <div id="modal1517" class="modal">
+    <div class="modal-content">
+      <p>Keith is still working on these</p>
+      <button onclick="closeModal('modal1517')">Continue</button>
+    </div>
+  </div>
+
+  <!-- Modal for 2NT 20–22 -->
+  <div id="modal2nt" class="modal">
+    <div class="modal-content">
+      <p>Keith is still working on these</p>
+      <button onclick="closeModal('modal2nt')">Continue</button>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = "block";
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    function startPractice() {
+      document.getElementById('mode-buttons').style.display = "block";
+    }
+
+    function chooseMode(mode) {
+      document.getElementById('hands').style.display = "flex";
+      document.getElementById('bidding-table').style.display = "table";
+      document.getElementById('bid-entry').style.display = "block";
+
+      // Temporary static hand values
+      document.getElementById('keith-hand').innerHTML = "<strong>Keith (Opener):</strong><br>♠ Q 2<br>♥ Q 9 5<br>♦ A Q 7 6<br>♣ A K 8 7";
+      document.getElementById('user-hand').innerHTML = "<strong>You (Responder):</strong><br>♠ A K 10 8 7 5 4 3<br>♥ 10<br>♦ 9 8 3<br>♣ Q";
+
+      // Static bid history for now
+      const bids = [
+        ["1NT", "2♥"],
+        ["2♠", "4♠"],
+        ["4♠", ""]
+      ];
+      const tbody = document.getElementById('bids');
+      tbody.innerHTML = "";
+      bids.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function submitBid() {
+      const bid = document.getElementById('bid-input').value;
+      alert("Bid submitted: " + bid);
+    }
+  </script>
 </body>
 </html>
