@@ -22,8 +22,6 @@ def next_bid():
     data = request.get_json()
     return jsonify({ "nextBid": "stub" })
 
-if __name__ == '__main__':
-    app.run(debug=True)
 
 import os
 
