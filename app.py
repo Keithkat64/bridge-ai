@@ -1,5 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
+from stayman import get_stayman_response  # ✅ Import your logic here
+
 import os
 import random
 
@@ -94,6 +96,17 @@ def validate_bid():
 def next_bid():
     data = request.get_json()
     return jsonify({"nextBid": "stub"})
+
+@app.route('/api/stayman-response', methods=['POST'])
+def stayman_response():
+    data = request.get_json()
+    opener = data.get('opener')
+    responder_bid = data.get('responderBid', '2C')
+
+    # Run your Stayman logic
+    response = get_stayman_response(opener, responder_bid)
+
+    return jsonify({ "response": response })
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
