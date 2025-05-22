@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
-from stayman import get_stayman_response  # ✅ Import your logic here
+from stayman import get_stayman_response
 
 import os
 import random
@@ -12,15 +12,12 @@ suits = ['spades', 'hearts', 'diamonds', 'clubs']
 ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 hcp_values = {'A': 4, 'K': 3, 'Q': 2, 'J': 1}
 
-# Generate full deck
 def generate_deck():
     return [(rank, suit) for suit in suits for rank in ranks]
 
-# Count HCP
 def count_hcp(hand):
     return sum(hcp_values.get(rank, 0) for rank, _ in hand)
 
-# Format hand by suit and order A to 2
 def format_hand_by_suit(hand):
     suit_dict = {suit: [] for suit in suits}
     for rank, suit in hand:
@@ -29,15 +26,12 @@ def format_hand_by_suit(hand):
         suit_dict[suit].sort(key=lambda r: ranks[::-1].index(r))
     return suit_dict
 
-# Validate 1NT opener shape
 def is_balanced_1nt(hand):
     suit_lengths = {suit: 0 for suit in suits}
     for _, suit in hand:
         suit_lengths[suit] += 1
     has_5_card_major = suit_lengths['spades'] >= 5 or suit_lengths['hearts'] >= 5
     return not has_5_card_major and max(suit_lengths.values()) <= 5 and min(suit_lengths.values()) >= 2
-
-# Build opener hand
 
 def generate_valid_opener():
     while True:
@@ -47,8 +41,6 @@ def generate_valid_opener():
         hcp = count_hcp(opener_hand)
         if 16 <= hcp <= 18 and is_balanced_1nt(opener_hand):
             return opener_hand, deck[13:]
-
-# Build responder hand that is stayman or transfer
 
 def generate_valid_responder(remaining_deck, opener_cards):
     def is_valid_responder(hand):
@@ -68,7 +60,7 @@ def generate_valid_responder(remaining_deck, opener_cards):
         if all(card not in opener_cards for card in candidate) and is_valid_responder(candidate):
             return candidate
         attempts += 1
-    return remaining_deck[:13]  # fallback
+    return remaining_deck[:13]
 
 @app.route('/')
 def index():
@@ -102,13 +94,10 @@ def stayman_response():
     data = request.get_json()
     opener = data.get('opener')
     responder_bid = data.get('responderBid', '2C')
-
-    # Run your Stayman logic
     response = get_stayman_response(opener, responder_bid)
-
     return jsonify({ "response": response })
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-
+    
