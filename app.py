@@ -11,7 +11,20 @@ def index():
 
 @app.route('/api/generate-hands')
 def generate_hands():
-    return jsonify({ "status": "stub", "message": "Hand generation to be wired in." })
+    return jsonify({
+        "opener": {
+            "spades": ["Q", "2"],
+            "hearts": ["Q", "9", "5"],
+            "diamonds": ["A", "Q", "7", "6"],
+            "clubs": ["A", "K", "8", "7"]
+        },
+        "responder": {
+            "spades": ["A", "K", "10", "8", "7", "5", "4", "3"],
+            "hearts": ["10"],
+            "diamonds": ["9", "8", "3"],
+            "clubs": ["Q"]
+        }
+    })
 
 @app.route('/api/validate-bid', methods=['POST'])
 def validate_bid():
