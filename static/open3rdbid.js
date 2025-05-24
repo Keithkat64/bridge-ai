@@ -1,11 +1,3 @@
-function startWithSystem(system) {
-  console.log("System selected:", system);
-  document.getElementById("start-buttons").style.display = "none";
-  // You can expand this logic to load hands, setup bidding, etc.
-}
-
-// Make sure it's globally accessible
-window.startWithSystem = startWithSystem;
 
 function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
   let open3rdbid = "";
@@ -45,11 +37,7 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
       open3rdbid = "PASS";
     } else if (user2ndbid === "3C" || user2ndbid === "3D") {
       if (has4Spades) {
-        if (tp >= 18) {
-          open3rdbid = "3S";
-        } else {
-          open3rdbid = "4S";
-        }
+        open3rdbid = tp >= 18 ? "3S" : "4S";
       } else if (has4InUserMinor) {
         open3rdbid = "4" + userMinor.toUpperCase();
       } else {
@@ -62,19 +50,11 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
 
   else if (open2ndbid === "2S") {
     if (user2ndbid === "2NT") {
-      if (hcp === 18) {
-        open3rdbid = "3NT";
-        user3rdbid = "PASS";
-      } else {
-        open3rdbid = "PASS";
-      }
+      open3rdbid = hcp === 18 ? "3NT" : "PASS";
+      user3rdbid = open3rdbid === "3NT" ? "PASS" : "";
     } else if (user2ndbid === "3S") {
-      if (tp >= 18) {
-        open3rdbid = "4S";
-        user3rdbid = "PASS";
-      } else {
-        open3rdbid = "PASS";
-      }
+      open3rdbid = tp >= 18 ? "4S" : "PASS";
+      user3rdbid = open3rdbid === "4S" ? "PASS" : "";
     } else if (user2ndbid === "3NT" || user2ndbid === "4S") {
       open3rdbid = "PASS";
     } else if (user2ndbid === "3C" || user2ndbid === "3D") {
@@ -113,3 +93,7 @@ function hasStrongMinor(suit) {
   const honourCount = (cards, set) => cards.filter(card => set.includes(card)).length;
   return honourCount(suit, topHonours) >= 2 || honourCount(suit, fiveHonours) >= 3;
 }
+
+// Make global
+window.calculateOpen3rdBid = calculateOpen3rdBid;
+window.hasStrongMinor = hasStrongMinor;
