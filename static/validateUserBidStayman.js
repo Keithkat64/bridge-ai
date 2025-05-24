@@ -1,17 +1,13 @@
 
-function validateUserBidStayman(userBid, userHand) {
-  if (userBid === "2C") {
-    const hasLongHeart = userHand?.hearts?.length > 4;
-    const hasLongSpade = userHand?.spades?.length > 4;
+function validateUserBidStayman(bid, responderHand) {
+  const has4Spades = responderHand.spades && responderHand.spades.length === 4;
+  const has4Hearts = responderHand.hearts && responderHand.hearts.length === 4;
 
-    if (hasLongHeart || hasLongSpade) {
-      showModal("Keith thinks this is a Transfer hand");
-      return false; // wait for re-entry
-    } else {
-      console.log("User has bid Stayman. Proceeding to open2ndbid.js");
-      runOpen2ndBid(userHand, window.openerHand); // ✅ correctly passing both hands
-      return true;
-    }
+  if (!has4Spades && !has4Hearts) {
+    showModal("You need 4 cards in a major to use Stayman. Try Transfers instead.");
+    return;
   }
-  return false; // Not Stayman
+
+  console.log("User has bid Stayman. Proceeding to open2ndbid.js");
+  runOpen2ndBid(responderHand, window.openerHand);
 }
