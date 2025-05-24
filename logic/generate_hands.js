@@ -50,12 +50,22 @@ function generateOpenerHand(deck) {
     const hand = shuffled.slice(0, 13);
     const hcp = evaluateHCP(hand);
     const suitCounts = countSuits(hand);
-    if (
-      hcp >= 16 && hcp <= 18 &&
-      suitCounts['♠'] <= 4 &&
-      suitCounts['♥'] <= 4 &&
-      isBalanced(suitCounts)
-    ) return hand;
+
+    if (hcp < 16 || hcp > 18) continue;
+    if (suitCounts['♠'] > 4 || suitCounts['♥'] > 4) continue;
+
+    const counts = Object.values(suitCounts).sort((a, b) => b - a); // e.g. [5,3,3,2]
+
+    const is4333 = counts.join() === '4,3,3,3';
+    const is4432 = counts.join() === '4,4,3,2';
+    const is5332 = counts.join() === '5,3,3,2';
+
+    const fiveCardSuit = Object.keys(suitCounts).find(suit => suitCounts[suit] === 5);
+    const fiveCardSuitIsMinor = fiveCardSuit === '♣' || fiveCardSuit === '♦';
+
+    if (is4333 || is4432 || (is5332 && fiveCardSuitIsMinor)) {
+      return hand;
+    }
   }
   return null;
 }
