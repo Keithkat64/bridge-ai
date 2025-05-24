@@ -103,9 +103,11 @@ function loadNewHand() {
 
 function displayHand(elementId, hand) {
   const suits = ["♠", "♥", "♦", "♣"];
+  const rankOrder = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"];
   const format = suits.map(suit => {
     const cards = hand[suit] || [];
-    const styledCards = cards.join(" ");
+    const sorted = cards.slice().sort((a, b) => rankOrder.indexOf(a) - rankOrder.indexOf(b));
+    const styledCards = sorted.join(" ");
     const colorClass = (suit === "♥" || suit === "♦") ? "hearts" : "blacks";
     return `<div class="${colorClass}">${suit} ${styledCards}</div>`;
   }).join("");
