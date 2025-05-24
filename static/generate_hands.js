@@ -1,3 +1,34 @@
+function generateHands() {
+  const suits = ["♠", "♥", "♦", "♣"];
+  const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+  const deck = [];
+
+  for (let suit of suits) {
+    for (let rank of ranks) {
+      deck.push({ suit, rank });
+    }
+  }
+
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+
+  function dealHand(startIndex) {
+    const hand = { "♠": [], "♥": [], "♦": [], "♣": [] };
+    for (let i = 0; i < 13; i++) {
+      const card = deck[startIndex + i];
+      hand[card.suit].push(card.rank);
+    }
+    return hand;
+  }
+
+  const opener = dealHand(0);
+  const responder = dealHand(13);
+
+  return { opener, responder };
+}
+
 function startWithSystem(system) {
   console.log("System selected:", system);
   document.getElementById("start-buttons").style.display = "none";
