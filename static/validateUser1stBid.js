@@ -1,7 +1,7 @@
 
 function validateUser1stBid(userBid, responderHand) {
-  const spades = responderHand.spades?.length || 0;
-  const hearts = responderHand.hearts?.length || 0;
+  const spades = responderHand["♠"]?.length || 0;
+  const hearts = responderHand["♥"]?.length || 0;
   const bid = userBid.toUpperCase();
 
   if (spades < 5 && hearts < 5) {
