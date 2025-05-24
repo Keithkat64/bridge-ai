@@ -9,7 +9,7 @@ function validateUserBidStayman(userBid, userHand) {
       return false; // wait for re-entry
     } else {
       console.log("User has bid Stayman. Proceeding to open2ndbid.js");
-      runOpen2ndBid(userHand); // Call the next logic step
+      runOpen2ndBid(userHand, window.openerHand); // ✅ correctly passing both hands
       return true;
     }
   }
