@@ -115,8 +115,9 @@ function displayHand(elementId, hand) {
 }
 
 function displayHands(opener, responder) {
-  displayHand("opener-column", opener);
-  displayHand("responder", responder);
+  displayHand("opener-column", window.openerHand);
+  displayHand("responder", window.responderHand);
+
 }
 
 function updateBiddingDisplay() {
