@@ -12,7 +12,7 @@ function startWithSystem(system) {
 }
 
 function loadNewHand() {
-  fetch("/api/generate-hands")
+  fetch("https://bridge-ai-production.up.railway.app/api/generate-hands")
     .then(res => res.json())
     .then(data => {
       if (!data.opener || !data.responder) {
