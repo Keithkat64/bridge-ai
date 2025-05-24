@@ -1,8 +1,8 @@
 
 function validateUserBidStayman(userBid, userHand) {
   if (userBid === "2C") {
-    const hasLongHeart = userHand.hearts.length > 4;
-    const hasLongSpade = userHand.spades.length > 4;
+    const hasLongHeart = userHand?.hearts?.length > 4;
+    const hasLongSpade = userHand?.spades?.length > 4;
 
     if (hasLongHeart || hasLongSpade) {
       showModal("Keith thinks this is a Transfer hand");
