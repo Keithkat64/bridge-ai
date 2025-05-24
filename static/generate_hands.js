@@ -170,3 +170,6 @@ window.displayHands = displayHands;
 window.updateBiddingDisplay = updateBiddingDisplay;
 window.showModal = showModal;
 window.closeModal = closeModal;
+window.isValidResponder = isValidResponder;
+window.isValidOpener = isValidOpener;
+
