@@ -1,4 +1,3 @@
-
 function startWithSystem(system) {
   console.log("System selected:", system);
   document.getElementById("start-buttons").style.display = "none";
@@ -13,6 +12,12 @@ function startWithSystem(system) {
 
 function loadNewHand() {
   const hands = generateHands(); // Generate new random opener + responder hands
+  if (!hands || !hands.opener || !hands.responder) {
+    showModal("Something went wrong generating the hands.");
+    return;
+  }
+
+  console.log("New hand generated:", hands);
 
   // Store hands globally so validation runs on correct hand
   window.openerHand = hands.opener;
