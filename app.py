@@ -97,7 +97,12 @@ def stayman_response():
     response = get_stayman_response(opener, responder_bid)
     return jsonify({ "response": response })
 
+from flask import send_from_directory
+
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('static', filename)
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-    
