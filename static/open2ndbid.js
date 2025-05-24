@@ -1,23 +1,25 @@
-
 function runOpen2ndBid(responderHand, openerHand) {
-  if (!openerHand || !openerHand.hearts || !openerHand.spades) {
-    console.error("Invalid openerHand passed to runOpen2ndBid:", openerHand);
-    showModal("Something went wrong with Keith's hand. Try a new hand.");
-    return;
-  }
+  const hearts = openerHand["♥"].length;
+  const spades = openerHand["♠"].length;
 
-  let bid = "";
-
-  if (openerHand.hearts.length === 4) {
-    bid = "2♥";
-  } else if (openerHand.spades.length === 4) {
-    bid = "2♠";
+  if (spades === 4 && hearts === 4) {
+    open2ndbid = "2D"; // deny showing either
+  } else if (spades === 4) {
+    open2ndbid = "2S";
+  } else if (hearts === 4) {
+    open2ndbid = "2H";
   } else {
-    bid = "2♦";
+    open2ndbid = "2D";
   }
 
-  console.log("Keith responds with", bid);
-  open2ndbid = bid;
-  window.biddingHistory.push({ keith: bid, you: "" });
+  window.biddingHistory[0].keith = "1NT";
+  window.biddingHistory[0].you = "2C";
+  window.biddingHistory.push({ keith: open2ndbid, you: "" });
+
   updateBiddingDisplay();
+
+  // now prompt the user for their next bid
+  document.getElementById("next-bid-container").style.display = "block";
+  document.getElementById("your-next-bid").focus();
 }
+
