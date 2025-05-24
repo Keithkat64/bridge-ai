@@ -1,5 +1,4 @@
-
-function generateHands() {
+  function generateHands() {
   const suits = ["♠", "♥", "♦", "♣"];
   const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
   const deck = [];
@@ -41,10 +40,27 @@ function countHCP(hand) {
   return points;
 }
 
+function isBalancedAndValidOpener(hand) {
+  const hcp = countHCP(hand);
+  const spades = hand["♠"].length;
+  const hearts = hand["♥"].length;
+  const diamonds = hand["♦"].length;
+  const clubs = hand["♣"].length;
+
+  const shape = [spades, hearts, diamonds, clubs].sort((a, b) => b - a).join("");
+
+  const isBalanced =
+    shape === "4333" ||
+    shape === "4432" ||
+    shape === "5332";
+
+  return isBalanced && hcp >= 16 && hcp <= 18 && spades < 5 && hearts < 5;
+}
+
 function isStaymanHand(hand) {
   const hcp = countHCP(hand);
-  const has4Spades = (hand["♠"] || []).length >= 4;
-  const has4Hearts = (hand["♥"] || []).length >= 4;
+  const has4Spades = (hand["♠"] || []).length === 4;
+  const has4Hearts = (hand["♥"] || []).length === 4;
   return hcp >= 8 && (has4Spades || has4Hearts);
 }
 
@@ -69,13 +85,14 @@ function startWithSystem(system) {
 function loadNewHand() {
   let hands;
   let attempts = 0;
+
   do {
     hands = generateHands();
     attempts++;
   } while (
-    !isStaymanHand(hands.responder) &&
-    !isTransferHand(hands.responder) &&
-    attempts < 20
+    (!isBalancedAndValidOpener(hands.opener) ||
+     (!isStaymanHand(hands.responder) && !isTransferHand(hands.responder)))
+    && attempts < 50
   );
 
   if (!hands || !hands.opener || !hands.responder) {
@@ -117,7 +134,6 @@ function displayHand(elementId, hand) {
 function displayHands(opener, responder) {
   displayHand("opener-column", window.openerHand);
   displayHand("responder", window.responderHand);
-
 }
 
 function updateBiddingDisplay() {
