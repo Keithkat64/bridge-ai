@@ -87,22 +87,33 @@ function startWithSystem(system) {
   }
 }
 
+function isValidResponder(hand) {
+  const hcp = countHCP(hand);
+  const spades = (hand["♠"] || []).length;
+  const hearts = (hand["♥"] || []).length;
+
+  const has4Major = spades === 4 || hearts === 4;
+  const has5PlusMajor = spades > 4 || hearts > 4;
+
+  return (
+    (hcp >= 8 && has4Major) ||
+    (hcp > 0 && has5PlusMajor)
+  );
+}
+
+
 function loadNewHand() {
   let hands;
   let attempts = 0;
 
   do {
-    hands = generateHands();
-    attempts++;
-  } while (
-    (!isValidOpener(hands.opener) || !isValidResponder(hands.responder)) &&
-    attempts < 100
-  );
+  hands = generateHands();
+  attempts++;
+} while (
+  (!isValidOpener(hands.opener) || !isValidResponder(hands.responder)) &&
+  attempts < 100
+);
 
-  if (!hands || !hands.opener || !hands.responder) {
-    showModal("Something went wrong generating the hands.");
-    return;
-  }
 
   console.log("New hand generated:", hands);
 
@@ -172,4 +183,5 @@ window.showModal = showModal;
 window.closeModal = closeModal;
 window.isValidResponder = isValidResponder;
 window.isValidOpener = isValidOpener;
+
 
