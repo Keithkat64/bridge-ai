@@ -107,7 +107,7 @@ function displayHand(elementId, hand) {
     const cards = hand[suit] || [];
     const styledCards = cards.join(" ");
     const colorClass = (suit === "♥" || suit === "♦") ? "hearts" : "blacks";
-    return `<div class="\${colorClass}">\${suit} \${styledCards}</div>`;
+    return `<div class="${colorClass}">${suit} ${styledCards}</div>`;
   }).join("");
   document.getElementById(elementId).innerHTML = format;
 }
