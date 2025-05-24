@@ -1,9 +1,9 @@
-function runOpen2ndBid(responderHand, openerHand) {
-  const hearts = openerHand["♥"].length;
-  const spades = openerHand["♠"].length;
+function runOpen2ndBid(responderHand, openerHand = window.openerHand) {
+  const hearts = (openerHand["♥"] || []).length;
+  const spades = (openerHand["♠"] || []).length;
 
   if (spades === 4 && hearts === 4) {
-    open2ndbid = "2D"; // deny showing either
+    open2ndbid = "2D";
   } else if (spades === 4) {
     open2ndbid = "2S";
   } else if (hearts === 4) {
@@ -18,8 +18,8 @@ function runOpen2ndBid(responderHand, openerHand) {
 
   updateBiddingDisplay();
 
-  // now prompt the user for their next bid
   document.getElementById("next-bid-container").style.display = "block";
   document.getElementById("your-next-bid").focus();
 }
+
 
