@@ -14,6 +14,7 @@ function runOpen2ndBid(userHand, openerHand) {
 
 function respondWith(bid) {
   console.log("Opener bids", bid);
+  open2ndbid = bid; // ✅ Make sure global tracker is updated
   window.biddingHistory.push({ keith: bid, you: "" });
   updateBiddingDisplay();
 }
