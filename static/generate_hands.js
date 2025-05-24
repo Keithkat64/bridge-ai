@@ -57,19 +57,23 @@ function isValidOpener(hand) {
   );
 }
 
-function isValidResponder(hand) {
+function isValidOpener(hand) {
   const hcp = countHCP(hand);
-  const spades = (hand["♠"] || []).length;
-  const hearts = (hand["♥"] || []).length;
-
-  const has4Major = spades === 4 || hearts === 4;
-  const has5PlusMajor = spades > 4 || hearts > 4;
+  const suitLengths = ["♠", "♥", "♦", "♣"].map(suit => (hand[suit] || []).length);
+  const shape = [...suitLengths].sort((a, b) => b - a).join("");
+  const isBalanced = shape === "4333" || shape === "4432" || shape === "5332";
+  const allSuitsMinTwo = suitLengths.every(len => len >= 2);
 
   return (
-    (hcp >= 8 && has4Major) ||
-    (hcp > 0 && has5PlusMajor)
+    hcp >= 16 &&
+    hcp <= 18 &&
+    (hand["♠"] || []).length < 5 &&
+    (hand["♥"] || []).length < 5 &&
+    isBalanced &&
+    allSuitsMinTwo
   );
 }
+
 
 function startWithSystem(system) {
   console.log("System selected:", system);
