@@ -4,8 +4,10 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
   let user3rdbid = "";
   const hcp = calculateHCP(opener);
   const tp = hcp + countDoubletons(opener);
-  const has4Spades = opener.spades.length === 4;
-  const has4InUserMinor = userMinor && opener[userMinor]?.length === 4;
+
+  const has4Spades = (opener["♠"] || []).length === 4;
+  const has4Hearts = (opener["♥"] || []).length === 4;
+  const has4InUserMinor = userMinor && (opener[userMinor] || []).length === 4;
 
   if (open2ndbid === "2H") {
     if (user2ndbid === "2NT") {
@@ -17,27 +19,19 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
           open3rdbid = "3S";
         }
       } else {
-        if (hcp === 18) {
-          open3rdbid = "3NT";
-          user3rdbid = "PASS";
-        } else {
-          open3rdbid = "PASS";
-        }
+        open3rdbid = hcp === 18 ? "3NT" : "PASS";
+        if (open3rdbid === "3NT") user3rdbid = "PASS";
       }
     } else if (user2ndbid === "3H") {
-      if (tp >= 18) {
-        open3rdbid = "4H";
-        user3rdbid = "PASS";
-      } else {
-        open3rdbid = "PASS";
-      }
+      open3rdbid = tp >= 18 ? "4H" : "PASS";
+      if (open3rdbid === "4H") user3rdbid = "PASS";
     } else if (user2ndbid === "3NT") {
       open3rdbid = has4Spades ? "4S" : "PASS";
     } else if (user2ndbid === "4H") {
       open3rdbid = "PASS";
     } else if (user2ndbid === "3C" || user2ndbid === "3D") {
       if (has4Spades) {
-        open3rdbid = tp >= 18 ? "3S" : "4S";
+        open3rdbid = tp >= 18 ? "4S" : "PASS";
       } else if (has4InUserMinor) {
         open3rdbid = "4" + userMinor.toUpperCase();
       } else {
@@ -66,15 +60,13 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
 
   else if (open2ndbid === "2D") {
     if (user2ndbid === "2NT") {
+      const clubs = opener["♣"] || [];
+      const diamonds = opener["♦"] || [];
       const hasGoodMinor = (hcp === 17 &&
-        ((opener.clubs.length === 5 && hasStrongMinor(opener.clubs)) ||
-         (opener.diamonds.length === 5 && hasStrongMinor(opener.diamonds))));
-      if (hcp === 18 || hasGoodMinor) {
-        open3rdbid = "3NT";
-        user3rdbid = "PASS";
-      } else {
-        open3rdbid = "PASS";
-      }
+        ((clubs.length === 5 && hasStrongMinor(clubs)) ||
+         (diamonds.length === 5 && hasStrongMinor(diamonds))));
+      open3rdbid = (hcp === 18 || hasGoodMinor) ? "3NT" : "PASS";
+      user3rdbid = open3rdbid === "3NT" ? "PASS" : "";
     } else if (user2ndbid === "3NT") {
       open3rdbid = "PASS";
     } else if (user2ndbid === "3C" || user2ndbid === "3D") {
@@ -90,7 +82,7 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
 function hasStrongMinor(suit) {
   const topHonours = ['A', 'K', 'Q'];
   const fiveHonours = ['A', 'K', 'Q', 'J', '10'];
-  const honourCount = (cards, set) => cards.filter(card => set.includes(card)).length;
+  const honourCount = (cards, set) => (cards || []).filter(card => set.includes(card)).length;
   return honourCount(suit, topHonours) >= 2 || honourCount(suit, fiveHonours) >= 3;
 }
 
