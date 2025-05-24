@@ -62,8 +62,7 @@ function loadNewHand() {
   user3rdbid = "";
 
   // Update the hand display
-  displayHand("opener-column", window.openerHand);
-  displayHand("responder", window.responderHand);
+  displayHands(window.openerHand, window.responderHand);
   updateBiddingDisplay();
 
   // Show the hand area if hidden
