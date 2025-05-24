@@ -49,8 +49,27 @@ function updateBiddingDisplay() {
   youCol.innerHTML = window.biddingHistory.map(row => row.you).join("<br>");
 }
 
-// Make globally accessible
+// Modal functions
+function showModal(message) {
+  const modal = document.getElementById("modal");
+  const modalMessage = document.getElementById("modal-message");
+  if (modal && modalMessage) {
+    modalMessage.textContent = message;
+    modal.style.display = "block";
+  }
+}
+
+function closeModal() {
+  const modal = document.getElementById("modal");
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Expose all globally
 window.startWithSystem = startWithSystem;
 window.loadNewHand = loadNewHand;
 window.displayHands = displayHands;
 window.updateBiddingDisplay = updateBiddingDisplay;
+window.showModal = showModal;
+window.closeModal = closeModal;
