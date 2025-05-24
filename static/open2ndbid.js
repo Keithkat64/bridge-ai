@@ -16,5 +16,6 @@ function respondWith(bid) {
   console.log("Opener bids", bid);
   open2ndbid = bid; // ✅ Make sure global tracker is updated
   window.biddingHistory.push({ keith: bid, you: "" });
+  console.log("Keith responds with", bid);
   updateBiddingDisplay();
 }
