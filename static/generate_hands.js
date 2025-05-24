@@ -11,7 +11,7 @@ function startWithSystem(system) {
   }
 }
 
-ffunction loadNewHand() {
+function loadNewHand() {
   const hands = generateHands(); // Generate new random opener + responder hands
 
   // Store hands globally so validation runs on correct hand
