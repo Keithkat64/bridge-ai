@@ -1,3 +1,4 @@
+
 function runOpen2ndBid(userHand, openerHand) {
   let bid = "";
 
