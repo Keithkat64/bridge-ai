@@ -1,13 +1,16 @@
 
 function validateUserBidStayman(bid, responderHand) {
-  const has4Spades = responderHand.spades && responderHand.spades.length === 4;
-  const has4Hearts = responderHand.hearts && responderHand.hearts.length === 4;
+  const spades = responderHand['♠'] || responderHand['spades'] || [];
+  const hearts = responderHand['♥'] || responderHand['hearts'] || [];
 
-  if (!has4Spades && !has4Hearts) {
+  const has4Majors = (spades.length === 4 || hearts.length === 4);
+  const hasNoMajors = (spades.length < 4 && hearts.length < 4);
+
+  if (hasNoMajors) {
     showModal("You need 4 cards in a major to use Stayman. Try Transfers instead.");
     return;
   }
 
   console.log("User has bid Stayman. Proceeding to open2ndbid.js");
-  runOpen2ndBid(responderHand, window.openerHand);
+  runOpen2ndBid(window.openerHand, bid);
 }
