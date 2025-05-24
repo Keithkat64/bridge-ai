@@ -56,17 +56,19 @@ function isValidOpener(hand) {
     allSuitsMinTwo
   );
 }
-function isStaymanHand(hand) {
-  const hcp = countHCP(hand);
-  const has4Spades = (hand["♠"] || []).length === 4;
-  const has4Hearts = (hand["♥"] || []).length === 4;
-  return hcp >= 8 && (has4Spades || has4Hearts);
-}
 
-function isTransferHand(hand) {
-  const hearts = (hand["♥"] || []).length;
+function isValidResponder(hand) {
+  const hcp = countHCP(hand);
   const spades = (hand["♠"] || []).length;
-  return hearts >= 5 || spades >= 5;
+  const hearts = (hand["♥"] || []).length;
+
+  const has4Major = spades === 4 || hearts === 4;
+  const has5PlusMajor = spades > 4 || hearts > 4;
+
+  return (
+    (hcp >= 8 && has4Major) ||
+    (hcp > 0 && has5PlusMajor)
+  );
 }
 
 function startWithSystem(system) {
@@ -89,9 +91,8 @@ function loadNewHand() {
     hands = generateHands();
     attempts++;
   } while (
-    (!isBalancedAndValidOpener(hands.opener) ||
-     (!isStaymanHand(hands.responder) && !isTransferHand(hands.responder)))
-    && attempts < 50
+    (!isValidOpener(hands.opener) || !isValidResponder(hands.responder)) &&
+    attempts < 100
   );
 
   if (!hands || !hands.opener || !hands.responder) {
