@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 from stayman import get_stayman_response
@@ -8,7 +9,7 @@ import random
 app = Flask(__name__)
 CORS(app)
 
-suits = ['spades', 'hearts', 'diamonds', 'clubs']
+suits = ['♠', '♥', '♦', '♣']
 ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 hcp_values = {'A': 4, 'K': 3, 'Q': 2, 'J': 1}
 
@@ -30,7 +31,7 @@ def is_balanced_1nt(hand):
     suit_lengths = {suit: 0 for suit in suits}
     for _, suit in hand:
         suit_lengths[suit] += 1
-    has_5_card_major = suit_lengths['spades'] >= 5 or suit_lengths['hearts'] >= 5
+    has_5_card_major = suit_lengths['♠'] >= 5 or suit_lengths['♥'] >= 5
     return not has_5_card_major and max(suit_lengths.values()) <= 5 and min(suit_lengths.values()) >= 2
 
 def generate_valid_opener():
@@ -49,8 +50,8 @@ def generate_valid_responder(remaining_deck, opener_cards):
             hand_suit_count[suit] += 1
         hcp = count_hcp(hand)
         return (
-            (hcp >= 8 and (hand_suit_count['spades'] == 4 or hand_suit_count['hearts'] == 4)) or
-            (hand_suit_count['spades'] > 4 or hand_suit_count['hearts'] > 4)
+            (hcp >= 8 and (hand_suit_count['♠'] == 4 or hand_suit_count['♥'] == 4)) or
+            (hand_suit_count['♠'] > 4 or hand_suit_count['♥'] > 4)
         )
 
     attempts = 0
