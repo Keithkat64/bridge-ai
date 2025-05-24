@@ -40,23 +40,22 @@ function countHCP(hand) {
   return points;
 }
 
-function isBalancedAndValidOpener(hand) {
+function isValidOpener(hand) {
   const hcp = countHCP(hand);
-  const spades = hand["♠"].length;
-  const hearts = hand["♥"].length;
-  const diamonds = hand["♦"].length;
-  const clubs = hand["♣"].length;
+  const suitLengths = ["♠", "♥", "♦", "♣"].map(suit => (hand[suit] || []).length);
+  const shape = [...suitLengths].sort((a, b) => b - a).join("");
+  const isBalanced = shape === "4333" || shape === "4432" || shape === "5332";
+  const allSuitsMinTwo = suitLengths.every(len => len >= 2);
 
-  const shape = [spades, hearts, diamonds, clubs].sort((a, b) => b - a).join("");
-
-  const isBalanced =
-    shape === "4333" ||
-    shape === "4432" ||
-    shape === "5332";
-
-  return isBalanced && hcp >= 16 && hcp <= 18 && spades < 5 && hearts < 5;
+  return (
+    hcp >= 16 &&
+    hcp <= 18 &&
+    (hand["♠"] || []).length < 5 &&
+    (hand["♥"] || []).length < 5 &&
+    isBalanced &&
+    allSuitsMinTwo
+  );
 }
-
 function isStaymanHand(hand) {
   const hcp = countHCP(hand);
   const has4Spades = (hand["♠"] || []).length === 4;
