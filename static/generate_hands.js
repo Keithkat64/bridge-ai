@@ -1,3 +1,4 @@
+
 function generateHands() {
   const suits = ["♠", "♥", "♦", "♣"];
   const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
@@ -29,6 +30,30 @@ function generateHands() {
   return { opener, responder };
 }
 
+function countHCP(hand) {
+  const hcpMap = { A: 4, K: 3, Q: 2, J: 1 };
+  let points = 0;
+  for (let suit of Object.keys(hand)) {
+    for (let card of hand[suit]) {
+      if (hcpMap[card]) points += hcpMap[card];
+    }
+  }
+  return points;
+}
+
+function isStaymanHand(hand) {
+  const hcp = countHCP(hand);
+  const has4Spades = (hand["♠"] || []).length >= 4;
+  const has4Hearts = (hand["♥"] || []).length >= 4;
+  return hcp >= 8 && (has4Spades || has4Hearts);
+}
+
+function isTransferHand(hand) {
+  const hearts = (hand["♥"] || []).length;
+  const spades = (hand["♠"] || []).length;
+  return hearts >= 5 || spades >= 5;
+}
+
 function startWithSystem(system) {
   console.log("System selected:", system);
   document.getElementById("start-buttons").style.display = "none";
@@ -42,7 +67,17 @@ function startWithSystem(system) {
 }
 
 function loadNewHand() {
-  const hands = generateHands(); // Generate new random opener + responder hands
+  let hands;
+  let attempts = 0;
+  do {
+    hands = generateHands();
+    attempts++;
+  } while (
+    !isStaymanHand(hands.responder) &&
+    !isTransferHand(hands.responder) &&
+    attempts < 20
+  );
+
   if (!hands || !hands.opener || !hands.responder) {
     showModal("Something went wrong generating the hands.");
     return;
@@ -50,38 +85,36 @@ function loadNewHand() {
 
   console.log("New hand generated:", hands);
 
-  // Store hands globally so validation runs on correct hand
   window.openerHand = hands.opener;
   window.responderHand = hands.responder;
 
-  // Reset bidding history and user bid variables
   window.biddingHistory = [{ keith: "1NT", you: "" }];
   userBid = "";
   open2ndbid = "";
   user2ndbid = "";
   user3rdbid = "";
 
-  // Update the hand display
-  displayHands(window.openerHand, window.responderHand);
+  displayHand("opener-column", window.openerHand);
+  displayHand("responder", window.responderHand);
   updateBiddingDisplay();
 
-  // Show the hand area if hidden
   document.getElementById("hand-display").style.display = "block";
 }
 
-function displayHands(opener, responder) {
+function displayHand(elementId, hand) {
   const suits = ["♠", "♥", "♦", "♣"];
-  const formatHand = (hand) =>
-    suits.map(suit => {
-      const cards = hand[suit] || [];
-      const text = cards.join(" ");
-      return (suit === "♥" || suit === "♦")
-        ? `<span class="hearts">${suit} ${text}</span>`
-        : `${suit} ${text}`;
-    }).join("<br>");
+  const format = suits.map(suit => {
+    const cards = hand[suit] || [];
+    const styledCards = cards.join(" ");
+    const colorClass = (suit === "♥" || suit === "♦") ? "hearts" : "blacks";
+    return `<div class="\${colorClass}">\${suit} \${styledCards}</div>`;
+  }).join("");
+  document.getElementById(elementId).innerHTML = format;
+}
 
-  document.getElementById("opener-column").innerHTML = formatHand(opener);
-  document.getElementById("responder").innerHTML = formatHand(responder);
+function displayHands(opener, responder) {
+  displayHand("opener-column", opener);
+  displayHand("responder", responder);
 }
 
 function updateBiddingDisplay() {
@@ -91,7 +124,6 @@ function updateBiddingDisplay() {
   youCol.innerHTML = window.biddingHistory.map(row => row.you).join("<br>");
 }
 
-// Modal functions
 function showModal(message) {
   const modal = document.getElementById("modal");
   const modalMessage = document.getElementById("modal-message");
@@ -108,9 +140,9 @@ function closeModal() {
   }
 }
 
-// Expose all globally
 window.startWithSystem = startWithSystem;
 window.loadNewHand = loadNewHand;
+window.displayHand = displayHand;
 window.displayHands = displayHands;
 window.updateBiddingDisplay = updateBiddingDisplay;
 window.showModal = showModal;
