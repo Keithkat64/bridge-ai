@@ -11,20 +11,27 @@ function startWithSystem(system) {
   }
 }
 
-function loadNewHand() {
-  fetch("https://bridge-ai-production.up.railway.app/api/generate-hands")
-    .then(res => res.json())
-    .then(data => {
-      if (!data.opener || !data.responder) {
-        console.error("Invalid hand data from API");
-        return;
-      }
-      displayHands(data.opener, data.responder);
-      window.openerHand = data.opener;
-      window.responderHand = data.responder;
-      window.biddingHistory = [{ keith: "1NT", you: "" }];
-      updateBiddingDisplay();
-    });
+ffunction loadNewHand() {
+  const hands = generateHands(); // Generate new random opener + responder hands
+
+  // Store hands globally so validation runs on correct hand
+  window.openerHand = hands.opener;
+  window.responderHand = hands.responder;
+
+  // Reset bidding history and user bid variables
+  window.biddingHistory = [{ keith: "1NT", you: "" }];
+  userBid = "";
+  open2ndbid = "";
+  user2ndbid = "";
+  user3rdbid = "";
+
+  // Update the hand display
+  displayHand("opener-column", window.openerHand);
+  displayHand("responder", window.responderHand);
+  updateBiddingDisplay();
+
+  // Show the hand area if hidden
+  document.getElementById("hand-display").style.display = "block";
 }
 
 function displayHands(opener, responder) {
