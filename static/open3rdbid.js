@@ -1,3 +1,11 @@
+function startWithSystem(system) {
+  console.log("System selected:", system);
+  document.getElementById("start-buttons").style.display = "none";
+  // You can expand this logic to load hands, setup bidding, etc.
+}
+
+// Make sure it's globally accessible
+window.startWithSystem = startWithSystem;
 
 function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
   let open3rdbid = "";
