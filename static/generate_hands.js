@@ -97,8 +97,12 @@ function loadNewHand() {
     attempts++;
   } while (
     (!isValidOpener(hands.opener) || !isValidResponder(hands.responder)) &&
-    attempts < 100
+    attempts < 1000
   );
+
+  if (attempts >= 1000) {
+    console.warn("Couldn't generate valid hands after 1000 attempts");
+  }
 
   console.log("New hand generated:", hands);
 
@@ -114,6 +118,9 @@ function loadNewHand() {
   displayHand("opener-column", window.openerHand);
   displayHand("responder", window.responderHand);
   updateBiddingDisplay();
+
+  const bidRow = document.getElementById("bid-input-row");
+  if (bidRow) bidRow.style.display = "block";
 
   document.getElementById("hand-display").style.display = "block";
 }
