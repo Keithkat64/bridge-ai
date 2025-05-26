@@ -1,9 +1,10 @@
+
 function runOpen2ndBid(responderHand, openerHand = window.openerHand) {
   const hearts = (openerHand["♥"] || []).length;
   const spades = (openerHand["♠"] || []).length;
 
   if (spades === 4 && hearts === 4) {
-    open2ndbid = "2D";
+    open2ndbid = "2H"; // standard: bid hearts first
   } else if (spades === 4) {
     open2ndbid = "2S";
   } else if (hearts === 4) {
@@ -23,5 +24,3 @@ function runOpen2ndBid(responderHand, openerHand = window.openerHand) {
   if (nextBidContainer) nextBidContainer.style.display = "block";
   if (nextBidInput) nextBidInput.focus();
 }
-
-
