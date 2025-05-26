@@ -18,8 +18,10 @@ function runOpen2ndBid(responderHand, openerHand = window.openerHand) {
 
   updateBiddingDisplay();
 
-  document.getElementById("next-bid-container").style.display = "block";
-  document.getElementById("your-next-bid").focus();
+  const nextBidContainer = document.getElementById("next-bid-container");
+  const nextBidInput = document.getElementById("your-next-bid");
+  if (nextBidContainer) nextBidContainer.style.display = "block";
+  if (nextBidInput) nextBidInput.focus();
 }
 
 
