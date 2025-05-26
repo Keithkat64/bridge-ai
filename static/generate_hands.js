@@ -1,4 +1,7 @@
+# Rewriting the generate_hands.js content just to ensure everything matches deployment expectations
+from pathlib import Path
 
+updated_generate_hands = """
 function generateHands() {
   const suits = ["♠", "♥", "♦", "♣"];
   const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
@@ -48,7 +51,9 @@ function isValidOpener(hand) {
   const isBalanced = shape === "4333" || shape === "4432" || shape === "5332";
   const hasSingleton = suitLengths.some(len => len === 1);
   const hasVoid = suitLengths.some(len => len === 0);
-  const tooLongMajor = (hand["♠"]?.length || 0) > 4 || (hand["♥"]?.length || 0) > 4;
+  const spades = (hand["♠"] || []).length;
+  const hearts = (hand["♥"] || []).length;
+  const tooLongMajor = spades > 4 || hearts > 4;
 
   return (
     hcp >= 16 &&
@@ -166,3 +171,9 @@ window.showModal = showModal;
 window.closeModal = closeModal;
 window.isValidResponder = isValidResponder;
 window.isValidOpener = isValidOpener;
+"""
+
+# Save the updated script
+fixed_generate_hands_path = "/mnt/data/generate_hands.js"
+Path(fixed_generate_hands_path).write_text(updated_generate_hands)
+fixed_generate_hands_path
