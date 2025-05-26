@@ -1,5 +1,5 @@
-// blackwood-logic.js
-export function runBlackwood(opener, responder, bidHistory) {
+
+function runBlackwood(opener, responder, bidHistory) {
   const aceCount = countAces(opener.hand);
   const kingCount = countKings(opener.hand);
   const lastBid = bidHistory[bidHistory.length - 1];
@@ -32,3 +32,5 @@ function countAces(hand) {
 function countKings(hand) {
   return hand.filter(card => card.startsWith("K")).length;
 }
+
+window.runBlackwood = runBlackwood;
