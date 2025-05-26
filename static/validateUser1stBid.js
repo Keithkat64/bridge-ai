@@ -3,15 +3,13 @@ function validateUser1stBid(userBid, responderHand) {
   const hearts = responderHand["♥"]?.length || 0;
   const bid = userBid.toUpperCase();
 
-  // Track retry count
   if (typeof window.retryCount === "undefined") {
     window.retryCount = 0;
   }
 
-  // Assume Stayman if no 5-card major
   const isStayman = spades < 5 && hearts < 5;
-
   let isValid = false;
+  let feedback = "";
 
   if (isStayman) {
     if (bid === "2C") {
@@ -20,7 +18,7 @@ function validateUser1stBid(userBid, responderHand) {
       updateBiddingDisplay();
       runOpen2ndBid();
     } else {
-      showModal("Keith thinks this is a Stayman hand. Please re-enter your bid.");
+      feedback = "Keith thinks this is a Stayman hand. Please re-enter your bid.";
     }
 
   } else if (hearts > 4) {
@@ -29,9 +27,9 @@ function validateUser1stBid(userBid, responderHand) {
       window.biddingHistory.at(-1).you = "2D";
       updateBiddingDisplay();
       window.transferTarget = "hearts";
-      // TODO: Run transfer logic
+      // TODO: run transfer logic
     } else {
-      showModal("Keith thinks this is a transfer to ♥. Please re-enter your bid.");
+      feedback = "Keith thinks this is a transfer to ♥. Please re-enter your bid.";
     }
 
   } else if (spades > 4) {
@@ -40,23 +38,24 @@ function validateUser1stBid(userBid, responderHand) {
       window.biddingHistory.at(-1).you = "2H";
       updateBiddingDisplay();
       window.transferTarget = "spades";
-      // TODO: Run transfer logic
+      // TODO: run transfer logic
     } else {
-      showModal("Keith thinks this is a transfer to ♠. Please re-enter your bid.");
+      feedback = "Keith thinks this is a transfer to ♠. Please re-enter your bid.";
     }
   }
 
-  // Retry handling
+  // Only handle retries if the bid is invalid
   if (!isValid) {
-    window.retryCount++;
-    if (window.retryCount >= 2) {
+    if (window.retryCount === 0) {
+      window.retryCount = 1;
+      showModal(feedback);
+    } else {
       showModal("That's two strikes. Keith is passing for you.");
       window.biddingHistory.at(-1).you = "PASS";
       updateBiddingDisplay();
-      // Optional: end bidding or show 'Bid another hand?' buttons
     }
   } else {
-    // Reset retry count on success
+    // Reset after success
     window.retryCount = 0;
   }
 }
