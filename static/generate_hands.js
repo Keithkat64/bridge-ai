@@ -1,3 +1,4 @@
+
 function generateHands() {
   const suits = ["♠", "♥", "♦", "♣"];
   const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
@@ -45,35 +46,19 @@ function isValidOpener(hand) {
   const suitLengths = ["♠", "♥", "♦", "♣"].map(suit => (hand[suit] || []).length);
   const shape = [...suitLengths].sort((a, b) => b - a).join("");
   const isBalanced = shape === "4333" || shape === "4432" || shape === "5332";
-  const allSuitsMinTwo = suitLengths.every(len => len >= 2);
+  const hasSingleton = suitLengths.some(len => len === 1);
+  const hasVoid = suitLengths.some(len => len === 0);
+  const tooLongMajor = (hand["♠"]?.length || 0) > 4 || (hand["♥"]?.length || 0) > 4;
 
   return (
     hcp >= 16 &&
     hcp <= 18 &&
-    (hand["♠"] || []).length < 5 &&
-    (hand["♥"] || []).length < 5 &&
     isBalanced &&
-    allSuitsMinTwo
+    !hasSingleton &&
+    !hasVoid &&
+    !tooLongMajor
   );
 }
-
-function isValidOpener(hand) {
-  const hcp = countHCP(hand);
-  const suitLengths = ["♠", "♥", "♦", "♣"].map(suit => (hand[suit] || []).length);
-  const shape = [...suitLengths].sort((a, b) => b - a).join("");
-  const isBalanced = shape === "4333" || shape === "4432" || shape === "5332";
-  const allSuitsMinTwo = suitLengths.every(len => len >= 2);
-
-  return (
-    hcp >= 16 &&
-    hcp <= 18 &&
-    (hand["♠"] || []).length < 5 &&
-    (hand["♥"] || []).length < 5 &&
-    isBalanced &&
-    allSuitsMinTwo
-  );
-}
-
 
 function startWithSystem(system) {
   console.log("System selected:", system);
@@ -101,19 +86,17 @@ function isValidResponder(hand) {
   );
 }
 
-
 function loadNewHand() {
   let hands;
   let attempts = 0;
 
   do {
-  hands = generateHands();
-  attempts++;
-} while (
-  (!isValidOpener(hands.opener) || !isValidResponder(hands.responder)) &&
-  attempts < 100
-);
-
+    hands = generateHands();
+    attempts++;
+  } while (
+    (!isValidOpener(hands.opener) || !isValidResponder(hands.responder)) &&
+    attempts < 100
+  );
 
   console.log("New hand generated:", hands);
 
@@ -183,5 +166,3 @@ window.showModal = showModal;
 window.closeModal = closeModal;
 window.isValidResponder = isValidResponder;
 window.isValidOpener = isValidOpener;
-
-
