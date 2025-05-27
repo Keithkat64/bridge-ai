@@ -1,14 +1,37 @@
 
-function runAceAsk(opener, responder, bidHistory) {
-  const aceCount = countAces(opener.hand);
-  const responses = ["5C", "5D", "5H", "5S", "5C"]; // 0 to 4 aces
-  const openerBid = responses[Math.min(aceCount, 4)];
+function runAceAsk(userBid, openerHand) {
+  return new Promise((resolve) => {
+    const aceCount = countAces(openerHand);
+    let response;
 
-  return Promise.resolve({ openerBid });
+    switch (aceCount) {
+      case 0:
+        response = "5C";
+        break;
+      case 1:
+        response = "5D";
+        break;
+      case 2:
+        response = "5H";
+        break;
+      case 3:
+        response = "5S";
+        break;
+      case 4:
+        response = "5NT";
+        break;
+      default:
+        response = "PASS";
+    }
+
+    resolve(response);
+  });
 }
 
 function countAces(hand) {
-  return hand.filter(card => card.startsWith("A")).length;
+  // Combine all suit arrays into a single flat array
+  const allCards = [...hand.spades, ...hand.hearts, ...hand.diamonds, ...hand.clubs];
+  return allCards.filter(card => card === "A").length;
 }
 
 window.runAceAsk = runAceAsk;
