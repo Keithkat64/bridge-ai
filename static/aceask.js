@@ -1,4 +1,5 @@
 
+// aceask.js
 function runAceAsk(userBid, openerHand) {
   return new Promise((resolve) => {
     const aceCount = countAces(openerHand);
@@ -6,31 +7,36 @@ function runAceAsk(userBid, openerHand) {
 
     switch (aceCount) {
       case 0:
-        response = "5C";
-        break;
+        response = "5C"; break;
       case 1:
-        response = "5D";
-        break;
+        response = "5D"; break;
       case 2:
-        response = "5H";
-        break;
+        response = "5H"; break;
       case 3:
-        response = "5S";
-        break;
+        response = "5S"; break;
       case 4:
-        response = "5NT";
-        break;
+        response = "5NT"; break;
       default:
         response = "PASS";
     }
 
-    resolve(response);
+    resolve({ openerBid: response });
   });
 }
 
 function countAces(hand) {
-  // Combine all suit arrays into a single flat array
-  const allCards = [...hand.spades, ...hand.hearts, ...hand.diamonds, ...hand.clubs];
+  if (!hand || !hand["♠"] || !hand["♥"] || !hand["♦"] || !hand["♣"]) {
+    console.error("Invalid hand structure:", hand);
+    return 0;
+  }
+
+  const allCards = [
+    ...hand["♠"],
+    ...hand["♥"],
+    ...hand["♦"],
+    ...hand["♣"]
+  ];
+
   return allCards.filter(card => card === "A").length;
 }
 
