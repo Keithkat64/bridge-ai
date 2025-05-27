@@ -13,7 +13,10 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
     const bidHistory = [user2ndbid];
     const flatHand = flattenHand(opener);
     const result = window.runAceAsk({ hand: flatHand }, null, bidHistory);
-    open3rdbid = result.openerBid || "PASS";
+    console.log("Ace Ask result:", result);
+  open3rdbid = (result && result.openerBid && typeof result.openerBid === "string")
+    ? result.openerBid
+    : "PASS";
     return { open3rdbid, user3rdbid };
   }
 
