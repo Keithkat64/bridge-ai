@@ -6,13 +6,13 @@ function runKingAsk(opener, responder, bidHistory) {
   if (lastBid === "5NT") {
     const responses = ["6C", "6D", "6H", "6S", "6C"]; // 0 to 4 kings
     const bid = responses[Math.min(kingCount, 4)];
-    return {
+    return Promise.resolve({
       openerBid: bid,
       nextStep: "awaitResponderFinalDecision"
-    };
+    });
   }
 
-  return { error: "Unexpected bid: Only 5NT is valid for king ask." };
+  return Promise.resolve({ error: "Unexpected bid: Only 5NT is valid for king ask." });
 }
 
 function countKings(hand) {
