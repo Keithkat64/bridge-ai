@@ -1,19 +1,14 @@
 
-function interceptBlackwood(userBid, openerHand) {
-  if (userBid === "4NT") {
-    const flatHand = flattenHand(openerHand);
-    const result = window.runBlackwood
-      ? window.runBlackwood({ hand: flatHand }, null, ["4NT"])
-      : { openerBid: "ERROR" };
+function runAceAsk(opener, responder, bidHistory) {
+  const aceCount = countAces(opener.hand);
+  const responses = ["5C", "5D", "5H", "5S", "5C"]; // 0 to 4 aces
 
-    open4thbid = result.openerBid || "PASS";
-    window.biddingHistory.push({ keith: open4thbid, you: userBid });
-    updateBiddingDisplay();
-
-    if (open4thbid === "PASS") endBidding();
-    return true; // 4NT was handled
-  }
-  return false; // continue normal bidding
+  const openerBid = responses[Math.min(aceCount, 4)];
+  return { openerBid };
 }
 
-window.interceptBlackwood = interceptBlackwood;
+function countAces(hand) {
+  return hand.filter(card => card.startsWith("A")).length;
+}
+
+window.runAceAsk = runAceAsk;
