@@ -7,8 +7,8 @@ function calculateOpen4thBid(user3rdbid, openerHand, user4thbid = "") {
 
   } else if (bid === "4NT") {
     const flatHand = flattenHand(openerHand);
-    const result = window.runBlackwood
-      ? window.runBlackwood({ hand: flatHand }, null, [bid])
+    const result = window.runAceAsk
+      ? window.runAceAsk({ hand: flatHand }, null, [bid])
       : { openerBid: "ERROR" };
     open4thbid = result.openerBid || "PASS";
 
@@ -17,8 +17,8 @@ function calculateOpen4thBid(user3rdbid, openerHand, user4thbid = "") {
 
   } else if (bid === "5NT") {
     const flatHand = flattenHand(openerHand);
-    const result = window.runBlackwood
-      ? window.runBlackwood({ hand: flatHand }, null, [bid])
+    const result = window.runKingAsk
+      ? window.runKingAsk({ hand: flatHand }, null, [bid])
       : { openerBid: "ERROR" };
     open4thbid = result.openerBid || "PASS";
 

@@ -7,8 +7,8 @@ function calculateOpen5thBid(user4thbid, user5thbid, openerHand) {
 
   if (user4thbid.toUpperCase() === "5NT") {
     const flatHand = flattenHand(openerHand);
-    const result = window.runBlackwood
-      ? window.runBlackwood({ hand: flatHand }, null, ["5NT"])
+    const result = window.runKingAsk
+      ? window.runKingAsk({ hand: flatHand }, null, ["5NT"])
       : { openerBid: "ERROR" };
     open5thbid = result.openerBid || "PASS";
 

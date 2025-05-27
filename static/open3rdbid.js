@@ -9,10 +9,10 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
   const has4Hearts = (opener["♥"] || []).length === 4;
   const has4InUserMinor = userMinor && (opener[userMinor] || []).length === 4;
 
-  if (user2ndbid === "4NT" && typeof window.runBlackwood === "function") {
+  if (user2ndbid === "4NT" && typeof window.runAceAsk === "function") {
     const bidHistory = [user2ndbid];
     const flatHand = flattenHand(opener);
-    const result = window.runBlackwood({ hand: flatHand }, null, bidHistory);
+    const result = window.runAceAsk({ hand: flatHand }, null, bidHistory);
     open3rdbid = result.openerBid || "PASS";
     return { open3rdbid, user3rdbid };
   }
