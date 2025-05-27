@@ -1,22 +1,31 @@
 
-function runKingAsk(opener, responder, bidHistory) {
-  const kingCount = countKings(opener.hand);
-  const lastBid = bidHistory[bidHistory.length - 1];
+function runKingAsk(userBid, openerHand) {
+  return new Promise((resolve) => {
+    let response;
 
-  if (lastBid === "5NT") {
-    const responses = ["6C", "6D", "6H", "6S", "6C"]; // 0 to 4 kings
-    const bid = responses[Math.min(kingCount, 4)];
-    return Promise.resolve({
-      openerBid: bid,
-      nextStep: "awaitResponderFinalDecision"
-    });
-  }
+    const kings = openerHand.filter(card => ['♠', '♥', '♦', '♣'].includes(card[0]) && card[1] === 'K');
+    const kingCount = kings.length;
 
-  return Promise.resolve({ error: "Unexpected bid: Only 5NT is valid for king ask." });
+    switch (kingCount) {
+      case 0:
+        response = "5C";
+        break;
+      case 1:
+        response = "5D";
+        break;
+      case 2:
+        response = "5H";
+        break;
+      case 3:
+        response = "5S";
+        break;
+      case 4:
+        response = "5NT";
+        break;
+      default:
+        response = "PASS";
+    }
+
+    resolve(response);
+  });
 }
-
-function countKings(hand) {
-  return hand.filter(card => card.startsWith("K")).length;
-}
-
-window.runKingAsk = runKingAsk;
