@@ -5,7 +5,7 @@ function runKingAsk(userBid, openerHand) {
       return resolve({ openerBid: "PASS" });
     }
 
-    const kingCount = countKings(openerHand);
+    const kingCount = countKings(openerHand); //kings
     let response;
 
     switch (kingCount) {
