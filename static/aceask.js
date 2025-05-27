@@ -15,7 +15,7 @@ function runAceAsk(userBid, openerHand) {
       case 3:
         response = "5S"; break;
       case 4:
-        response = "5NT"; break;
+        response = "5C"; break;
       default:
         response = "PASS";
     }

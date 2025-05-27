@@ -1,6 +1,11 @@
 // kingask.js
 function runKingAsk(userBid, openerHand) {
   return new Promise((resolve) => {
+    if (!openerHand || !openerHand["♠"] || !openerHand["♥"] || !openerHand["♦"] || !openerHand["♣"]) {
+      console.error("Invalid hand structure in runKingAsk:", openerHand);
+      return resolve({ openerBid: "PASS" });
+    }
+
     const kingCount = countKings(openerHand);
     let response;
 
@@ -14,7 +19,7 @@ function runKingAsk(userBid, openerHand) {
       case 3:
         response = "5S"; break;
       case 4:
-        response = "5NT"; break;
+        response = "5C"; break;
       default:
         response = "PASS";
     }
