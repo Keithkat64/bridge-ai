@@ -2,7 +2,6 @@
 function runKingAsk(userBid, openerHand) {
   return new Promise((resolve) => {
     if (!openerHand || !openerHand["♠"] || !openerHand["♥"] || !openerHand["♦"] || !openerHand["♣"]) {
-      console.error("Invalid hand structure in runKingAsk:", openerHand);
       return resolve({ openerBid: "PASS" });
     }
 
@@ -30,7 +29,6 @@ function runKingAsk(userBid, openerHand) {
 
 function countKings(hand) {
   if (!hand || !hand["♠"] || !hand["♥"] || !hand["♦"] || !hand["♣"]) {
-    console.error("Invalid hand structure:", hand);
     return 0;
   }
 
