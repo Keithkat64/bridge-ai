@@ -1,30 +1,61 @@
-
 function validateUser1stBid(userBid, responderHand) {
-  window.validUser1stBid = false;
+  const spades = responderHand["♠"]?.length || 0;
+  const hearts = responderHand["♥"]?.length || 0;
+  const bid = userBid.toUpperCase();
 
-  if (!responderHand || !responderHand.hearts || !responderHand.spades) {
-    console.error("Responder hand not ready:", responderHand);
-    showModal("System error — Keith's still dealing the cards.");
-    return;
+  if (typeof window.retryCount === "undefined") {
+    window.retryCount = 0;
   }
 
-  const upperBid = userBid.toUpperCase();
+  const isStayman = spades < 5 && hearts < 5;
+  let isValid = false;
+  let feedback = "";
 
-  const hasFiveHearts = responderHand.hearts.length >= 5;
-  const hasFiveSpades = responderHand.spades.length >= 5;
-  const hasFourHearts = responderHand.hearts.length === 4;
-  const hasFourSpades = responderHand.spades.length === 4;
+  if (isStayman) {
+    if (bid === "2C") {
+      isValid = true;
+      window.biddingHistory.at(-1).you = "2C";
+      updateBiddingDisplay();
+      runOpen2ndBid();
+    } else {
+      feedback = "Keith thinks this is a Stayman hand. Please re-enter your bid.";
+    }
 
-  const isTransferHand = hasFiveHearts || hasFiveSpades;
-  const isStaymanHand = (hasFourHearts || hasFourSpades) && !isTransferHand;
+  } else if (hearts > 4) {
+    if (bid === "2D") {
+      isValid = true;
+      window.biddingHistory.at(-1).you = "2D";
+      updateBiddingDisplay();
+      window.transferTarget = "hearts";
+      // TODO: run transfer logic
+    } else {
+      feedback = "Keith thinks this is a transfer to ♥. Please re-enter your bid.";
+    }
 
-  if (isTransferHand && upperBid === "2D") {
-    window.validUser1stBid = true;
-  } else if (isTransferHand && upperBid === "2H") {
-    window.validUser1stBid = true;
-  } else if (isStaymanHand && upperBid === "2C") {
-    window.validUser1stBid = true;
+  } else if (spades > 4) {
+    if (bid === "2H") {
+      isValid = true;
+      window.biddingHistory.at(-1).you = "2H";
+      updateBiddingDisplay();
+      window.transferTarget = "spades";
+      // TODO: run transfer logic
+    } else {
+      feedback = "Keith thinks this is a transfer to ♠. Please re-enter your bid.";
+    }
+  }
+
+  // Only handle retries if the bid is invalid
+  if (!isValid) {
+    if (window.retryCount === 0) {
+      window.retryCount = 1;
+      showModal(feedback);
+    } else {
+      showModal("That's two strikes. Keith is passing for you.");
+      window.biddingHistory.at(-1).you = "PASS";
+      updateBiddingDisplay();
+    }
   } else {
-    showModal("Keith thinks you have a better bid");
+    // Reset after success
+    window.retryCount = 0;
   }
 }
