@@ -1,20 +1,23 @@
-
 function validateUser1stBid(userBid, responderHand) {
-  const bid = userBid.toUpperCase();
-  const spades = responderHand["♠"]?.length || 0;
-  const hearts = responderHand["♥"]?.length || 0;
+  window.validUser1stBid = false;
 
-  window.validUserBid = false;
+  const upperBid = userBid.toUpperCase();
 
-  if (bid === "2C" && spades < 5 && hearts < 5) {
-    window.validUserBid = true;
-  } else if (bid === "2D" && hearts >= 5) {
-    window.validUserBid = true;
-    window.transferTarget = "hearts";
-  } else if (bid === "2H" && spades >= 5) {
-    window.validUserBid = true;
-    window.transferTarget = "spades";
+  const hasFiveHearts = responderHand.hearts.length >= 5;
+  const hasFiveSpades = responderHand.spades.length >= 5;
+  const hasFourHearts = responderHand.hearts.length === 4;
+  const hasFourSpades = responderHand.spades.length === 4;
+
+  const isTransferHand = hasFiveHearts || hasFiveSpades;
+  const isStaymanHand = (hasFourHearts || hasFourSpades) && !isTransferHand;
+
+  if (isTransferHand && upperBid === "2D") {
+    window.validUser1stBid = true;
+  } else if (isTransferHand && upperBid === "2H") {
+    window.validUser1stBid = true;
+  } else if (isStaymanHand && upperBid === "2C") {
+    window.validUser1stBid = true;
   } else {
-    showModal("That's not the right bid for your hand.");
+    showModal("Keith thinks you have a better bid");
   }
 }
