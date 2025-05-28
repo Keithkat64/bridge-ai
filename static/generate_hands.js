@@ -175,3 +175,7 @@ window.showModal = showModal;
 window.closeModal = closeModal;
 window.isValidResponder = isValidResponder;
 window.isValidOpener = isValidOpener;
+
+
+console.log("Responder hand =", window.responderHand);
+console.log("Opener hand =", window.openerHand);
