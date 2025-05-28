@@ -1,5 +1,12 @@
+
 function validateUser1stBid(userBid, responderHand) {
   window.validUser1stBid = false;
+
+  if (!responderHand || !responderHand.hearts || !responderHand.spades) {
+    console.error("Responder hand not ready:", responderHand);
+    showModal("System error — Keith's still dealing the cards.");
+    return;
+  }
 
   const upperBid = userBid.toUpperCase();
 
