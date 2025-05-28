@@ -4,7 +4,7 @@ function validateUser2ndBid(userBid, open2ndbid) {
 
   const upperBid = userBid.toUpperCase();
 
-  const validBidsAlways = ["2NT", "3NT", "4NT", "PASS", "3C", "3D"];
+  const validBidsAlways = ["2NT", "3NT", "4NT", "PASS", "3C"];
 
   const validBidsByOpener = {
     "2H": ["3H", "4H"],
