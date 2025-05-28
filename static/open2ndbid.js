@@ -1,6 +1,5 @@
-
 function runOpen2ndBid(responderHand, openerHand = window.openerHand) {
-  if (!window.validUserBid) return;
+  if (!window.validuser1stbid) return;
 
   const spades = openerHand["♠"]?.length || 0;
   const hearts = openerHand["♥"]?.length || 0;
@@ -24,6 +23,7 @@ function runOpen2ndBid(responderHand, openerHand = window.openerHand) {
     }
   }
 
+  window.open2ndbid = open2ndbid; // <-- store it globally for later logic
   window.biddingHistory.push({ keith: open2ndbid, you: "" });
   updateBiddingDisplay();
 }
