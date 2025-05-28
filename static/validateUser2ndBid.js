@@ -16,6 +16,6 @@ function validateUser2ndBid(userBid, open2ndbid) {
   } else if (validBidsByOpener[open2ndbid] && validBidsByOpener[open2ndbid].includes(upperBid)) {
     window.validUserBid = true;
   } else {
-    showModal("Keith thinks you have a better bid");
+    showModal("Keith thinks you do have a better bid");
   }
 }
