@@ -14,6 +14,12 @@ function submitBid() {
   const history = window.biddingHistory;
 
   if (history.length === 1 && !history[0].you) {
+    if (!responderHand || !responderHand["♠"] || !responderHand["♥"]) {
+      console.error("Responder hand is not properly set before validation:", responderHand);
+      alert("Something went wrong with hand setup. Please reload the hand.");
+      return;
+    }
+
     user1stbid = bid;
     validuser1stbid = validateUser1stBid(user1stbid, responderHand);
 
