@@ -1,15 +1,21 @@
 
-function validateUser2ndBid(user2ndbid, open2ndbid) {
-  const validSecondBids = ["2NT", "3C", "3D", "3NT", "4NT"];
-  if (open2ndbid === "2H") validSecondBids.push("3H", "4H");
-  if (open2ndbid === "2S") validSecondBids.push("3S", "4S");
-
+function validateUser2ndBid(userBid, open2ndbid) {
   window.validUserBid = false;
 
-  if (!validSecondBids.includes(user2ndbid.toUpperCase())) {
-    showModal("Keith thinks you have a better bid");
-    return;
-  }
+  const upperBid = userBid.toUpperCase();
 
-  window.validUserBid = true;
+  const validBidsAlways = ["2NT", "3NT", "4NT", "PASS", "3C", "3D"];
+
+  const validBidsByOpener = {
+    "2H": ["3H", "4H"],
+    "2S": ["3S", "4S"]
+  };
+
+  if (validBidsAlways.includes(upperBid)) {
+    window.validUserBid = true;
+  } else if (validBidsByOpener[open2ndbid] && validBidsByOpener[open2ndbid].includes(upperBid)) {
+    window.validUserBid = true;
+  } else {
+    showModal("Keith thinks you have a better bid");
+  }
 }
