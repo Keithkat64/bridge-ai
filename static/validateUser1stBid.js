@@ -1,61 +1,28 @@
+
 function validateUser1stBid(userBid, responderHand) {
-  const spades = responderHand["♠"]?.length || 0;
-  const hearts = responderHand["♥"]?.length || 0;
-  const bid = userBid.toUpperCase();
+  console.log("validateUser1stBid CALLED");
+  console.log("userBid =", userBid);
+  console.log("responderHand =", responderHand);
 
-  if (typeof window.retryCount === "undefined") {
-    window.retryCount = 0;
+  window.validuser1stbid = false;
+
+  if (!userBid || !responderHand) {
+    console.log("Missing userBid or responderHand");
+    return;
   }
 
-  const isStayman = spades < 5 && hearts < 5;
-  let isValid = false;
-  let feedback = "";
+  const upperBid = userBid.trim().toUpperCase();
+  const spades = responderHand.spades ? responderHand.spades.length : 0;
+  const hearts = responderHand.hearts ? responderHand.hearts.length : 0;
 
-  if (isStayman) {
-    if (bid === "2C") {
-      isValid = true;
-      window.biddingHistory.at(-1).you = "2C";
-      updateBiddingDisplay();
-      runOpen2ndBid();
-    } else {
-      feedback = "Keith thinks this is a Stayman hand. Please re-enter your bid.";
-    }
-
-  } else if (hearts > 4) {
-    if (bid === "2D") {
-      isValid = true;
-      window.biddingHistory.at(-1).you = "2D";
-      updateBiddingDisplay();
-      window.transferTarget = "hearts";
-      // TODO: run transfer logic
-    } else {
-      feedback = "Keith thinks this is a transfer to ♥. Please re-enter your bid.";
-    }
-
-  } else if (spades > 4) {
-    if (bid === "2H") {
-      isValid = true;
-      window.biddingHistory.at(-1).you = "2H";
-      updateBiddingDisplay();
-      window.transferTarget = "spades";
-      // TODO: run transfer logic
-    } else {
-      feedback = "Keith thinks this is a transfer to ♠. Please re-enter your bid.";
-    }
+  if (upperBid === "2C" && (spades === 4 || hearts === 4)) {
+    window.validuser1stbid = true;
+    console.log("Valid Stayman bid: 2C with a 4-card major.");
   }
 
-  // Only handle retries if the bid is invalid
-  if (!isValid) {
-    if (window.retryCount === 0) {
-      window.retryCount = 1;
-      showModal(feedback);
-    } else {
-      showModal("That's two strikes. Keith is passing for you.");
-      window.biddingHistory.at(-1).you = "PASS";
-      updateBiddingDisplay();
-    }
-  } else {
-    // Reset after success
-    window.retryCount = 0;
+  console.log("validuser1stbid =", window.validuser1stbid);
+
+  if (!window.validuser1stbid) {
+    showErrorModal("That's not the right bid for your hand.");
   }
 }
