@@ -6,10 +6,14 @@ function validateUser1stBid(userBid, responderHand) {
     return;
   }
 
+  if (!responderHand || !responderHand["♠"] || !responderHand["♥"]) {
+    console.error("Responder hand is undefined or incomplete:", responderHand);
+    return;
+  }
+
   userBid = userBid.toUpperCase();
-  const suit = userBid.charAt(1);
-  const has4Spades = responderHand.spades.length >= 4;
-  const has4Hearts = responderHand.hearts.length >= 4;
+  const has4Spades = responderHand["♠"].length >= 4;
+  const has4Hearts = responderHand["♥"].length >= 4;
 
   if (userBid === "2C" && (has4Spades || has4Hearts)) {
     window.validuser1stbid = true;
