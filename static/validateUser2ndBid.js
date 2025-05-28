@@ -1,21 +1,22 @@
-
 function validateUser2ndBid(userBid, open2ndbid) {
-  window.validUserBid = false;
+  window.validUser2ndBid = false;
 
   const upperBid = userBid.toUpperCase();
 
-  const validBidsAlways = ["2NT", "3NT", "4NT", "PASS", "3C"];
+  // Always allowed bids for any open2ndbid
+  const universalValidBids = ["2NT", "3C", "3D", "3NT", "4NT"];
 
-  const validBidsByOpener = {
+  // Contextual bids based on Keith's 2nd bid
+  const contextualValidBids = {
     "2H": ["3H", "4H"],
-    "2S": ["3S", "4S"]
+    "2S": ["3S", "4S"],
+    "2D": [] // No suit-level fit bids allowed
   };
 
-  if (validBidsAlways.includes(upperBid)) {
-    window.validUserBid = true;
-  } else if (validBidsByOpener[open2ndbid] && validBidsByOpener[open2ndbid].includes(upperBid)) {
-    window.validUserBid = true;
+  if (universalValidBids.includes(upperBid) ||
+      (contextualValidBids[open2ndbid] && contextualValidBids[open2ndbid].includes(upperBid))) {
+    window.validUser2ndBid = true;
   } else {
-    showModal("Keith thinks you do have a better bid");
+    showModal("Keith thinks you have a better bid");
   }
 }
