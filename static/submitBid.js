@@ -33,7 +33,9 @@ function submitBid() {
     user2ndbid = bid;
     validuser2ndbid = validateUser2ndBid(user2ndbid, open2ndbid);
     if (validuser2ndbid) {
-      open3rdbid = getOpen3rdBid(open2ndbid, user2ndbid, openerHand);
+      // Changed this line to use the correct function name
+      const result = calculateOpen3rdBid(open2ndbid, user2ndbid, openerHand);
+      open3rdbid = result.open3rdbid;
       history[1].you = user2ndbid;
       history.push({ keith: open3rdbid, you: "" });
       updateBiddingDisplay();
