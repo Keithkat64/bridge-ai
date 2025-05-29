@@ -5,6 +5,8 @@ function validateUser5thBid(user5thbid, responderHand, open5thbid) {
     // Define valid fifth bids
     const validFifthBids = [
         "PASS",
+        "5H", "5S",  // Added 5H and 5S as valid bids after Blackwood
+        "5NT",       // Asking for kings
         "6C", "6D", "6H", "6S", "6NT",
         "7C", "7D", "7H", "7S", "7NT"
     ];
@@ -15,14 +17,21 @@ function validateUser5thBid(user5thbid, responderHand, open5thbid) {
         return false;
     }
 
-    // If it's not PASS, ensure it's higher than Keith's bid
+    // If it's not PASS, ensure it's a valid progression
     if (upperBid !== "PASS") {
         const bidLevels = {
-            "5H": 0,  // Add this to compare with Keith's 5H bid
-            "6C": 1, "6D": 2, "6H": 3, "6S": 4, "6NT": 5,
-            "7C": 6, "7D": 7, "7H": 8, "7S": 9, "7NT": 10
+            "5C": 1, "5D": 2, "5H": 3, "5S": 4, "5NT": 5,
+            "6C": 6, "6D": 7, "6H": 8, "6S": 9, "6NT": 10,
+            "7C": 11, "7D": 12, "7H": 13, "7S": 14, "7NT": 15
         };
 
+        // Special case: After Blackwood response, allow same-level bids
+        if (open5thbid === "5D" && ["5H", "5S", "5NT"].includes(upperBid)) {
+            window.validuser5thbid = true;
+            return true;
+        }
+
+        // For other cases, bid must be higher
         if (bidLevels[upperBid] <= bidLevels[open5thbid]) {
             showModal("Your bid must be higher than Keith's bid");
             return false;

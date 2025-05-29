@@ -12,12 +12,16 @@ function calculateOpen5thBid(open4thbid, user4thbid, opener) {
             case 3: open5thbid = "6S"; break;
             default: open5thbid = "6C"; break; // 0 or 4 kings
         }
+    } else if (user4thbid === "7S") {
+        // When user bids 7S, Keith should pass
+        open5thbid = "PASS";
     } else {
-        // For any other bid (including 6C), Keith should pass
+        // For any other bid, Keith should pass
         open5thbid = "PASS";
     }
 
-    return { open5thbid };
+    // Return just the bid string instead of an object
+    return open5thbid;
 }
 
 function countKings(hand) {
@@ -38,5 +42,5 @@ function countKings(hand) {
 
 // Make functions available globally
 window.calculateOpen5thBid = calculateOpen5thBid;
-window.getOpen5thBid = calculateOpen5thBid;  // Add this line to provide the alternative name
+window.getOpen5thBid = calculateOpen5thBid;
 window.countKings = countKings;
