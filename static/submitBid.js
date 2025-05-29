@@ -44,13 +44,37 @@ function submitBid() {
     }
   } else if (history.length === 2 && !history[1].you) {
     user2ndbid = bid;
-    validuser2ndbid = validateUser2ndBid(user2ndbid, open2ndbid);
-    if (validuser2ndbid) {
-      const result = calculateOpen3rdBid(open2ndbid, user2ndbid, openerHand);
-      open3rdbid = result.open3rdbid;
-      history[1].you = user2ndbid;
-      history.push({ keith: open3rdbid, you: "" });
-      updateBiddingDisplay();
+    
+    // Handle transfers differently from Stayman
+    if (user1stbid === "2D") {  // Heart transfer
+      validuser2ndbid = validateUser2ndBidHeartTransfer(user2ndbid, open2ndbid);
+      if (validuser2ndbid) {
+        const result = calculateOpen3rdBidHeartTransfer(open2ndbid, user2ndbid, openerHand);
+        open3rdbid = result.open3rdbid;
+        user3rdbid = result.user3rdbid;  // Capture any forced response
+        history[1].you = user2ndbid;
+        history.push({ keith: open3rdbid, you: "" });
+        updateBiddingDisplay();
+      }
+    } else if (user1stbid === "2H") {  // Spade transfer
+      validuser2ndbid = validateUser2ndBidSpadeTransfer(user2ndbid, open2ndbid);
+      if (validuser2ndbid) {
+        const result = calculateOpen3rdBidSpadeTransfer(open2ndbid, user2ndbid, openerHand);
+        open3rdbid = result.open3rdbid;
+        user3rdbid = result.user3rdbid;  // Capture any forced response
+        history[1].you = user2ndbid;
+        history.push({ keith: open3rdbid, you: "" });
+        updateBiddingDisplay();
+      }
+    } else {  // Stayman sequence
+      validuser2ndbid = validateUser2ndBid(user2ndbid, open2ndbid);
+      if (validuser2ndbid) {
+        const result = calculateOpen3rdBid(open2ndbid, user2ndbid, openerHand);
+        open3rdbid = result.open3rdbid;
+        history[1].you = user2ndbid;
+        history.push({ keith: open3rdbid, you: "" });
+        updateBiddingDisplay();
+      }
     }
   } else if (history.length === 3 && !history[2].you) {
     user3rdbid = bid;
