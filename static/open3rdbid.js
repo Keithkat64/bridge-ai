@@ -1,7 +1,28 @@
-
 function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
   let open3rdbid = "";
   let user3rdbid = "";
+  
+  // Helper function to calculate HCP
+  function calculateHCP(hand) {
+    const hcpMap = { A: 4, K: 3, Q: 2, J: 1 };
+    let points = 0;
+    for (let suit of Object.keys(hand)) {
+      for (let card of hand[suit]) {
+        if (hcpMap[card]) points += hcpMap[card];
+      }
+    }
+    return points;
+  }
+
+  // Helper function to count doubletons
+  function countDoubletons(hand) {
+    let count = 0;
+    for (let suit of Object.keys(hand)) {
+      if (hand[suit].length === 2) count++;
+    }
+    return count;
+  }
+
   const hcp = calculateHCP(opener);
   const tp = hcp + countDoubletons(opener);
 
@@ -9,15 +30,18 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
   const has4Hearts = (opener["♥"] || []).length === 4;
   const has4InUserMinor = userMinor && (opener[userMinor] || []).length === 4;
 
-  if (user2ndbid === "4NT" && typeof window.runAceAsk === "function") {
-    const bidHistory = [user2ndbid];
-    const flatHand = flattenHand(opener);
-    const result = window.runAceAsk({ hand: flatHand }, null, bidHistory);
-    console.log("Ace Ask result:", result);
-  open3rdbid = (result && result.openerBid && typeof result.openerBid === "string")
-    ? result.openerBid
-    : "PASS";
-    return { open3rdbid, user3rdbid };
+  // Handle Blackwood 4NT
+  if (user2ndbid === "4NT") {
+    const aceCount = countAces(opener);
+    switch (aceCount) {
+      case 0: open3rdbid = "5C"; break;
+      case 1: open3rdbid = "5D"; break;
+      case 2: open3rdbid = "5H"; break;
+      case 3: open3rdbid = "5S"; break;
+      case 4: open3rdbid = "5NT"; break;
+      default: open3rdbid = "PASS";
+    }
+    return { open3rdbid, user3rdbid: "" };
   }
 
   if (open2ndbid === "2H") {
@@ -76,8 +100,20 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
   return { open3rdbid, user3rdbid };
 }
 
-function flattenHand(opener) {
-  return ["♠", "♥", "♦", "♣"].flatMap(suit => opener[suit] || []);
+function countAces(hand) {
+  if (!hand || !hand["♠"] || !hand["♥"] || !hand["♦"] || !hand["♣"]) {
+    console.error("Invalid hand structure:", hand);
+    return 0;
+  }
+
+  const allCards = [
+    ...hand["♠"],
+    ...hand["♥"],
+    ...hand["♦"],
+    ...hand["♣"]
+  ];
+
+  return allCards.filter(card => card === "A").length;
 }
 
 function hasStrongMinor(suit) {
@@ -87,5 +123,6 @@ function hasStrongMinor(suit) {
   return honourCount(suit, topHonours) >= 2 || honourCount(suit, fiveHonours) >= 3;
 }
 
+// Make functions available globally
 window.calculateOpen3rdBid = calculateOpen3rdBid;
 window.hasStrongMinor = hasStrongMinor;
