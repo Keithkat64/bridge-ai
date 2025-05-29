@@ -86,20 +86,19 @@ function submitBid() {
     }
   }
 
+  // Only check for bidding finished after updating history
   if (isBiddingFinished()) {
     document.getElementById("bid-input-row").style.display = "none";
   }
 }
 
 function isBiddingFinished() {
-  return ["PASS"].includes(open3rdbid) ||
-         ["PASS"].includes(user3rdbid) ||
-         ["PASS"].includes(open4thbid) ||
-         ["PASS"].includes(user4thbid) ||
-         ["PASS"].includes(open5thbid) ||
-         ["PASS"].includes(user5thbid) ||
-         ["PASS"].includes(open6thbid) ||
-         userBid === "PASS";  // Added check for user's PASS bid
+  // Only return true if someone has bid PASS
+  const passExists = window.biddingHistory.some(bid => 
+    bid.keith === "PASS" || bid.you === "PASS"
+  );
+  
+  return passExists;
 }
 
 window.submitBid = submitBid;
