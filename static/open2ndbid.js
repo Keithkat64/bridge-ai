@@ -31,18 +31,14 @@ function getOpen2ndBid(opener1stBid, user1stBid, openerHand) {
     // Store the bid globally for later reference
     window.open2ndbid = open2ndbid;
     
-    // Update the bidding display - create a new entry instead of modifying the first one
-    if (window.biddingHistory) {
-        // Keep the original 1NT bid in the first entry
-        window.biddingHistory[0].keith = "1NT";  // Ensure first bid stays as 1NT
-        window.biddingHistory[0].you = user1stBid;  // Add user's first bid
-        
-        // Add a new entry for the second round of bidding
-        window.biddingHistory.push({ keith: open2ndbid, you: "" });
-        
-        if (typeof updateBiddingDisplay === 'function') {
-            updateBiddingDisplay();
-        }
+    // Reset bidding history to ensure correct sequence
+    window.biddingHistory = [
+        { keith: "1NT", you: user1stBid },    // First round
+        { keith: open2ndbid, you: "" }        // Second round
+    ];
+    
+    if (typeof updateBiddingDisplay === 'function') {
+        updateBiddingDisplay();
     }
 
     return open2ndbid;
