@@ -28,7 +28,6 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
 
   const has4Spades = (opener["♠"] || []).length === 4;
   const has4Hearts = (opener["♥"] || []).length === 4;
-  const has4InUserMinor = userMinor && (opener[userMinor] || []).length === 4;
 
   // Handle Blackwood 4NT
   if (user2ndbid === "4NT") {
@@ -61,10 +60,11 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
     } else if (user2ndbid === "4H") {
       open3rdbid = "PASS";
     } else if (user2ndbid === "3C" || user2ndbid === "3D") {
+      const userMinor = user2ndbid === "3C" ? "♣" : "♦";
       if (has4Spades) {
         open3rdbid = tp >= 18 ? "4S" : "PASS";
-      } else if (has4InUserMinor) {
-        open3rdbid = "4" + userMinor.toUpperCase();
+      } else if (opener[userMinor]?.length >= 4) {
+        open3rdbid = "4" + user2ndbid[1];  // Use the minor from user's bid
       } else {
         open3rdbid = "3NT";
       }
@@ -79,7 +79,12 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
     } else if (user2ndbid === "3NT" || user2ndbid === "4S") {
       open3rdbid = "PASS";
     } else if (user2ndbid === "3C" || user2ndbid === "3D") {
-      open3rdbid = has4InUserMinor ? "4" + userMinor.toUpperCase() : "3NT";
+      const userMinor = user2ndbid === "3C" ? "♣" : "♦";
+      if (opener[userMinor]?.length >= 4) {
+        open3rdbid = "4" + user2ndbid[1];  // Use the minor from user's bid
+      } else {
+        open3rdbid = "3NT";
+      }
     }
   } else if (open2ndbid === "2D") {
     if (user2ndbid === "2NT") {
@@ -93,7 +98,12 @@ function calculateOpen3rdBid(open2ndbid, user2ndbid, opener, userMinor = "") {
     } else if (user2ndbid === "3NT") {
       open3rdbid = "PASS";
     } else if (user2ndbid === "3C" || user2ndbid === "3D") {
-      open3rdbid = has4InUserMinor ? "4" + userMinor.toUpperCase() : "3NT";
+      const userMinor = user2ndbid === "3C" ? "♣" : "♦";
+      if (opener[userMinor]?.length >= 4) {
+        open3rdbid = "4" + user2ndbid[1];  // Use the minor from user's bid
+      } else {
+        open3rdbid = "3NT";
+      }
     }
   }
 
