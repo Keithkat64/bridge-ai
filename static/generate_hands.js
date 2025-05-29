@@ -150,22 +150,39 @@ function updateBiddingDisplay() {
   youCol.innerHTML = window.biddingHistory.map(row => row.you).join("<br>");
 }
 
+function toggleBiddingControls(enabled) {
+    const bidInput = document.getElementById("userBid");
+    const submitButton = document.getElementById("submitBtn");
+    
+    if (enabled) {
+        bidInput.removeAttribute("disabled");
+        submitButton.removeAttribute("disabled");
+    } else {
+        bidInput.setAttribute("disabled", "disabled");
+        submitButton.setAttribute("disabled", "disabled");
+    }
+}
+
 function showModal(message) {
-  const modal = document.getElementById("modal");
-  const modalMessage = document.getElementById("modal-message");
-  if (modal && modalMessage) {
-    modalMessage.textContent = message;
-    modal.style.display = "block";
-  }
+    const modal = document.getElementById("modal");
+    const modalMessage = document.getElementById("modal-message");
+    if (modal && modalMessage) {
+        modalMessage.textContent = message;
+        modal.style.display = "block";
+        toggleBiddingControls(false);  // Disable bidding controls
+    }
 }
 
 function closeModal() {
-  const modal = document.getElementById("modal");
-  if (modal) {
-    modal.style.display = "none";
-  }
+    const modal = document.getElementById("modal");
+    if (modal) {
+        modal.style.display = "none";
+        toggleBiddingControls(true);   // Re-enable bidding controls
+    }
 }
 
+window.showModal = showModal;
+window.closeModal = closeModal;
 window.startWithSystem = startWithSystem;
 window.loadNewHand = loadNewHand;
 window.displayHand = displayHand;
