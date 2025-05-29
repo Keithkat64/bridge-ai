@@ -15,7 +15,7 @@ function submitBid() {
   if (history.length === 1 && !history[0].you) {
     if (!responderHand || !responderHand["♠"] || !responderHand["♥"]) {
       console.error("Responder hand is not properly set before validation:", responderHand);
-      alert("Something went wrong with hand setup. Please reload the hand.");
+      showModal("Something went wrong. Please try a new hand.");
       return;
     }
 
@@ -28,8 +28,6 @@ function submitBid() {
       history[0].you = user1stbid;
       history.push({ keith: open2ndbid, you: "" });
       updateBiddingDisplay();
-    } else {
-      alert("Invalid bid for the hand. Try again.");
     }
   } else if (history.length === 2 && !history[1].you) {
     user2ndbid = bid;
@@ -39,8 +37,6 @@ function submitBid() {
       history[1].you = user2ndbid;
       history.push({ keith: open3rdbid, you: "" });
       updateBiddingDisplay();
-    } else {
-      alert("Invalid second bid.");
     }
   } else if (history.length === 3 && !history[2].you) {
     user3rdbid = bid;
@@ -50,8 +46,6 @@ function submitBid() {
       history[2].you = user3rdbid;
       history.push({ keith: open4thbid, you: "" });
       updateBiddingDisplay();
-    } else {
-      alert("Invalid third bid.");
     }
   } else if (history.length === 4 && !history[3].you) {
     user4thbid = bid;
@@ -61,8 +55,6 @@ function submitBid() {
       history[3].you = user4thbid;
       history.push({ keith: open5thbid, you: "" });
       updateBiddingDisplay();
-    } else {
-      alert("Invalid fourth bid.");
     }
   } else if (history.length === 5 && !history[4].you) {
     user5thbid = bid;
@@ -72,9 +64,7 @@ function submitBid() {
       history[4].you = user5thbid;
       history.push({ keith: open6thbid, you: "" });
       updateBiddingDisplay();
-      alert("Bidding finished.");
-    } else {
-      alert("Invalid fifth bid.");
+      showModal("Bidding finished.");
     }
   }
 
