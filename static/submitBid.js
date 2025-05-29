@@ -12,6 +12,18 @@ function submitBid() {
 
   const history = window.biddingHistory;
 
+  // Check if user bid PASS and end bidding if they did
+  if (bid === "PASS") {
+    const currentBidIndex = history.findIndex(h => !h.you);
+    if (currentBidIndex !== -1) {
+      history[currentBidIndex].you = "PASS";
+      updateBiddingDisplay();
+      showModal("Bidding finished.");
+      document.getElementById("bid-input-row").style.display = "none";
+      return;
+    }
+  }
+
   if (history.length === 1 && !history[0].you) {
     if (!responderHand || !responderHand["♠"] || !responderHand["♥"]) {
       console.error("Responder hand is not properly set before validation:", responderHand);
@@ -86,7 +98,8 @@ function isBiddingFinished() {
          ["PASS"].includes(user4thbid) ||
          ["PASS"].includes(open5thbid) ||
          ["PASS"].includes(user5thbid) ||
-         ["PASS"].includes(open6thbid);
+         ["PASS"].includes(open6thbid) ||
+         userBid === "PASS";  // Added check for user's PASS bid
 }
 
 window.submitBid = submitBid;
