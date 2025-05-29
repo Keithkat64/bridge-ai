@@ -1,4 +1,3 @@
-
 function submitBid() {
   const bidInput = document.getElementById("userBid");
   const bid = bidInput.value.trim().toUpperCase();
@@ -22,8 +21,9 @@ function submitBid() {
 
     user1stbid = bid;
     validuser1stbid = validateUser1stBid(user1stbid, responderHand);
+    console.log("Validation result:", validuser1stbid);
 
-    if (validuser1stbid) {
+    if (validuser1stbid === true) {
       open2ndbid = getOpen2ndBid("1NT", user1stbid, openerHand);
       history[0].you = user1stbid;
       history.push({ keith: open2ndbid, you: "" });
@@ -33,7 +33,7 @@ function submitBid() {
     }
   } else if (history.length === 2 && !history[1].you) {
     user2ndbid = bid;
-    validuser2ndbid = validateUser2ndBid(user2ndbid, responderHand, open2ndbid);
+    validuser2ndbid = validateUser2ndBid(user2ndbid, open2ndbid);
     if (validuser2ndbid) {
       open3rdbid = getOpen3rdBid(open2ndbid, user2ndbid, openerHand);
       history[1].you = user2ndbid;
@@ -77,21 +77,20 @@ function submitBid() {
       alert("Invalid fifth bid.");
     }
   }
+
+  if (isBiddingFinished()) {
+    document.getElementById("bid-input-row").style.display = "none";
+  }
 }
 
-function updateBiddingDisplay() {
-  const keithCol = document.getElementById("keith-column");
-  const youCol = document.getElementById("you-column");
-
-  if (!Array.isArray(window.biddingHistory)) return;
-
-  keithCol.innerHTML = "";
-  youCol.innerHTML = "";
-
-  window.biddingHistory.forEach(row => {
-    keithCol.innerHTML += `<div>${row.keith || ""}</div>`;
-    youCol.innerHTML += `<div>${row.you || ""}</div>`;
-  });
+function isBiddingFinished() {
+  return ["PASS"].includes(open3rdbid) ||
+         ["PASS"].includes(user3rdbid) ||
+         ["PASS"].includes(open4thbid) ||
+         ["PASS"].includes(user4thbid) ||
+         ["PASS"].includes(open5thbid) ||
+         ["PASS"].includes(user5thbid) ||
+         ["PASS"].includes(open6thbid);
 }
 
 window.submitBid = submitBid;
