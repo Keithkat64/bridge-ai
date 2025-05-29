@@ -18,6 +18,7 @@ function submitBid() {
     if (currentBidIndex !== -1) {
       history[currentBidIndex].you = "PASS";
       updateBiddingDisplay();
+      showOpenersHand();  // Show opener's hand when user passes
       showModal("Bidding finished.");
       document.getElementById("bid-input-row").style.display = "none";
       return;
@@ -69,7 +70,6 @@ function submitBid() {
     user4thbid = bid;
     validuser4thbid = validateUser4thBid(user4thbid, responderHand, open4thbid);
     if (validuser4thbid) {
-      // Handle king asking sequence
       if (user4thbid === "5NT") {
         const result = calculateOpen5thBid(open4thbid, user4thbid, openerHand);
         open5thbid = result.open5thbid;
@@ -95,19 +95,29 @@ function submitBid() {
     }
   }
 
-  // Only check for bidding finished after updating history
   if (isBiddingFinished()) {
     document.getElementById("bid-input-row").style.display = "none";
   }
 }
 
 function isBiddingFinished() {
-  // Only return true if someone has bid PASS
   const passExists = window.biddingHistory.some(bid => 
     bid.keith === "PASS" || bid.you === "PASS"
   );
   
+  if (passExists) {
+    showOpenersHand();
+  }
+  
   return passExists;
 }
 
+function showOpenersHand() {
+    const openerColumn = document.getElementById("opener-column");
+    if (openerColumn) {
+        openerColumn.classList.remove("hidden-hand");
+    }
+}
+
 window.submitBid = submitBid;
+window.showOpenersHand = showOpenersHand;

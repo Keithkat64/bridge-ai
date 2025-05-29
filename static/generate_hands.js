@@ -115,6 +115,12 @@ function loadNewHand() {
   user2ndbid = "";
   user3rdbid = "";
 
+  // Hide opener's hand at start of new hand
+  const openerColumn = document.getElementById("opener-column");
+  if (openerColumn) {
+      openerColumn.classList.add("hidden-hand");
+  }
+
   displayHand("opener-column", window.openerHand);
   displayHand("responder", window.responderHand);
   updateBiddingDisplay();
@@ -124,6 +130,7 @@ function loadNewHand() {
 
   document.getElementById("hand-display").style.display = "block";
 }
+
 
 function displayHand(elementId, hand) {
   const suits = ["♠", "♥", "♦", "♣"];
