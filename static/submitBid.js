@@ -47,6 +47,7 @@ function submitBid() {
     
     // Handle transfers differently from Stayman
     if (user1stbid === "2D") {  // Heart transfer
+      console.log("Heart transfer path");
       validuser2ndbid = validateUser2ndBidHeartTransfer(user2ndbid, open2ndbid);
       if (validuser2ndbid) {
         const result = calculateOpen3rdBidHeartTransfer(open2ndbid, user2ndbid, openerHand);
@@ -57,9 +58,21 @@ function submitBid() {
         updateBiddingDisplay();
       }
     } else if (user1stbid === "2H") {  // Spade transfer
+      console.log("Spade transfer path");
+      console.log("user2ndbid:", user2ndbid);
+      console.log("open2ndbid:", open2ndbid);
+      console.log("Checking if validateUser2ndBidSpadeTransfer exists:", typeof validateUser2ndBidSpadeTransfer);
+      
       validuser2ndbid = validateUser2ndBidSpadeTransfer(user2ndbid, open2ndbid);
+      console.log("Spade transfer validation result:", validuser2ndbid);
+      
       if (validuser2ndbid) {
+        console.log("Attempting to calculate opener's response");
+        console.log("Checking if calculateOpen3rdBidSpadeTransfer exists:", typeof calculateOpen3rdBidSpadeTransfer);
+        
         const result = calculateOpen3rdBidSpadeTransfer(open2ndbid, user2ndbid, openerHand);
+        console.log("Opener's response result:", result);
+        
         open3rdbid = result.open3rdbid;
         user3rdbid = result.user3rdbid;  // Capture any forced response
         history[1].you = user2ndbid;
@@ -67,6 +80,7 @@ function submitBid() {
         updateBiddingDisplay();
       }
     } else {  // Stayman sequence
+      console.log("Stayman path");
       validuser2ndbid = validateUser2ndBid(user2ndbid, open2ndbid);
       if (validuser2ndbid) {
         const result = calculateOpen3rdBid(open2ndbid, user2ndbid, openerHand);
