@@ -69,10 +69,19 @@ function submitBid() {
     user4thbid = bid;
     validuser4thbid = validateUser4thBid(user4thbid, responderHand, open4thbid);
     if (validuser4thbid) {
-      open5thbid = getOpen5thBid(open4thbid, user4thbid, openerHand);
-      history[3].you = user4thbid;
-      history.push({ keith: open5thbid, you: "" });
-      updateBiddingDisplay();
+      // Handle king asking sequence
+      if (user4thbid === "5NT") {
+        const result = calculateOpen5thBid(open4thbid, user4thbid, openerHand);
+        open5thbid = result.open5thbid;
+        history[3].you = user4thbid;
+        history.push({ keith: open5thbid, you: "" });
+        updateBiddingDisplay();
+      } else {
+        open5thbid = getOpen5thBid(open4thbid, user4thbid, openerHand);
+        history[3].you = user4thbid;
+        history.push({ keith: open5thbid, you: "" });
+        updateBiddingDisplay();
+      }
     }
   } else if (history.length === 5 && !history[4].you) {
     user5thbid = bid;
