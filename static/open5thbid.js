@@ -45,6 +45,7 @@ function countKings(hand) {
     return allCards.filter(card => card === "K").length;
 }
 
-// Make functions available globally
+// Make functions available globally with both names
 window.calculateOpen5thBid = calculateOpen5thBid;
+window.getOpen5thBid = calculateOpen5thBid;  // Add this line to provide the alternative name
 window.countKings = countKings;
