@@ -33,7 +33,6 @@ function submitBid() {
     user2ndbid = bid;
     validuser2ndbid = validateUser2ndBid(user2ndbid, open2ndbid);
     if (validuser2ndbid) {
-      // Changed this line to use the correct function name
       const result = calculateOpen3rdBid(open2ndbid, user2ndbid, openerHand);
       open3rdbid = result.open3rdbid;
       history[1].you = user2ndbid;
@@ -42,9 +41,14 @@ function submitBid() {
     }
   } else if (history.length === 3 && !history[2].you) {
     user3rdbid = bid;
+    console.log("Processing third bid:", bid);
     validuser3rdbid = validateUser3rdBid(user3rdbid, responderHand, open3rdbid);
+    console.log("Third bid validation result:", validuser3rdbid);
     if (validuser3rdbid) {
-      open4thbid = getOpen4thBid(open3rdbid, user3rdbid, openerHand);
+      console.log("Calculating opener's fourth bid...");
+      const result = calculateOpen4thBid(open3rdbid, user3rdbid, openerHand);
+      console.log("Fourth bid result:", result);
+      open4thbid = result.open4thbid;
       history[2].you = user3rdbid;
       history.push({ keith: open4thbid, you: "" });
       updateBiddingDisplay();
