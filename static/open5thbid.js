@@ -12,18 +12,9 @@ function calculateOpen5thBid(open4thbid, user4thbid, opener) {
             case 3: open5thbid = "6S"; break;
             default: open5thbid = "6C"; break; // 0 or 4 kings
         }
-        return { open5thbid };
-    }
-
-    // Handle other sequences
-    if (open4thbid === "5H" || open4thbid === "5S") {
-        if (user4thbid === "PASS") {
-            open5thbid = "PASS";
-        } else {
-            open5thbid = "PASS";  // Default action
-        }
     } else {
-        open5thbid = "PASS";  // Default action for unknown sequences
+        // For any other bid (including 6C), Keith should pass
+        open5thbid = "PASS";
     }
 
     return { open5thbid };
@@ -45,7 +36,7 @@ function countKings(hand) {
     return allCards.filter(card => card === "K").length;
 }
 
-// Make functions available globally with both names
+// Make functions available globally
 window.calculateOpen5thBid = calculateOpen5thBid;
 window.getOpen5thBid = calculateOpen5thBid;  // Add this line to provide the alternative name
 window.countKings = countKings;
