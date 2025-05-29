@@ -1,4 +1,4 @@
-function runOpen2ndBid(responderHand, openerHand = window.openerHand) {
+function getOpen2ndBid(responderHand, openerHand = window.openerHand) {
   if (!window.validuser1stbid) return;
 
   const spades = openerHand["♠"]?.length || 0;
