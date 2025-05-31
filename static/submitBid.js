@@ -146,29 +146,36 @@ function submitBid() {
 }
 
 function isBiddingFinished() {
-  const passExists = window.biddingHistory.some(bid => 
-    bid.keith === "PASS" || bid.you === "PASS"
-  );
-  
-  if (passExists) {
-    showOpenersHand();
-  }
-  
-  return passExists;
+    const passExists = window.biddingHistory.some(bid => 
+        bid.keith === "PASS" || bid.you === "PASS"
+    );
+    
+    if (passExists) {
+        showOpenersHand();
+    }
+    
+    return passExists;
 }
 
 function showOpenersHand() {
-    const openerElements = [
-        document.getElementById("mobile-opener-column"),
-        document.getElementById("desktop-opener-column"),
-        document.getElementById("opener-column")
-    ];
-    
-    openerElements.forEach(element => {
-        if (element) {
-            element.classList.remove("hidden-hand");
+    // First, show the container on mobile
+    const openerTd = document.getElementById("opener-td");
+    if (openerTd) {
+        openerTd.classList.add("show-opener-mobile");
+    }
+
+    // Then, after a small delay, show the hand itself
+    setTimeout(() => {
+        const openerColumn = document.getElementById("opener-column");
+        if (openerColumn) {
+            openerColumn.classList.remove("hidden-hand");
         }
-    });
+        
+        // Force a redraw for mobile devices
+        if (window.innerWidth <= 768) {
+            window.dispatchEvent(new Event('resize'));
+        }
+    }, 100);
 }
 
 // Update bidding display function
