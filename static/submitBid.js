@@ -1,5 +1,6 @@
 function submitBid() {
-  const bidInput = document.getElementById("userBid");
+  // Get bid input from either mobile or desktop version
+  const bidInput = document.getElementById("mobile-userBid") || document.getElementById("desktop-userBid") || document.getElementById("userBid");
   const bid = bidInput.value.trim().toUpperCase();
   if (!bid) return;
 
@@ -12,15 +13,33 @@ function submitBid() {
 
   const history = window.biddingHistory;
 
+  // Function to update all versions of an element
+  function updateElement(baseId, content) {
+    const ids = [`mobile-${baseId}`, `desktop-${baseId}`, baseId];
+    ids.forEach(id => {
+      const element = document.getElementById(id);
+      if (element) element.innerHTML = content;
+    });
+  }
+
+  // Function to show/hide elements across versions
+  function updateElementDisplay(baseId, display) {
+    const ids = [`mobile-${baseId}`, `desktop-${baseId}`, baseId];
+    ids.forEach(id => {
+      const element = document.getElementById(id);
+      if (element) element.style.display = display;
+    });
+  }
+
   // Check if user bid PASS and end bidding if they did
   if (bid === "PASS") {
     const currentBidIndex = history.findIndex(h => !h.you);
     if (currentBidIndex !== -1) {
       history[currentBidIndex].you = "PASS";
       updateBiddingDisplay();
-      showOpenersHand();  // Show opener's hand when user passes
+      showOpenersHand();
       showModal("Bidding finished.");
-      document.getElementById("bid-input-row").style.display = "none";
+      updateElementDisplay("bid-input-row", "none");
       return;
     }
   }
@@ -52,35 +71,23 @@ function submitBid() {
       if (validuser2ndbid) {
         const result = calculateOpen3rdBidHeartTransfer(open2ndbid, user2ndbid, openerHand);
         open3rdbid = result.open3rdbid;
-        user3rdbid = result.user3rdbid;  // Capture any forced response
+        user3rdbid = result.user3rdbid;
         history[1].you = user2ndbid;
         history.push({ keith: open3rdbid, you: "" });
         updateBiddingDisplay();
       }
     } else if (user1stbid === "2H") {  // Spade transfer
       console.log("Spade transfer path");
-      console.log("user2ndbid:", user2ndbid);
-      console.log("open2ndbid:", open2ndbid);
-      console.log("Checking if validateUser2ndBidSpadeTransfer exists:", typeof validateUser2ndBidSpadeTransfer);
-      
       validuser2ndbid = validateUser2ndBidSpadeTransfer(user2ndbid, open2ndbid);
-      console.log("Spade transfer validation result:", validuser2ndbid);
-      
       if (validuser2ndbid) {
-        console.log("Attempting to calculate opener's response");
-        console.log("Checking if calculateOpen3rdBidSpadeTransfer exists:", typeof calculateOpen3rdBidSpadeTransfer);
-        
         const result = calculateOpen3rdBidSpadeTransfer(open2ndbid, user2ndbid, openerHand);
-        console.log("Opener's response result:", result);
-        
         open3rdbid = result.open3rdbid;
-        user3rdbid = result.user3rdbid;  // Capture any forced response
+        user3rdbid = result.user3rdbid;
         history[1].you = user2ndbid;
         history.push({ keith: open3rdbid, you: "" });
         updateBiddingDisplay();
       }
     } else {  // Stayman sequence
-      console.log("Stayman path");
       validuser2ndbid = validateUser2ndBid(user2ndbid, open2ndbid);
       if (validuser2ndbid) {
         const result = calculateOpen3rdBid(open2ndbid, user2ndbid, openerHand);
@@ -134,7 +141,7 @@ function submitBid() {
   }
 
   if (isBiddingFinished()) {
-    document.getElementById("bid-input-row").style.display = "none";
+    updateElementDisplay("bid-input-row", "none");
   }
 }
 
@@ -151,11 +158,36 @@ function isBiddingFinished() {
 }
 
 function showOpenersHand() {
-    const openerColumn = document.getElementById("opener-column");
-    if (openerColumn) {
-        openerColumn.classList.remove("hidden-hand");
-    }
+    const openerElements = [
+        document.getElementById("mobile-opener-column"),
+        document.getElementById("desktop-opener-column"),
+        document.getElementById("opener-column")
+    ];
+    
+    openerElements.forEach(element => {
+        if (element) {
+            element.classList.remove("hidden-hand");
+        }
+    });
+}
+
+// Update bidding display function
+function updateBiddingDisplay() {
+    const keithContent = window.biddingHistory.map(bid => bid.keith).filter(Boolean).join('<br>');
+    const youContent = window.biddingHistory.map(bid => bid.you).filter(Boolean).join('<br>');
+    
+    // Update both mobile and desktop versions
+    ['mobile-keith-column', 'desktop-keith-column', 'keith-column'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.innerHTML = keithContent;
+    });
+    
+    ['mobile-you-column', 'desktop-you-column', 'you-column'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.innerHTML = youContent;
+    });
 }
 
 window.submitBid = submitBid;
 window.showOpenersHand = showOpenersHand;
+window.updateBiddingDisplay = updateBiddingDisplay;
