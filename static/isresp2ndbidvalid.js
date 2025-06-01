@@ -2,6 +2,8 @@ let isuser2ndbidvalid = "";
 let usermsg2ndbid = "";
 
 function validateSecondBid(responders, open2ndbid, user2ndbid) {
+    console.log("Validating with:", {responders, open2ndbid, user2ndbid});
+    
     if (responders.hcp === 8 || responders.hcp === 9) {
         if (open2ndbid === "2D") { // opener has no 4 card major
             if (user2ndbid === "2NT") {
@@ -11,11 +13,13 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                 isuser2ndbidvalid = false;
                 usermsg2ndbid = "❌ Keith would bid 2NT";
             }
+            return;
         }
 
         if (open2ndbid === "2H") {
             if (responders.hearts === 4) { // there is a heart fit
                 let responders_tp = responders.hcp + responders.shortagePoints;
+                console.log("Total points:", responders_tp);
                 
                 if (responders_tp === 8 || responders_tp === 9) {
                     if (user2ndbid === "3H") {
@@ -25,6 +29,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 3H";
                     }
+                    return;
                 }
                 
                 if (responders_tp > 9 && responders_tp < 15) {
@@ -35,6 +40,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 4H";
                     }
+                    return;
                 }
                 
                 if (responders_tp > 15) {
@@ -45,6 +51,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "❌ Keith would bid 4NT";
                     }
+                    return;
                 }
             }
 
@@ -58,6 +65,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "❌ Keith would bid 2NT";
                     }
+                    return;
                 }
 
                 if (responders.hcp > 9 && responders.hcp < 15) {
@@ -70,6 +78,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                                 isuser2ndbidvalid = false;
                                 usermsg2ndbid = "3C is not wrong, but Keith would bid 3NT";
                             }
+                            return;
                         } else { // responder has 4 spades, 5 clubs and a singleton
                             if (user2ndbid === "3C") {
                                 usermsg2ndbid = "excellent bidding";
@@ -78,6 +87,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                                 usermsg2ndbid = "3NT is not wrong, but Keith would bid 3C";
                                 isuser2ndbidvalid = false;
                             }
+                            return;
                         }
                     }
 
@@ -90,6 +100,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                                 isuser2ndbidvalid = false;
                                 usermsg2ndbid = "3D is not wrong, but Keith would bid 3NT";
                             }
+                            return;
                         } else { // responder has 4 spades, 5 diamonds and a singleton
                             if (user2ndbid === "3D") {
                                 usermsg2ndbid = "excellent bidding";
@@ -98,6 +109,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                                 usermsg2ndbid = "3NT is not wrong, but Keith would bid 3D";
                                 isuser2ndbidvalid = false;
                             }
+                            return;
                         }
                     }
 
@@ -108,6 +120,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 3NT";
                     }
+                    return;
                 }
 
                 if (responders.hcp > 15) {
@@ -119,6 +132,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                             usermsg2ndbid = "4NT is not wrong, but Keith would bid 3C";
                             isuser2ndbidvalid = false;
                         }
+                        return;
                     }
 
                     if (responders.diamonds > 4) {
@@ -129,6 +143,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                             usermsg2ndbid = "4NT is not wrong, but Keith would bid 3D";
                             isuser2ndbidvalid = false;
                         }
+                        return;
                     }
 
                     if (user2ndbid === "4NT") {
@@ -138,6 +153,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 4NT";
                     }
+                    return;
                 }
             }
         }
@@ -154,6 +170,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 3S";
                     }
+                    return;
                 }
 
                 if (responders_tp > 9 && responders_tp < 15) {
@@ -164,6 +181,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 4S";
                     }
+                    return;
                 }
 
                 if (responders_tp > 15) {
@@ -174,6 +192,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 4NT";
                     }
+                    return;
                 }
             }
 
@@ -187,6 +206,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 2NT";
                     }
+                    return;
                 }
 
                 if (responders.hcp > 9 && responders.hcp < 15) {
@@ -199,6 +219,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                                 isuser2ndbidvalid = false;
                                 usermsg2ndbid = "3C is not wrong, but Keith would bid 3NT";
                             }
+                            return;
                         } else { // responder has 5 clubs and a singleton
                             if (user2ndbid === "3C") {
                                 usermsg2ndbid = "excellent bidding";
@@ -207,6 +228,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                                 usermsg2ndbid = "3NT is not wrong, but Keith would bid 3C";
                                 isuser2ndbidvalid = false;
                             }
+                            return;
                         }
                     }
 
@@ -219,6 +241,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                                 isuser2ndbidvalid = false;
                                 usermsg2ndbid = "3D is not wrong, but Keith would bid 3NT";
                             }
+                            return;
                         } else { // responder has 4 hearts, 5 diamonds and a singleton
                             if (user2ndbid === "3D") {
                                 usermsg2ndbid = "excellent bidding";
@@ -227,6 +250,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                                 usermsg2ndbid = "3NT is not wrong, but Keith would bid 3D";
                                 isuser2ndbidvalid = false;
                             }
+                            return;
                         }
                     }
 
@@ -237,6 +261,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 2NT";
                     }
+                    return;
                 }
 
                 if (responders.hcp > 15) {
@@ -248,6 +273,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                             usermsg2ndbid = "4NT is not wrong, but Keith would bid 3C";
                             isuser2ndbidvalid = false;
                         }
+                        return;
                     }
 
                     if (responders.diamonds > 4) {
@@ -258,6 +284,7 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                             usermsg2ndbid = "4NT is not wrong, but Keith would bid 3D";
                             isuser2ndbidvalid = false;
                         }
+                        return;
                     }
 
                     if (user2ndbid === "4NT") {
@@ -267,9 +294,11 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 4NT";
                     }
+                    return;
                 }
             }
         }
     }
 }
+
 window.validateSecondBid = validateSecondBid;
