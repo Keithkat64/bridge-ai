@@ -50,7 +50,7 @@ function createBiddingRows() {
         const responders = createRespondersObject(window.responderHand);
         validateSecondBid(responders, open2ndbid, user2ndbid);
         const validationClass = isuser2ndbidvalid ? "valid-bid" : "invalid-bid";
-        const validationSymbol = isuser2ndbidvalid ? "✓" : "❌";
+        const validationSymbol = isuser2ndbidvalid ? "✓" : "❌";  // Use correct symbol based on validation
         
         rows += `
             <div class="bidding-row">
@@ -75,22 +75,32 @@ function createBiddingRows() {
         `;
     }
 
-    // Fourth bid row
-    if (open4thbid && user4thbid) {
+    // Fourth bid row (including PASS)
+    if (open4thbid || user3rdbid === "PASS") {
         rows += `
             <div class="bidding-row">
-                <div class="keith-column">${open4thbid}</div>
-                <div class="user-column">${user4thbid}</div>
+                <div class="keith-column">${open4thbid || ''}</div>
+                <div class="user-column">${user3rdbid === "PASS" ? "PASS" : (user4thbid || '')}</div>
             </div>
         `;
     }
 
-    // Fifth bid row
-    if (open5thbid && user5thbid) {
+    // Fifth bid row (if exists)
+    if (open5thbid || user4thbid === "PASS") {
         rows += `
             <div class="bidding-row">
-                <div class="keith-column">${open5thbid}</div>
-                <div class="user-column">${user5thbid}</div>
+                <div class="keith-column">${open5thbid || ''}</div>
+                <div class="user-column">${user4thbid === "PASS" ? "PASS" : (user5thbid || '')}</div>
+            </div>
+        `;
+    }
+
+    // Final PASS if exists
+    if (open6thbid === "PASS" || user5thbid === "PASS") {
+        rows += `
+            <div class="bidding-row">
+                <div class="keith-column">${open6thbid || ''}</div>
+                <div class="user-column">${user5thbid === "PASS" ? "PASS" : ''}</div>
             </div>
         `;
     }
