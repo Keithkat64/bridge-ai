@@ -81,57 +81,47 @@ function createBiddingRows() {
         validateSecondBid(responders, open2ndbid, user2ndbid);
         const validationClass = isuser2ndbidvalid ? "valid-bid" : "invalid-bid";
         const validationSymbol = isuser2ndbidvalid ? "✓" : "❌";
+        const message = isuser2ndbidvalid ? `${validationSymbol} excellent bidding` : `${validationSymbol} ${usermsg2ndbid}`;
         
         rows += `
             <div class="bidding-row">
                 <div class="keith-column">${open2ndbid}</div>
                 <div class="user-column">${user2ndbid}</div>
                 <div class="message-column ${validationClass}">
-                    ${validationSymbol} ${usermsg2ndbid}
+                    ${message}
                 </div>
             </div>
         `;
     }
 
-    // Third bid row
-    if (open3rdbid || user2ndbid === "PASS") {
+    // Third bid row (only if not PASS)
+    if (open3rdbid && user3rdbid && user3rdbid !== "PASS") {
         rows += `
             <div class="bidding-row">
-                <div class="keith-column">${open3rdbid || ''}</div>
-                <div class="user-column">${user2ndbid === "PASS" ? "PASS" : (user3rdbid || '')}</div>
+                <div class="keith-column">${open3rdbid}</div>
+                <div class="user-column">${user3rdbid}</div>
                 <div class="message-column"></div>
             </div>
         `;
     }
 
-    // Fourth bid row
-    if (open4thbid || user3rdbid === "PASS") {
+    // Fourth bid row (only if not PASS)
+    if (open4thbid && user4thbid && user4thbid !== "PASS") {
         rows += `
             <div class="bidding-row">
-                <div class="keith-column">${open4thbid || ''}</div>
-                <div class="user-column">${user3rdbid === "PASS" ? "PASS" : (user4thbid || '')}</div>
+                <div class="keith-column">${open4thbid}</div>
+                <div class="user-column">${user4thbid}</div>
                 <div class="message-column"></div>
             </div>
         `;
     }
 
-    // Fifth bid row
-    if (open5thbid || user4thbid === "PASS") {
+    // Fifth bid row (only if not PASS)
+    if (open5thbid && user5thbid && user5thbid !== "PASS") {
         rows += `
             <div class="bidding-row">
-                <div class="keith-column">${open5thbid || ''}</div>
-                <div class="user-column">${user4thbid === "PASS" ? "PASS" : (user5thbid || '')}</div>
-                <div class="message-column"></div>
-            </div>
-        `;
-    }
-
-    // Final PASS if exists
-    if (open6thbid === "PASS" || user5thbid === "PASS") {
-        rows += `
-            <div class="bidding-row">
-                <div class="keith-column">${open6thbid || ''}</div>
-                <div class="user-column">${user5thbid === "PASS" ? "PASS" : ''}</div>
+                <div class="keith-column">${open5thbid}</div>
+                <div class="user-column">${user5thbid}</div>
                 <div class="message-column"></div>
             </div>
         `;
