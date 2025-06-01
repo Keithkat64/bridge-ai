@@ -57,11 +57,21 @@ function formatHand(hand) {
 function createBiddingRows() {
     let rows = '';
     
+    // Headers row
+    rows += `
+        <div class="bidding-row header">
+            <div class="keith-column">Keith</div>
+            <div class="user-column">You</div>
+            <div class="message-column">Keith's Analysis</div>
+        </div>
+    `;
+    
     // First bid row
     rows += `
         <div class="bidding-row">
             <div class="keith-column">1NT</div>
             <div class="user-column">${user1stbid}</div>
+            <div class="message-column"></div>
         </div>
     `;
 
@@ -75,11 +85,9 @@ function createBiddingRows() {
         rows += `
             <div class="bidding-row">
                 <div class="keith-column">${open2ndbid}</div>
-                <div class="user-column">
-                    ${user2ndbid}
-                    <div class="bid-message ${validationClass}">
-                        ${validationSymbol} ${usermsg2ndbid}
-                    </div>
+                <div class="user-column">${user2ndbid}</div>
+                <div class="message-column ${validationClass}">
+                    ${validationSymbol} ${usermsg2ndbid}
                 </div>
             </div>
         `;
@@ -91,6 +99,7 @@ function createBiddingRows() {
             <div class="bidding-row">
                 <div class="keith-column">${open3rdbid || ''}</div>
                 <div class="user-column">${user2ndbid === "PASS" ? "PASS" : (user3rdbid || '')}</div>
+                <div class="message-column"></div>
             </div>
         `;
     }
@@ -101,6 +110,7 @@ function createBiddingRows() {
             <div class="bidding-row">
                 <div class="keith-column">${open4thbid || ''}</div>
                 <div class="user-column">${user3rdbid === "PASS" ? "PASS" : (user4thbid || '')}</div>
+                <div class="message-column"></div>
             </div>
         `;
     }
@@ -111,6 +121,7 @@ function createBiddingRows() {
             <div class="bidding-row">
                 <div class="keith-column">${open5thbid || ''}</div>
                 <div class="user-column">${user4thbid === "PASS" ? "PASS" : (user5thbid || '')}</div>
+                <div class="message-column"></div>
             </div>
         `;
     }
@@ -121,6 +132,7 @@ function createBiddingRows() {
             <div class="bidding-row">
                 <div class="keith-column">${open6thbid || ''}</div>
                 <div class="user-column">${user5thbid === "PASS" ? "PASS" : ''}</div>
+                <div class="message-column"></div>
             </div>
         `;
     }
@@ -130,6 +142,10 @@ function createBiddingRows() {
 
 function showBiddingAnalysis() {
     const analysisModal = document.getElementById('analysis-modal');
+    
+    // Hide bid input row and bid another hand button
+    document.getElementById('bid-input-row').style.display = 'none';
+    document.querySelector('.button-container button').style.display = 'none';
     
     // Update hands
     document.getElementById('analysis-keith-hand').innerHTML = formatHand(openerHand);
@@ -143,14 +159,21 @@ function showBiddingAnalysis() {
 }
 
 function closeAnalysisModal() {
-    document.getElementById('analysis-modal').style.display = 'none';
+    const analysisModal = document.getElementById('analysis-modal');
+    if (analysisModal) {
+        analysisModal.style.display = 'none';
+    }
+    // Show bid another hand button
     document.querySelector('.button-container button').style.display = 'block';
+    // Keep bid input row hidden
+    document.getElementById('bid-input-row').style.display = 'none';
 }
 
 function showAnalysisModal() {
     if (keithIsTesting === "Y") {
         console.log("Showing analysis modal");
-        // Hide bid another hand button
+        // Hide bid input row and bid another hand button
+        document.getElementById('bid-input-row').style.display = 'none';
         document.querySelector('.button-container button').style.display = 'none';
         
         // Show initial analysis question modal
@@ -232,8 +255,8 @@ function submitBid() {
             history[currentBidIndex].you = "PASS";
             updateBiddingDisplay();
             showOpenersHand();
+            document.getElementById('bid-input-row').style.display = 'none';
             showAnalysisModal();
-            updateElementDisplay("bid-input-row", "none");
             return;
         }
     }
@@ -262,8 +285,8 @@ function submitBid() {
             history[1].you = "PASS";
             updateBiddingDisplay();
             showOpenersHand();
+            document.getElementById('bid-input-row').style.display = 'none';
             showAnalysisModal();
-            updateElementDisplay("bid-input-row", "none");
             return;
         }
         
@@ -307,8 +330,8 @@ function submitBid() {
             history[2].you = "PASS";
             updateBiddingDisplay();
             showOpenersHand();
+            document.getElementById('bid-input-row').style.display = 'none';
             showAnalysisModal();
-            updateElementDisplay("bid-input-row", "none");
             return;
         }
         
@@ -331,8 +354,8 @@ function submitBid() {
             history[3].you = "PASS";
             updateBiddingDisplay();
             showOpenersHand();
+            document.getElementById('bid-input-row').style.display = 'none';
             showAnalysisModal();
-            updateElementDisplay("bid-input-row", "none");
             return;
         }
         
@@ -359,12 +382,13 @@ function submitBid() {
             history[4].you = user5thbid;
             history.push({ keith: open6thbid, you: "" });
             updateBiddingDisplay();
+            document.getElementById('bid-input-row').style.display = 'none';
             showAnalysisModal();
         }
     }
 
     if (isBiddingFinished()) {
-        updateElementDisplay("bid-input-row", "none");
+        document.getElementById('bid-input-row').style.display = 'none';
     }
 }
 
@@ -376,6 +400,7 @@ function isBiddingFinished() {
     if (passExists) {
         showOpenersHand();
         if (keithIsTesting === "Y") {
+            document.getElementById('bid-input-row').style.display = 'none';
             showAnalysisModal();
         }
     }
