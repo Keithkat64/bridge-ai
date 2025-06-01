@@ -204,11 +204,19 @@ function submitBid() {
         const yesButton = document.createElement('button');
         yesButton.className = 'fancy-button';
         yesButton.textContent = 'YES';
-        yesButton.onclick = function() {
-          closeModal();
-          const responders = createRespondersObject(window.responderHand);
-          validateSecondBid(responders, open2ndbid, user2ndbid);
-          document.querySelector('.button-container button').style.display = 'block';
+        yesButton.onclick = function() {  // THIS IS THE SECOND LOCATION
+              console.log("Yes button clicked");
+              closeModal();
+              console.log("Creating responders object from:", window.responderHand);
+              const responders = createRespondersObject(window.responderHand);
+              console.log("Created responders object:", responders);
+              console.log("open2ndbid:", open2ndbid);
+              console.log("user2ndbid:", user2ndbid);
+              validateSecondBid(responders, open2ndbid, user2ndbid);
+              console.log("After validateSecondBid call");
+              console.log("isuser2ndbidvalid:", isuser2ndbidvalid);
+              console.log("usermsg2ndbid:", usermsg2ndbid);
+              document.querySelector('.button-container button').style.display = 'block';
         };
         const noButton = document.createElement('button');
         noButton.className = 'fancy-button';
