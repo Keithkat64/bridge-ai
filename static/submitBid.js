@@ -20,13 +20,132 @@ function getHandShape(hand) {
     return lengths.join("");
 }
 
+function formatHand(hand) {
+    const suits = ["♠", "♥", "♦", "♣"];
+    return suits.map(suit => {
+        const cards = hand[suit] || [];
+        const colorClass = (suit === "♥" || suit === "♦") ? "hearts" : "blacks";
+        return `<div class="${colorClass}">${suit} ${cards.join(" ")}</div>`;
+    }).join("");
+}
+
+function createBiddingRows() {
+    let rows = '';
+    
+    // First bid row
+    rows += `
+        <div class="bidding-row">
+            <div>1NT</div>
+            <div>${user1stbid}</div>
+        </div>
+    `;
+
+    // Second bid row with validation
+    if (open2ndbid && user2ndbid) {
+        const responders = createRespondersObject(window.responderHand);
+        validateSecondBid(responders, open2ndbid, user2ndbid);
+        const validationClass = isuser2ndbidvalid ? "valid-bid" : "invalid-bid";
+        const validationSymbol = isuser2ndbidvalid ? "✓" : "❌";
+        
+        rows += `
+            <div class="bidding-row">
+                <div>${open2ndbid}</div>
+                <div>
+                    ${user2ndbid}
+                    <div class="validation-message ${validationClass}">
+                        ${validationSymbol} ${usermsg2ndbid}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Third bid row
+    if (open3rdbid && user3rdbid) {
+        rows += `
+            <div class="bidding-row">
+                <div>${open3rdbid}</div>
+                <div>${user3rdbid}</div>
+            </div>
+        `;
+    }
+
+    // Fourth bid row
+    if (open4thbid && user4thbid) {
+        rows += `
+            <div class="bidding-row">
+                <div>${open4thbid}</div>
+                <div>${user4thbid}</div>
+            </div>
+        `;
+    }
+
+    // Fifth bid row
+    if (open5thbid && user5thbid) {
+        rows += `
+            <div class="bidding-row">
+                <div>${open5thbid}</div>
+                <div>${user5thbid}</div>
+            </div>
+        `;
+    }
+
+    return rows;
+}
+
+function showBiddingAnalysis() {
+    // Remove existing analysis modal if it exists
+    const existingModal = document.getElementById('analysis-modal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    // Create and show the analysis modal
+    const analysisModal = document.createElement('div');
+    analysisModal.id = 'analysis-modal';
+    analysisModal.className = 'modal';
+    
+    // Create the content
+    const content = `
+        <div class="analysis-content">
+            <div class="hands-row">
+                <div class="hand-column">
+                    <h3>Keith's Hand</h3>
+                    <div>${formatHand(openerHand)}</div>
+                </div>
+                <div class="hand-column">
+                    <h3>Your Hand</h3>
+                    <div>${formatHand(responderHand)}</div>
+                </div>
+            </div>
+            <div class="bidding-row header">
+                <div>Keith</div>
+                <div>You</div>
+            </div>
+            ${createBiddingRows()}
+        </div>
+        <button class="fancy-button" onclick="closeAnalysisModal()">Close</button>
+    `;
+    
+    analysisModal.innerHTML = content;
+    document.body.appendChild(analysisModal);
+}
+
+function closeAnalysisModal() {
+    const analysisModal = document.getElementById('analysis-modal');
+    if (analysisModal) {
+        analysisModal.remove();
+    }
+    document.querySelector('.button-container button').style.display = 'block';
+}
+
 function showAnalysisModal() {
     if (keithIsTesting === "Y") {
         console.log("Showing analysis modal");
         // Hide bid another hand button
         document.querySelector('.button-container button').style.display = 'none';
         
-        // Show analysis modal
+        // Show initial analysis question modal
         showModal("Do you want Keith to analyse the bidding?");
         
         // Clear any existing buttons
@@ -42,16 +161,7 @@ function showAnalysisModal() {
         yesButton.onclick = function() {
             console.log("Yes button clicked");
             closeModal();
-            console.log("Creating responders object from:", window.responderHand);
-            const responders = createRespondersObject(window.responderHand);
-            console.log("Created responders object:", responders);
-            console.log("open2ndbid:", open2ndbid);
-            console.log("user2ndbid:", user2ndbid);
-            validateSecondBid(responders, open2ndbid, user2ndbid);
-            console.log("After validateSecondBid call");
-            console.log("isuser2ndbidvalid:", isuser2ndbidvalid);
-            console.log("usermsg2ndbid:", usermsg2ndbid);
-            document.querySelector('.button-container button').style.display = 'block';
+            showBiddingAnalysis();
         };
         
         const noButton = document.createElement('button');
@@ -69,7 +179,6 @@ function showAnalysisModal() {
         showModal("Bidding finished.");
     }
 }
-
 
 function submitBid() {
     // Get bid input from either mobile or desktop version
@@ -255,13 +364,12 @@ function isBiddingFinished() {
     if (passExists) {
         showOpenersHand();
         if (keithIsTesting === "Y") {
-            showAnalysisModal();  // Add this line
+            showAnalysisModal();
         }
     }
     
     return passExists;
 }
-
 
 function showOpenersHand() {
     // First, show the container on mobile
@@ -303,3 +411,4 @@ function updateBiddingDisplay() {
 window.submitBid = submitBid;
 window.showOpenersHand = showOpenersHand;
 window.updateBiddingDisplay = updateBiddingDisplay;
+window.closeAnalysisModal = closeAnalysisModal;
