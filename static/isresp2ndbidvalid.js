@@ -49,9 +49,29 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
             return;
         }
 
+        /* NEW SECTION START - UPDATED 2S LOGIC */
         if (open2ndbid === "2S") {
             if (responders.spades === 4) { // there is a spades fit, user should bid either 3s OR 4s
                 let responders_tp = responders.hcp + responders.shortagePoints;
+                
+                if (responders_tp > 14) {
+                    if (user2ndbid === "4NT") {
+                        isuser2ndbidvalid = true;
+                    } else {
+                        isuser2ndbidvalid = false;
+                        usermsg2ndbid = "Keith would bid 4NT";
+                    }
+                    return;
+                } else if (responders_tp > 9) {
+                    if (user2ndbid === "4S") {
+                        isuser2ndbidvalid = true;
+                    } else {
+                        isuser2ndbidvalid = false;
+                        usermsg2ndbid = "Keith would bid 4S";
+                    }
+                    return;
+                }
+                
                 if (responders_tp === 8 || responders_tp === 9) {
                     if (user2ndbid === "3S") { // correct bid
                         isuser2ndbidvalid = true;
@@ -59,19 +79,23 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 3S";
                     }
+                    return;
                 }
             } else { // responder has 4 hearts
                 if (responders.hcp === 8 || responders.hcp === 9) {
                     if (user2ndbid === "2NT") { // correct bid
                         usermsg2ndbid = "excellent bidding";
+                        isuser2ndbidvalid = true;
                     } else {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 2NT";
                     }
+                    return;
                 }
             }
-            return;
         }
+        /* NEW SECTION END */
+        
     } else {
         // responder has game points
         if (responders.hcp > 9 && responders.hcp < 15) {

@@ -108,6 +108,7 @@ function createBiddingRows() {
     return rows;
 }
 
+
 function showBiddingAnalysis() {
     const analysisModal = document.getElementById('analysis-modal');
     
