@@ -57,15 +57,6 @@ function formatHand(hand) {
 function createBiddingRows() {
     let rows = '';
     
-    // Headers row
-    rows += `
-        <div class="bidding-row header">
-            <div class="keith-column">Keith</div>
-            <div class="user-column">You</div>
-            <div class="message-column">Keith's Analysis</div>
-        </div>
-    `;
-    
     // First bid row
     rows += `
         <div class="bidding-row">
@@ -105,23 +96,12 @@ function createBiddingRows() {
         `;
     }
 
-    // Fourth bid row (only if not PASS)
-    if (open4thbid && user4thbid && user4thbid !== "PASS") {
+    // Show PASS if it exists
+    if (open3rdbid === "PASS" || user3rdbid === "PASS") {
         rows += `
             <div class="bidding-row">
-                <div class="keith-column">${open4thbid}</div>
-                <div class="user-column">${user4thbid}</div>
-                <div class="message-column"></div>
-            </div>
-        `;
-    }
-
-    // Fifth bid row (only if not PASS)
-    if (open5thbid && user5thbid && user5thbid !== "PASS") {
-        rows += `
-            <div class="bidding-row">
-                <div class="keith-column">${open5thbid}</div>
-                <div class="user-column">${user5thbid}</div>
+                <div class="keith-column">${open3rdbid === "PASS" ? "PASS" : ""}</div>
+                <div class="user-column">${user3rdbid === "PASS" ? "PASS" : ""}</div>
                 <div class="message-column"></div>
             </div>
         `;
@@ -135,7 +115,11 @@ function showBiddingAnalysis() {
     
     // Hide bid input row and bid another hand button
     document.getElementById('bid-input-row').style.display = 'none';
-    document.querySelector('.button-container button').style.display = 'none';
+    const bidAnotherButton = document.querySelector('.button-container button');
+    if (bidAnotherButton) {
+        bidAnotherButton.style.display = 'none';
+        bidAnotherButton.style.pointerEvents = 'none';  // Prevent clicking even if visible
+    }
     
     // Update hands
     document.getElementById('analysis-keith-hand').innerHTML = formatHand(openerHand);
@@ -146,6 +130,9 @@ function showBiddingAnalysis() {
     
     // Show the modal
     analysisModal.style.display = 'block';
+    
+    // Add margin to ensure PASS is visible
+    document.querySelector('.analysis-content').style.marginBottom = '60px';
 }
 
 function closeAnalysisModal() {
@@ -153,8 +140,14 @@ function closeAnalysisModal() {
     if (analysisModal) {
         analysisModal.style.display = 'none';
     }
-    // Show bid another hand button
-    document.querySelector('.button-container button').style.display = 'block';
+    
+    // Show and enable bid another hand button
+    const bidAnotherButton = document.querySelector('.button-container button');
+    if (bidAnotherButton) {
+        bidAnotherButton.style.display = 'block';
+        bidAnotherButton.style.pointerEvents = 'auto';
+    }
+    
     // Keep bid input row hidden
     document.getElementById('bid-input-row').style.display = 'none';
 }
@@ -164,7 +157,11 @@ function showAnalysisModal() {
         console.log("Showing analysis modal");
         // Hide bid input row and bid another hand button
         document.getElementById('bid-input-row').style.display = 'none';
-        document.querySelector('.button-container button').style.display = 'none';
+        const bidAnotherButton = document.querySelector('.button-container button');
+        if (bidAnotherButton) {
+            bidAnotherButton.style.display = 'none';
+            bidAnotherButton.style.pointerEvents = 'none';
+        }
         
         // Show initial analysis question modal
         showModal("Do you want Keith to analyse the bidding?");
@@ -191,7 +188,11 @@ function showAnalysisModal() {
         noButton.onclick = function() {
             console.log("No button clicked");
             closeModal();
-            document.querySelector('.button-container button').style.display = 'block';
+            const bidAnotherButton = document.querySelector('.button-container button');
+            if (bidAnotherButton) {
+                bidAnotherButton.style.display = 'block';
+                bidAnotherButton.style.pointerEvents = 'auto';
+            }
         };
         
         modalDiv.appendChild(yesButton);
