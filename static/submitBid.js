@@ -25,10 +25,17 @@ function showAnalysisModal() {
         console.log("Showing analysis modal");
         // Hide bid another hand button
         document.querySelector('.button-container button').style.display = 'none';
+        
         // Show analysis modal
         showModal("Do you want Keith to analyse the bidding?");
-        // Add Yes/No buttons
+        
+        // Clear any existing buttons
         const modalDiv = document.getElementById('modal');
+        while (modalDiv.querySelector('button')) {
+            modalDiv.querySelector('button').remove();
+        }
+        
+        // Add Yes/No buttons
         const yesButton = document.createElement('button');
         yesButton.className = 'fancy-button';
         yesButton.textContent = 'YES';
@@ -46,6 +53,7 @@ function showAnalysisModal() {
             console.log("usermsg2ndbid:", usermsg2ndbid);
             document.querySelector('.button-container button').style.display = 'block';
         };
+        
         const noButton = document.createElement('button');
         noButton.className = 'fancy-button';
         noButton.textContent = 'NO';
@@ -54,12 +62,14 @@ function showAnalysisModal() {
             closeModal();
             document.querySelector('.button-container button').style.display = 'block';
         };
+        
         modalDiv.appendChild(yesButton);
         modalDiv.appendChild(noButton);
     } else {
         showModal("Bidding finished.");
     }
 }
+
 
 function submitBid() {
     // Get bid input from either mobile or desktop version
