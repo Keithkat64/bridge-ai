@@ -1,3 +1,25 @@
+function createRespondersObject(responderHand) {
+    return {
+        hcp: countHCP(responderHand),
+        hearts: responderHand["♥"].length,
+        spades: responderHand["♠"].length,
+        clubs: responderHand["♣"].length,
+        diamonds: responderHand["♦"].length,
+        shape: getHandShape(responderHand),
+        shortagePoints: calculateShortagePoints(responderHand)
+    };
+}
+
+function getHandShape(hand) {
+    const lengths = [
+        hand["♠"].length,
+        hand["♥"].length,
+        hand["♦"].length,
+        hand["♣"].length
+    ].sort((a, b) => b - a);  // Sort in descending order
+    return lengths.join("");
+}
+
 function submitBid() {
   // Get bid input from either mobile or desktop version
   const bidInput = document.getElementById("mobile-userBid") || document.getElementById("desktop-userBid") || document.getElementById("userBid");
@@ -50,6 +72,7 @@ function submitBid() {
         yesButton.textContent = 'YES';
         yesButton.onclick = function() {
           closeModal();
+          const responders = createRespondersObject(window.responderHand);
           validateSecondBid(responders, open2ndbid, user2ndbid);
           document.querySelector('.button-container button').style.display = 'block';
         };
@@ -174,6 +197,7 @@ function submitBid() {
         yesButton.textContent = 'YES';
         yesButton.onclick = function() {
           closeModal();
+          const responders = createRespondersObject(window.responderHand);
           validateSecondBid(responders, open2ndbid, user2ndbid);
           document.querySelector('.button-container button').style.display = 'block';
         };
