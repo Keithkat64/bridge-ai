@@ -22,12 +22,17 @@ function getHandShape(hand) {
 
 function formatHand(hand) {
     const suits = ["♠", "♥", "♦", "♣"];
+    const cardOrder = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"];
+    
     return suits.map(suit => {
         const cards = hand[suit] || [];
+        // Sort the cards according to cardOrder
+        const sortedCards = cards.sort((a, b) => cardOrder.indexOf(a) - cardOrder.indexOf(b));
         const colorClass = (suit === "♥" || suit === "♦") ? "hearts" : "blacks";
-        return `<div class="${colorClass}">${suit} ${cards.join(" ")}</div>`;
+        return `<div class="${colorClass}">${suit} ${sortedCards.join(" ")}</div>`;
     }).join("");
 }
+
 
 function createBiddingRows() {
     let rows = '';
