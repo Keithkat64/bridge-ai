@@ -14,8 +14,10 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
         user2ndbid: user2ndbid
     });
 
+    // RESPONDER HAS 8 OR 9 HCP AND SHOULD BE INVITING GAME
     if (responders.hcp === 8 || responders.hcp === 9) {
-        console.log("Entering HCP 8-9 block");
+        console.log("Checking 8-9 HCP branch");
+
         if (open2ndbid === "2D") { // opener has no 4 card major
             if (user2ndbid === "2NT") {
                 isuser2ndbidvalid = true;
@@ -28,320 +30,335 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
         }
 
         if (open2ndbid === "2H") {
-            console.log("Opener bid 2H");
-            if (responders.hearts === 4) { // there is a heart fit
+            if (responders.hearts === 4) { // there is a heart fit, user should bid either 3h OR 4h
                 let responders_tp = responders.hcp + responders.shortagePoints;
-                console.log("Heart fit found, total points:", responders_tp);
-                
-                if (responders_tp === 8 || responders_tp === 9) {
-                    if (user2ndbid === "3H") {
-                        isuser2ndbidvalid = true;
-                        usermsg2ndbid = "excellent bidding";
-                    } else {
-                        isuser2ndbidvalid = false;
-                        usermsg2ndbid = "Keith would bid 3H";
-                    }
-                    return;
+                if (user2ndbid === "3H") { // correct bid
+                    isuser2ndbidvalid = true;
+                } else {
+                    isuser2ndbidvalid = false;
+                    usermsg2ndbid = "Keith would bid 3H";
                 }
-                
-                if (responders_tp > 9 && responders_tp < 15) {
-                    if (user2ndbid === "4H") {
-                        isuser2ndbidvalid = true;
-                        usermsg2ndbid = "excellent bidding";
-                    } else {
-                        isuser2ndbidvalid = false;
-                        usermsg2ndbid = "Keith would bid 4H";
-                    }
-                    return;
-                }
-                
-                if (responders_tp > 15) {
-                    if (user2ndbid === "4NT") {
-                        usermsg2ndbid = "excellent bidding";
-                        isuser2ndbidvalid = true;
-                    } else {
-                        isuser2ndbidvalid = false;
-                        usermsg2ndbid = "❌ Keith would bid 4NT";
-                    }
-                    return;
+            } else { // responder has 4 spades
+                if (user2ndbid === "2NT") { // correct bid
+                    isuser2ndbidvalid = true;
+                } else {
+                    isuser2ndbidvalid = false;
+                    usermsg2ndbid = "Keith would bid 2NT";
                 }
             }
+            return;
+        }
 
-            // responder has 4 spades
-            if (responders.spades === 4) {
-                console.log("4 spades found");
-                if (responders.hcp === 8 || responders.hcp === 9) {
-                    if (user2ndbid === "2NT") {
-                        usermsg2ndbid = "✓ excellent bidding";
+        if (open2ndbid === "2S") {
+            if (responders.spades === 4) { // there is a spades fit, user should bid either 3s OR 4s
+                let responders_tp = responders.hcp + responders.shortagePoints;
+                if (responders_tp === 8 || responders_tp === 9) {
+                    if (user2ndbid === "3S") { // correct bid
                         isuser2ndbidvalid = true;
                     } else {
                         isuser2ndbidvalid = false;
-                        usermsg2ndbid = "❌ Keith would bid 2NT";
+                        usermsg2ndbid = "Keith would bid 3S";
                     }
-                    return;
                 }
+            } else { // responder has 4 hearts
+                if (responders.hcp === 8 || responders.hcp === 9) {
+                    if (user2ndbid === "2NT") { // correct bid
+                        usermsg2ndbid = "excellent bidding";
+                    } else {
+                        isuser2ndbidvalid = false;
+                        usermsg2ndbid = "Keith would bid 2NT";
+                    }
+                }
+            }
+            return;
+        }
+    } else {
+        // responder has game points
+        if (responders.hcp > 9 && responders.hcp < 15) {
+            console.log("Checking game points branch (10-14 HCP)");
 
-                if (responders.hcp > 9 && responders.hcp < 15) {
-                    if (responders.clubs > 4) {
-                        if (responders.shape === "5422") {
+            if (open2ndbid === "2D") {
+                if (responders.clubs > 4) { // responder has 5 clubs
+                    if (responders.shape === "5422") { // user should bid 3NT
+                        if (user2ndbid === "3NT") {
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "3C is not wrong, but Keith would bid 3NT";
+                        }
+                    } else { // responder has 5 clubs and a singleton
+                        if (user2ndbid === "3C") { // correct
+                            isuser2ndbidvalid = true;
+                        } else {
+                            usermsg2ndbid = "3NT is not wrong, but Keith would bid 3C";
+                            isuser2ndbidvalid = false;
+                        }
+                    }
+                }
+                if (responders.diamonds > 4) { // responder has 5 diamonds
+                    if (responders.shape === "5422") { // user should bid 3NT
+                        if (user2ndbid === "3NT") {
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "3D is not wrong, but Keith would bid 3NT";
+                        }
+                    } else { // responder has 5 diamonds and a singleton
+                        if (user2ndbid === "3D") { // correct
+                            isuser2ndbidvalid = true;
+                        } else {
+                            usermsg2ndbid = "3NT is not wrong, but Keith would bid 3D";
+                            isuser2ndbidvalid = false;
+                        }
+                    }
+                }
+                if (user2ndbid === "3NT") { // correct bid
+                    usermsg2ndbid = "excellent bidding";
+                } else {
+                    isuser2ndbidvalid = false;
+                    usermsg2ndbid = "Keith would bid 3NT";
+                }
+                return;
+            }
+
+            if (open2ndbid === "2H") { // opener has 4 hearts
+                if (responders.hearts === 4) {
+                    let responders_tp = responders.hcp + responders.shortagePoints;
+                    if (responders_tp > 14) {
+                        if (user2ndbid === "4NT") { // correct, ask for aces
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "Keith would bid 4NT. You should be going to slam";
+                        }
+                    } else { // responders tp = 10 to 14
+                        if (user2ndbid === "4H") { // correct bid
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "Keith would bid 4H";
+                        }
+                    }
+                } else { // responders spades = 4
+                    if (responders.clubs > 4) { // responder has 5 clubs
+                        if (responders.shape === "5422") { // user should bid 3NT
                             if (user2ndbid === "3NT") {
-                                usermsg2ndbid = "excellent bidding";
                                 isuser2ndbidvalid = true;
                             } else {
                                 isuser2ndbidvalid = false;
                                 usermsg2ndbid = "3C is not wrong, but Keith would bid 3NT";
                             }
-                            return;
                         } else { // responder has 4 spades, 5 clubs and a singleton
-                            if (user2ndbid === "3C") {
-                                usermsg2ndbid = "excellent bidding";
+                            if (user2ndbid === "3C") { // correct
                                 isuser2ndbidvalid = true;
                             } else {
                                 usermsg2ndbid = "3NT is not wrong, but Keith would bid 3C";
                                 isuser2ndbidvalid = false;
                             }
-                            return;
                         }
                     }
-
-                    if (responders.diamonds > 4) {
-                        if (responders.shape === "5422") {
+                    if (responders.diamonds > 4) { // responder has 5 diamonds
+                        if (responders.shape === "5422") { // user should bid 3NT
                             if (user2ndbid === "3NT") {
-                                usermsg2ndbid = "excellent bidding";
                                 isuser2ndbidvalid = true;
                             } else {
                                 isuser2ndbidvalid = false;
                                 usermsg2ndbid = "3D is not wrong, but Keith would bid 3NT";
                             }
-                            return;
                         } else { // responder has 4 spades, 5 diamonds and a singleton
-                            if (user2ndbid === "3D") {
-                                usermsg2ndbid = "excellent bidding";
+                            if (user2ndbid === "3D") { // correct
                                 isuser2ndbidvalid = true;
                             } else {
                                 usermsg2ndbid = "3NT is not wrong, but Keith would bid 3D";
                                 isuser2ndbidvalid = false;
                             }
-                            return;
                         }
                     }
-
-                    if (user2ndbid === "3NT") {
-                        usermsg2ndbid = "excellent bidding";
+                    if (user2ndbid === "3NT") { // correct bid
                         isuser2ndbidvalid = true;
                     } else {
                         isuser2ndbidvalid = false;
                         usermsg2ndbid = "Keith would bid 3NT";
                     }
-                    return;
-                }
-
-                if (responders.hcp > 15) {
-                    if (responders.clubs > 4) {
-                        if (user2ndbid === "3C") {
-                            usermsg2ndbid = "excellent bidding";
-                            isuser2ndbidvalid = true;
-                        } else {
-                            usermsg2ndbid = "4NT is not wrong, but Keith would bid 3C";
-                            isuser2ndbidvalid = false;
-                        }
-                        return;
-                    }
-
-                    if (responders.diamonds > 4) {
-                        if (user2ndbid === "3D") {
-                            usermsg2ndbid = "excellent bidding";
-                            isuser2ndbidvalid = true;
-                        } else {
-                            usermsg2ndbid = "4NT is not wrong, but Keith would bid 3D";
-                            isuser2ndbidvalid = false;
-                        }
-                        return;
-                    }
-
-                    if (user2ndbid === "4NT") {
-                        usermsg2ndbid = "excellent bidding";
-                        isuser2ndbidvalid = true;
-                    } else {
-                        isuser2ndbidvalid = false;
-                        usermsg2ndbid = "Keith would bid 4NT";
-                    }
-                    return;
-                }
-            }
-        }
-
-        if (open2ndbid === "2S") {
-            if (responders.spades === 4) { // there is a spade fit
-                let responders_tp = responders.hcp + responders.shortagePoints;
-                console.log("Spade fit found, total points:", responders_tp);
-                
-                if (responders_tp === 8 || responders_tp === 9) {
-                    if (user2ndbid === "3S") {
-                        isuser2ndbidvalid = true;
-                        usermsg2ndbid = "excellent bidding";
-                    } else {
-                        isuser2ndbidvalid = false;
-                        usermsg2ndbid = "Keith would bid 3S";
-                    }
-                    return;
-                }
-
-                if (responders_tp > 9 && responders_tp < 15) {
-                    if (user2ndbid === "4S") {
-                        isuser2ndbidvalid = true;
-                        usermsg2ndbid = "excellent bidding";
-                    } else {
-                        isuser2ndbidvalid = false;
-                        usermsg2ndbid = "Keith would bid 4S";
-                    }
-                    return;
-                }
-
-                if (responders_tp > 15) {
-                    if (user2ndbid === "4NT") {
-                        usermsg2ndbid = "excellent bidding";
-                        isuser2ndbidvalid = true;
-                    } else {
-                        isuser2ndbidvalid = false;
-                        usermsg2ndbid = "Keith would bid 4NT";
-                    }
-                    return;
-                }
-            }
-
-            // responder has 4 hearts
-            if (responders.hearts === 4) {
-                if (responders.hcp === 8 || responders.hcp === 9) {
-                    if (user2ndbid === "2NT") {
-                        usermsg2ndbid = "excellent bidding";
-                        isuser2ndbidvalid = true;
-                    } else {
-                        isuser2ndbidvalid = false;
-                        usermsg2ndbid = "Keith would bid 2NT";
-                    }
-                    return;
-                }
-
-                if (responders.hcp > 9 && responders.hcp < 15) {
-                    if (responders.clubs > 4) {
-                        if (responders.shape === "5422") {
-                            if (user2ndbid === "3NT") {
-                                usermsg2ndbid = "excellent bidding";
-                                isuser2ndbidvalid = true;
-                            } else {
-                                isuser2ndbidvalid = false;
-                                usermsg2ndbid = "3C is not wrong, but Keith would bid 3NT";
-                            }
-                            return;
-                        } else { // responder has 5 clubs and a singleton
-                            if (user2ndbid === "3C") {
-                                usermsg2ndbid = "excellent bidding";
-                                isuser2ndbidvalid = true;
-                            } else {
-                                usermsg2ndbid = "3NT is not wrong, but Keith would bid 3C";
-                                isuser2ndbidvalid = false;
-                            }
-                            return;
-                        }
-                    }
-
-                    if (responders.diamonds > 4) {
-                        if (responders.shape === "5422") {
-                            if (user2ndbid === "3NT") {
-                                usermsg2ndbid = "excellent bidding";
-                                isuser2ndbidvalid = true;
-                            } else {
-                                isuser2ndbidvalid = false;
-                                usermsg2ndbid = "3D is not wrong, but Keith would bid 3NT";
-                            }
-                            return;
-                        } else { // responder has 4 hearts, 5 diamonds and a singleton
-                            if (user2ndbid === "3D") {
-                                usermsg2ndbid = "excellent bidding";
-                                isuser2ndbidvalid = true;
-                            } else {
-                                usermsg2ndbid = "3NT is not wrong, but Keith would bid 3D";
-                                isuser2ndbidvalid = false;
-                            }
-                            return;
-                        }
-                    }
-
-                    if (user2ndbid === "3NT") {
-                        usermsg2ndbid = "excellent bidding";
-                        isuser2ndbidvalid = true;
-                    } else {
-                        isuser2ndbidvalid = false;
-                        usermsg2ndbid = "Keith would bid 2NT";
-                    }
-                    return;
-                }
-
-                if (responders.hcp > 15) {
-                    if (responders.clubs > 4) {
-                        if (user2ndbid === "3C") {
-                            usermsg2ndbid = "excellent bidding";
-                            isuser2ndbidvalid = true;
-                        } else {
-                            usermsg2ndbid = "4NT is not wrong, but Keith would bid 3C";
-                            isuser2ndbidvalid = false;
-                        }
-                        return;
-                    }
-
-                    if (responders.diamonds > 4) {
-                        if (user2ndbid === "3D") {
-                            usermsg2ndbid = "excellent bidding";
-                            isuser2ndbidvalid = true;
-                        } else {
-                            usermsg2ndbid = "4NT is not wrong, but Keith would bid 3D";
-                            isuser2ndbidvalid = false;
-                        }
-                        return;
-                    }
-
-                    if (user2ndbid === "4NT") {
-                        usermsg2ndbid = "excellent bidding";
-                        isuser2ndbidvalid = true;
-                    } else {
-                        isuser2ndbidvalid = false;
-                        usermsg2ndbid = "Keith would bid 4NT";
-                    }
-                    return;
-                }
-            }
-        }
-    } else {
-        // Add this else block to handle cases where HCP > 9
-        if (open2ndbid === "2H" && responders.hearts === 4) {
-            let responders_tp = responders.hcp + responders.shortagePoints;
-            console.log("Heart fit found (HCP > 9), total points:", responders_tp);
-            
-            if (responders_tp > 9 && responders_tp < 15) {
-                if (user2ndbid === "4H") {
-                    isuser2ndbidvalid = true;
-                    usermsg2ndbid = "excellent bidding";
-                } else {
-                    isuser2ndbidvalid = false;
-                    usermsg2ndbid = "Keith would bid 4H";
                 }
                 return;
             }
-            
-            if (responders_tp > 15) {
-                if (user2ndbid === "4NT") {
-                    usermsg2ndbid = "excellent bidding";
+
+            if (open2ndbid === "2S") {
+                if (responders.spades === 4) {
+                    let responders_tp = responders.hcp + responders.shortagePoints;
+                    if (responders_tp > 15) {
+                        if (user2ndbid === "4NT") { // correct bid
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "Keith would bid 4NT. You should be going to slam";
+                        }
+                    } else { // responders tp = 10 to 14
+                        if (user2ndbid === "4S") { // correct bid
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "Keith would bid 4S";
+                        }
+                    }
+                }
+                if (responders.clubs > 4) { // responder has 5 clubs
+                    if (responders.shape === "5422") { // user should bid 3NT
+                        if (user2ndbid === "3NT") {
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "3C is not wrong, but Keith would bid 3NT";
+                        }
+                    } else { // responder has 5 clubs and a singleton
+                        if (user2ndbid === "3C") { // correct
+                            isuser2ndbidvalid = true;
+                        } else {
+                            usermsg2ndbid = "3NT is not wrong, but Keith would bid 3C";
+                            isuser2ndbidvalid = false;
+                        }
+                    }
+                }
+                if (responders.diamonds > 4) { // responder has 5 diamonds
+                    if (responders.shape === "5422") { // user should bid 3NT
+                        if (user2ndbid === "3NT") {
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "3D is not wrong, but Keith would bid 3NT";
+                        }
+                    } else { // responder has 4 hearts, 5 diamonds and a singleton
+                        if (user2ndbid === "3D") { // correct
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "3NT is not wrong, but Keith would bid 3D";
+                        }
+                    }
+                }
+                if (user2ndbid === "3NT") { // correct bid
                     isuser2ndbidvalid = true;
                 } else {
                     isuser2ndbidvalid = false;
-                    usermsg2ndbid = "❌ Keith would bid 4NT";
+                    usermsg2ndbid = "Keith would bid 3NT";
+                }
+                return;
+            }
+        } else { // responders hcp > 14
+            console.log("Checking strong hand branch (>14 HCP)");
+
+            if (open2ndbid === "2D") {
+                if (responders.clubs > 4) { // responder has 5 clubs
+                    if (user2ndbid === "3C") { // correct
+                        isuser2ndbidvalid = true;
+                    } else {
+                        isuser2ndbidvalid = false;
+                        usermsg2ndbid = "Keith would bid 3C";
+                    }
+                } else {
+                    if (responders.diamonds > 4) { // responder has 5 diamonds
+                        if (user2ndbid === "3D") { // correct
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "but Keith would bid 3D";
+                        }
+                    } else {
+                        if (user2ndbid === "4NT") { // correct bid
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "Keith would bid 4NT";
+                        }
+                    }
+                }
+                return;
+            }
+
+            // opener bid 2H
+            if (open2ndbid === "2H") { // opener has 4 hearts
+                if (responders.hearts === 4) {
+                    let responders_tp = responders.hcp + responders.shortagePoints;
+                    if (user2ndbid === "4NT") { // correct, ask for aces
+                        isuser2ndbidvalid = true;
+                    } else {
+                        isuser2ndbidvalid = false;
+                        usermsg2ndbid = "Keith would bid 4NT. You should be going to slam";
+                    }
+                } else { // responders spades = 4
+                    if (responders.clubs > 4) { // responder has 5 clubs
+                        if (user2ndbid === "3C") {
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "Keith would bid 3C, and then follow up with 4NT";
+                        }
+                    }
+
+                    if (responders.diamonds > 4) { // responder has 5 diamonds
+                        if (user2ndbid === "3D") {
+                            isuser2ndbidvalid = true;
+                        } else {
+                            isuser2ndbidvalid = false;
+                            usermsg2ndbid = "Keith would bid 3D, and then follow up with 4NT";
+                        }
+                    }
+
+                    if (user2ndbid === "4NT") { // correct bid
+                        isuser2ndbidvalid = true;
+                    } else {
+                        isuser2ndbidvalid = false;
+                        usermsg2ndbid = "Keith would bid 4NT";
+                    }
+                }
+                return;
+            }
+
+            // opener bid 2S
+            if (open2ndbid === "2S") {
+                if (responders.spades === 4) {
+                    if (user2ndbid === "4NT") {
+                        isuser2ndbidvalid = true;
+                    } else {
+                        isuser2ndbidvalid = false;
+                        usermsg2ndbid = "Keith would bid 4NT. You should be going to slam";
+                    }
+                }
+
+                if (responders.clubs > 4) { // responder has 5 clubs
+                    if (user2ndbid === "3C") { // correct
+                        isuser2ndbidvalid = true;
+                    } else {
+                        isuser2ndbidvalid = false;
+                        usermsg2ndbid = "Keith would bid 3C and then follow up with 4NT";
+                    }
+                }
+
+                if (responders.diamonds > 4) { // responder has 5 diamonds
+                    if (user2ndbid === "3D") { // correct
+                        isuser2ndbidvalid = true;
+                    } else {
+                        isuser2ndbidvalid = false;
+                        usermsg2ndbid = "Keith would bid 3D and then follow up with 4NT";
+                    }
+                }
+
+                if (user2ndbid === "4NT") { // correct bid
+                    isuser2ndbidvalid = true;
+                } else {
+                    isuser2ndbidvalid = false;
+                    usermsg2ndbid = "Keith would bid 4NT";
                 }
                 return;
             }
         }
     }
-    console.log("No validation rule matched");
+
+    // Add final check for valid bid message
+    if (isuser2ndbidvalid === true) {
+        usermsg2ndbid = "excellent bidding";
+    }
 }
 
 window.validateSecondBid = validateSecondBid;
