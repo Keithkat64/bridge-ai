@@ -244,10 +244,14 @@ function isBiddingFinished() {
     
     if (passExists) {
         showOpenersHand();
+        if (keithIsTesting === "Y") {
+            showAnalysisModal();  // Add this line
+        }
     }
     
     return passExists;
 }
+
 
 function showOpenersHand() {
     // First, show the container on mobile
