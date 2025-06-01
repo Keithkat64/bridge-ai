@@ -272,3 +272,4 @@ function validateSecondBid(responders, open2ndbid, user2ndbid) {
         }
     }
 }
+window.validateSecondBid = validateSecondBid;
