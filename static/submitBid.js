@@ -35,8 +35,8 @@ function createBiddingRows() {
     // First bid row
     rows += `
         <div class="bidding-row">
-            <div>1NT</div>
-            <div>${user1stbid}</div>
+            <div class="keith-column">1NT</div>
+            <div class="user-column">${user1stbid}</div>
         </div>
     `;
 
@@ -49,10 +49,10 @@ function createBiddingRows() {
         
         rows += `
             <div class="bidding-row">
-                <div>${open2ndbid}</div>
-                <div>
+                <div class="keith-column">${open2ndbid}</div>
+                <div class="user-column">
                     ${user2ndbid}
-                    <div class="validation-message ${validationClass}">
+                    <div class="bid-message ${validationClass}">
                         ${validationSymbol} ${usermsg2ndbid}
                     </div>
                 </div>
@@ -64,8 +64,8 @@ function createBiddingRows() {
     if (open3rdbid && user3rdbid) {
         rows += `
             <div class="bidding-row">
-                <div>${open3rdbid}</div>
-                <div>${user3rdbid}</div>
+                <div class="keith-column">${open3rdbid}</div>
+                <div class="user-column">${user3rdbid}</div>
             </div>
         `;
     }
@@ -74,8 +74,8 @@ function createBiddingRows() {
     if (open4thbid && user4thbid) {
         rows += `
             <div class="bidding-row">
-                <div>${open4thbid}</div>
-                <div>${user4thbid}</div>
+                <div class="keith-column">${open4thbid}</div>
+                <div class="user-column">${user4thbid}</div>
             </div>
         `;
     }
@@ -84,8 +84,8 @@ function createBiddingRows() {
     if (open5thbid && user5thbid) {
         rows += `
             <div class="bidding-row">
-                <div>${open5thbid}</div>
-                <div>${user5thbid}</div>
+                <div class="keith-column">${open5thbid}</div>
+                <div class="user-column">${user5thbid}</div>
             </div>
         `;
     }
@@ -94,48 +94,21 @@ function createBiddingRows() {
 }
 
 function showBiddingAnalysis() {
-    // Remove existing analysis modal if it exists
-    const existingModal = document.getElementById('analysis-modal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-
-    // Create and show the analysis modal
-    const analysisModal = document.createElement('div');
-    analysisModal.id = 'analysis-modal';
-    analysisModal.className = 'modal';
+    const analysisModal = document.getElementById('analysis-modal');
     
-    // Create the content
-    const content = `
-        <div class="analysis-content">
-            <div class="hands-row">
-                <div class="hand-column">
-                    <h3>Keith's Hand</h3>
-                    <div>${formatHand(openerHand)}</div>
-                </div>
-                <div class="hand-column">
-                    <h3>Your Hand</h3>
-                    <div>${formatHand(responderHand)}</div>
-                </div>
-            </div>
-            <div class="bidding-row header">
-                <div>Keith</div>
-                <div>You</div>
-            </div>
-            ${createBiddingRows()}
-        </div>
-        <button class="fancy-button" onclick="closeAnalysisModal()">Close</button>
-    `;
+    // Update hands
+    document.getElementById('analysis-keith-hand').innerHTML = formatHand(openerHand);
+    document.getElementById('analysis-user-hand').innerHTML = formatHand(responderHand);
     
-    analysisModal.innerHTML = content;
-    document.body.appendChild(analysisModal);
+    // Update bidding rows
+    document.getElementById('bidding-analysis').innerHTML = createBiddingRows();
+    
+    // Show the modal
+    analysisModal.style.display = 'block';
 }
 
 function closeAnalysisModal() {
-    const analysisModal = document.getElementById('analysis-modal');
-    if (analysisModal) {
-        analysisModal.remove();
-    }
+    document.getElementById('analysis-modal').style.display = 'none';
     document.querySelector('.button-container button').style.display = 'block';
 }
 
