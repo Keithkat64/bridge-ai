@@ -38,7 +38,33 @@ function submitBid() {
       history[currentBidIndex].you = "PASS";
       updateBiddingDisplay();
       showOpenersHand();
-      showModal("Bidding finished.");
+      if (keithIsTesting === "Y") {
+        // Hide bid another hand button
+        document.querySelector('.button-container button').style.display = 'none';
+        // Show analysis modal
+        showModal("Do you want Keith to analyse the bidding?");
+        // Add Yes/No buttons
+        const modalDiv = document.getElementById('modal');
+        const yesButton = document.createElement('button');
+        yesButton.className = 'fancy-button';
+        yesButton.textContent = 'YES';
+        yesButton.onclick = function() {
+          closeModal();
+          validateSecondBid(responders, open2ndbid, user2ndbid);
+          document.querySelector('.button-container button').style.display = 'block';
+        };
+        const noButton = document.createElement('button');
+        noButton.className = 'fancy-button';
+        noButton.textContent = 'NO';
+        noButton.onclick = function() {
+          closeModal();
+          document.querySelector('.button-container button').style.display = 'block';
+        };
+        modalDiv.appendChild(yesButton);
+        modalDiv.appendChild(noButton);
+      } else {
+        showModal("Bidding finished.");
+      }
       updateElementDisplay("bid-input-row", "none");
       return;
     }
@@ -136,7 +162,33 @@ function submitBid() {
       history[4].you = user5thbid;
       history.push({ keith: open6thbid, you: "" });
       updateBiddingDisplay();
-      showModal("Bidding finished.");
+      if (keithIsTesting === "Y") {
+        // Hide bid another hand button
+        document.querySelector('.button-container button').style.display = 'none';
+        // Show analysis modal
+        showModal("Do you want Keith to analyse the bidding?");
+        // Add Yes/No buttons
+        const modalDiv = document.getElementById('modal');
+        const yesButton = document.createElement('button');
+        yesButton.className = 'fancy-button';
+        yesButton.textContent = 'YES';
+        yesButton.onclick = function() {
+          closeModal();
+          validateSecondBid(responders, open2ndbid, user2ndbid);
+          document.querySelector('.button-container button').style.display = 'block';
+        };
+        const noButton = document.createElement('button');
+        noButton.className = 'fancy-button';
+        noButton.textContent = 'NO';
+        noButton.onclick = function() {
+          closeModal();
+          document.querySelector('.button-container button').style.display = 'block';
+        };
+        modalDiv.appendChild(yesButton);
+        modalDiv.appendChild(noButton);
+      } else {
+        showModal("Bidding finished.");
+      }
     }
   }
 
