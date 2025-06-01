@@ -1,3 +1,24 @@
+function resetBiddingVariables() {
+    isuser2ndbidvalid = "";
+    usermsg2ndbid = "";
+    userBid = "";
+    open2ndbid = "";
+    open3rdbid = "";
+    open4thbid = "";
+    open5thbid = "";
+    open6thbid = "";
+    user1stbid = "";
+    user2ndbid = "";
+    user3rdbid = "";
+    user4thbid = "";
+    user5thbid = "";
+    validuser1stbid = false;
+    validuser2ndbid = false;
+    validuser3rdbid = false;
+    validuser4thbid = false;
+    validuser5thbid = false;
+}
+
 function createRespondersObject(responderHand) {
     return {
         hcp: countHCP(responderHand),
@@ -33,7 +54,6 @@ function formatHand(hand) {
     }).join("");
 }
 
-
 function createBiddingRows() {
     let rows = '';
     
@@ -50,7 +70,7 @@ function createBiddingRows() {
         const responders = createRespondersObject(window.responderHand);
         validateSecondBid(responders, open2ndbid, user2ndbid);
         const validationClass = isuser2ndbidvalid ? "valid-bid" : "invalid-bid";
-        const validationSymbol = isuser2ndbidvalid ? "✓" : "❌";  // Use correct symbol based on validation
+        const validationSymbol = isuser2ndbidvalid ? "✓" : "❌";
         
         rows += `
             <div class="bidding-row">
@@ -66,16 +86,16 @@ function createBiddingRows() {
     }
 
     // Third bid row
-    if (open3rdbid && user3rdbid) {
+    if (open3rdbid || user2ndbid === "PASS") {
         rows += `
             <div class="bidding-row">
-                <div class="keith-column">${open3rdbid}</div>
-                <div class="user-column">${user3rdbid}</div>
+                <div class="keith-column">${open3rdbid || ''}</div>
+                <div class="user-column">${user2ndbid === "PASS" ? "PASS" : (user3rdbid || '')}</div>
             </div>
         `;
     }
 
-    // Fourth bid row (including PASS)
+    // Fourth bid row
     if (open4thbid || user3rdbid === "PASS") {
         rows += `
             <div class="bidding-row">
@@ -85,7 +105,7 @@ function createBiddingRows() {
         `;
     }
 
-    // Fifth bid row (if exists)
+    // Fifth bid row
     if (open5thbid || user4thbid === "PASS") {
         rows += `
             <div class="bidding-row">
@@ -107,7 +127,6 @@ function createBiddingRows() {
 
     return rows;
 }
-
 
 function showBiddingAnalysis() {
     const analysisModal = document.getElementById('analysis-modal');
@@ -170,6 +189,10 @@ function showAnalysisModal() {
 }
 
 function submitBid() {
+    if (!window.biddingHistory || window.biddingHistory.length === 0) {
+        resetBiddingVariables();
+    }
+
     // Get bid input from either mobile or desktop version
     const bidInput = document.getElementById("mobile-userBid") || document.getElementById("desktop-userBid") || document.getElementById("userBid");
     const bid = bidInput.value.trim().toUpperCase();
