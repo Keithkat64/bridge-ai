@@ -253,22 +253,29 @@ function submitBid() {
     }
 
     if (history.length === 1 && !history[0].you) {
-        if (!responderHand || !responderHand["♠"] || !responderHand["♥"]) {
-            console.error("Responder hand is not properly set before validation:", responderHand);
-            showModal("Something went wrong. Please try a new hand.");
-            return;
-        }
+    if (!responderHand || !responderHand["♠"] || !responderHand["♥"]) {
+        console.error("Responder hand is not properly set before validation:", responderHand);
+        showModal("Something went wrong. Please try a new hand.");
+        return;
+    }
 
-        user1stbid = bid;
-        validuser1stbid = validateUser1stBid(user1stbid, responderHand);
-        console.log("Validation result:", validuser1stbid);
+    user1stbid = bid;
+    validuser1stbid = validateUser1stBid(user1stbid, responderHand);
+    console.log("Validation result:", validuser1stbid);
 
-        if (validuser1stbid === true) {
-            open2ndbid = getOpen2ndBid("1NT", user1stbid, openerHand);
-            history[0].you = user1stbid;
-            history.push({ keith: open2ndbid, you: "" });
-            updateBiddingDisplay();
-        }
+    if (validuser1stbid === true) {
+        open2ndbid = getOpen2ndBid("1NT", user1stbid, openerHand);
+        history[0].you = user1stbid;
+        history.push({ keith: open2ndbid, you: "" });
+        updateBiddingDisplay();
+    } else {
+        // Clear the invalid bid from the input
+        bidInput.value = "";
+        // Keep the bid input row visible
+        document.getElementById('bid-input-row').style.display = 'block';
+        return;  // Don't proceed with the rest of the function
+    }
+
     } else if (history.length === 2 && !history[1].you) {
         user2ndbid = bid;
         
