@@ -536,7 +536,56 @@ class BridgeQuiz {
                 }
             }
         },
+        // Question 11 to delete
+        {
+            hand: {
+                spades: "A962",
+                hearts: "AJT",
+                diamonds: "A853",
+                clubs: "76"
+            },
+            bidding: {
+                dealer: "East",
+                sequence: [
+                    ["", "", "1♣", "Dble"],
+                    ["1♦", "2♠", "Pass", "?"],
 
+               ]
+            },
+            options: [
+                { id: "a", text: "Pass" },
+                { id: "b", text: "3♠" },
+                { id: "c", text: "4♠" }
+            ],
+            correct: "a",
+            explanation: "You bid Pass. You have a definite fit, so add in your shortage points. Your hand is now worth 14 tp, but this is not enough for game when partner's range is 8-11.",
+            fullHand: {
+                north: {
+                    spades: "T8743",
+                    hearts: "85",
+                    diamonds: "Q5",
+                    clubs: "KQ62"
+                },
+                east: {
+                    spades: "K",
+                    hearts: "Q32",
+                    diamonds: "T74",
+                    clubs: "AKT842"
+                },
+                south: {
+                    spades: "A962",
+                    hearts: "AJT",
+                    diamonds: "A853",
+                    clubs: "76"
+                },
+                west: {
+                    spades: "QJ5",
+                    hearts: "J9",
+                    diamonds: "K9764",
+                    clubs: "J93"
+                }
+            }
+        },
 
         ];
     }
