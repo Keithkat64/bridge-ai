@@ -253,12 +253,12 @@ class BridgeQuiz {
                 ]
             },
             options: [
-                { id: "a", text: "3♦" },
+                { id: "a", text: "3♣" },
                 { id: "b", text: "3NT" },
                 { id: "c", text: "4NT" }
             ],
-            correct: "c",
-            explanation: "You bid 3♦. You want to tell partner that you hold 4 spades without giving up on 6NT if partner cannot fit your spades or diamonds. Bidding 3NT runs the risk of partner passing when they don't hold 4 spades.",
+            correct: "a",
+            explanation: "You bid 3♣. You want to tell partner that you hold 4 spades without giving up on 6NT if partner cannot fit your spades or clubs. Bidding 3NT runs the risk of partner passing when they don't hold 4 spades.",
             fullHand: {
                 north: {
                     spades: "AKT5",
@@ -453,11 +453,11 @@ class BridgeQuiz {
             },
             options: [
                 { id: "a", text: "Pass" },
-                { id: "b", text: "3♠" },
-                { id: "c", text: "4♠" }
+                { id: "b", text: "2♥" },
+                { id: "c", text: "2NT" }
             ],
-            correct: "a",
-            explanation: "You bid Pass. Your hand only revalues to 13 tp, so there is no chance for game. You cannot double dip on the singleton ace.",
+            correct: "b",
+            explanation: "Give preference back to Opener's 1st suit. This shows a weak hand (6-9 hcp) with only 2 hearts.",
             fullHand: {
                 north: {
                     spades: "53",
