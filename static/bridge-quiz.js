@@ -51,55 +51,73 @@ class BridgeQuiz {
             }
             // Add other questions here following the same structure
         ];
+
         this.currentQuestion = 0;
         this.score = 0;
         this.userAnswers = [];
         this.currentlyShowingAnswer = false;
+        
+        // Initialize when constructor is called
         this.initializeElements();
         this.attachEventListeners();
     }
 
     initializeElements() {
-        // Sections
-        this.registrationSection = document.getElementById('registrationSection');
-        this.quizSection = document.getElementById('quizSection');
-        this.resultsSection = document.getElementById('resultsSection');
+        try {
+            // Registration elements
+            this.registrationSection = document.getElementById('registrationSection');
+            this.registrationForm = document.getElementById('registrationForm');
+            this.firstNameInput = document.getElementById('firstName');
+            this.lastNameInput = document.getElementById('lastName');
 
-        // Forms and inputs
-        this.registrationForm = document.getElementById('registrationForm');
-        this.firstNameInput = document.getElementById('firstName');
-        this.lastNameInput = document.getElementById('lastName');
+            // Quiz section elements
+            this.quizSection = document.getElementById('quizSection');
+            this.currentHandDisplay = document.getElementById('currentHand');
+            this.dealer = document.getElementById('dealer');
+            this.biddingSequence = document.getElementById('biddingSequence');
+            this.optionsContainer = document.getElementById('optionsContainer');
+            this.submitButton = document.getElementById('submitButton');
+            this.answerFeedback = document.getElementById('answerFeedback');
+            this.fullHandDisplay = document.getElementById('fullHand');
+            this.continueButton = document.getElementById('continueButton');
+            this.progressBar = document.getElementById('progressBar');
 
-        // Quiz elements
-        this.currentHandDisplay = document.getElementById('currentHand');
-        this.dealer = document.getElementById('dealer');
-        this.biddingSequence = document.getElementById('biddingSequence');
-        this.optionsContainer = document.getElementById('optionsContainer');
-        this.submitButton = document.getElementById('submitButton');
-        this.answerFeedback = document.getElementById('answerFeedback');
-        this.fullHandDisplay = document.getElementById('fullHand');
-        this.continueButton = document.getElementById('continueButton');
-        this.progressBar = document.getElementById('progressBar');
+            // Results section elements
+            this.resultsSection = document.getElementById('resultsSection');
+            this.scoreDisplay = document.getElementById('scoreDisplay');
+            this.retryButton = document.getElementById('retryButton');
+            this.closeButton = document.getElementById('closeQuiz');
 
-        // Results elements
-        this.scoreDisplay = document.getElementById('scoreDisplay');
-        this.retryButton = document.getElementById('retryButton');
-        this.closeButton = document.getElementById('closeQuiz');
+            console.log('All elements initialized successfully');
+        } catch (error) {
+            console.error('Error initializing elements:', error);
+        }
     }
 
     attachEventListeners() {
-        this.registrationForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.startQuiz();
-        });
+        try {
+            // Registration form submission
+            this.registrationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                console.log('Form submitted');
+                this.startQuiz();
+            });
 
-        this.submitButton.addEventListener('click', () => this.handleSubmit());
-        this.continueButton.addEventListener('click', () => this.handleContinue());
-        this.retryButton.addEventListener('click', () => this.resetQuiz());
-        this.closeButton.addEventListener('click', () => this.closeQuiz());
+            // Quiz buttons
+            this.submitButton.addEventListener('click', () => this.handleSubmit());
+            this.continueButton.addEventListener('click', () => this.handleContinue());
+            this.retryButton.addEventListener('click', () => this.resetQuiz());
+            this.closeButton.addEventListener('click', () => this.closeQuiz());
+
+            console.log('Event listeners attached successfully');
+        } catch (error) {
+            console.error('Error attaching event listeners:', error);
+        }
     }
 
     startQuiz() {
+        console.log('Starting quiz');
+        
         this.firstName = this.firstNameInput.value.trim();
         this.lastName = this.lastNameInput.value.trim();
         
@@ -114,6 +132,8 @@ class BridgeQuiz {
     }
 
     displayQuestion() {
+        console.log('Displaying question:', this.currentQuestion);
+        
         const question = this.questions[this.currentQuestion];
         
         // Display the hand
@@ -132,7 +152,7 @@ class BridgeQuiz {
         // Update progress
         this.updateProgressBar();
         
-        // Update button
+        // Reset submit button
         this.submitButton.textContent = 'Submit Answer';
         this.submitButton.disabled = true;
         this.currentlyShowingAnswer = false;
@@ -143,7 +163,9 @@ class BridgeQuiz {
         
         suits.forEach(suit => {
             const cardSpan = this.currentHandDisplay.querySelector(`.suit.${suit} .cards`);
-            cardSpan.textContent = hand[suit] || '—';
+            if (cardSpan) {
+                cardSpan.textContent = hand[suit] || '—';
+            }
         });
     }
 
@@ -224,7 +246,9 @@ class BridgeQuiz {
         
         positions.forEach(position => {
             const handContent = this.fullHandDisplay.querySelector(`.${position} .hand-content`);
-            handContent.innerHTML = this.formatHandContent(fullHand[position]);
+            if (handContent) {
+                handContent.innerHTML = this.formatHandContent(fullHand[position]);
+            }
         });
     }
 
@@ -255,7 +279,9 @@ class BridgeQuiz {
 
     updateProgressBar() {
         const progress = ((this.currentQuestion + 1) / this.questions.length) * 100;
-        this.progressBar.style.width = `${progress}%`;
+        if (this.progressBar) {
+            this.progressBar.style.width = `${progress}%`;
+        }
     }
 
     async showResults() {
@@ -264,13 +290,16 @@ class BridgeQuiz {
         
         this.scoreDisplay.textContent = `${this.firstName} ${this.lastName}, you scored ${this.score} out of ${this.questions.length}`;
         
-        // Save score to leaderboard
-        await window.leaderboard.addScore({
-            firstName: this.firstName,
-            lastName: this.lastName,
-            score: this.score,
-            date: new Date()
-        });
+        try {
+            await window.leaderboard.addScore({
+                firstName: this.firstName,
+                lastName: this.lastName,
+                score: this.score,
+                date: new Date()
+            });
+        } catch (error) {
+            console.error('Error saving score:', error);
+        }
     }
 
     resetQuiz() {
@@ -297,5 +326,10 @@ class BridgeQuiz {
 
 // Initialize quiz when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.quiz = new BridgeQuiz();
+    try {
+        console.log('Initializing quiz');
+        window.quiz = new BridgeQuiz();
+    } catch (error) {
+        console.error('Error initializing quiz:', error);
+    }
 });
