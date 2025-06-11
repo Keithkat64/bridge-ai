@@ -64,28 +64,28 @@ class BridgeQuiz {
             explanation: "You bid 4♠. Partner has shown a balanced 16-18 (or 15-17)...you have a fit...so ADD in your shortage points. Your hand is worth 12 tp, so bid game.",
             fullHand: {
                 north: {
-                    spades: "AJT432",
-                    hearts: "82",
-                    diamonds: "",
-                    clubs: "J9654"
-                },
-                east: {
-                    spades: "Q5",
-                    hearts: "KJ975",
-                    diamonds: "K",
-                    clubs: "AQT32"
-                },
-                south: {
                     spades: "K973",
                     hearts: "AQ3",
                     diamonds: "AT82",
                     clubs: "K8"
                 },
+                east: {
+                    spades: "976",
+                    hearts: "AQT5",
+                    diamonds: "KJ975",
+                    clubs: "K"
+                },
+                south: {
+                    spades: "AJT432",
+                    hearts: "82",
+                    diamonds: "---",
+                    clubs: "J9654"
+                },
                 west: {
-                    spades: "64",
-                    hearts: "T64",
-                    diamonds: "QJ9765",
-                    clubs: "97"
+                    spades: "Q5",
+                    hearts: "J64",
+                    diamonds: "T8642",
+                    clubs: "Q73"
                 }
             }
         },
@@ -101,8 +101,7 @@ class BridgeQuiz {
             bidding: {
                 dealer: "North",
                 sequence: [
-                    ["", "1♣", "Pass", "1♥"],
-                    ["Pass", "?", "", ""]
+                    ["", "1♥", "Pass", "?"]
                 ]
             },
             options: [
@@ -114,28 +113,28 @@ class BridgeQuiz {
             explanation: "You bid 3♥. ADD in your shortage points when you have 4 or 5 card support for partner's five card suit. Your hand is worth 10tp, so bid 3♥ to show 10-12",
             fullHand: {
                 north: {
-                    spades: "543",
-                    hearts: "K4",
-                    diamonds: "96",
-                    clubs: "AKJ652"
-                },
-                east: {
                     spades: "K9",
                     hearts: "AJ9765",
                     diamonds: "AQ7",
-                    clubs: "T74"
-                },
-                south: {
-                    spades: "Q762",
-                    hearts: "KJT42",
-                    diamonds: "T743",
                     clubs: "98"
                 },
-                west: {
+                east: {
+                    spades: "Q762",
+                    hearts: "---",
+                    diamonds: "KJT42",
+                    clubs: "T743"
+                },
+                south: {
                     spades: "AJT8",
                     hearts: "QT832",
                     diamonds: "853",
                     clubs: "Q"
+                },
+                west: {
+                    spades: "543",
+                    hearts: "K4",
+                    diamonds: "96",
+                    clubs: "AKJ652"
                 }
             }
         },
@@ -151,27 +150,28 @@ class BridgeQuiz {
             bidding: {
                 dealer: "East",
                 sequence: [
-                    ["", "", "2♠", "?"]
+                    ["", "", "2♣", "?"]
                 ]
             },
             options: [
                 { id: "a", text: "Pass" },
-                { id: "b", text: "4♠" }
+                { id: "b", text: "2♠" },
+                { id: "c", text: "3♠" }
             ],
-            correct: "a",
-            explanation: "You bid Pass. Your hand only revalues to 13 tp, so there is no chance for game. You cannot double dip on the singleton king.",
+            correct: "c",
+            explanation: "You bid either c) 3S (best) or b) 2S. You have to try and get in the way of their bidding so that they find it harder to reach slam.",
             fullHand: {
                 north: {
-                    spades: "A6",
-                    hearts: "T83",
-                    diamonds: "875",
-                    clubs: "AT972"
-                },
-                east: {
                     spades: "K532",
                     hearts: "QJ7",
                     diamonds: "6",
                     clubs: "J6543"
+                },
+                east: {
+                    spades: "K8",
+                    hearts: "AK6542",
+                    diamonds: "AKQT9",
+                    clubs: ""
                 },
                 south: {
                     spades: "QJT9874",
@@ -180,10 +180,10 @@ class BridgeQuiz {
                     clubs: "J432"
                 },
                 west: {
-                    spades: "K8",
-                    hearts: "AK6542",
-                    diamonds: "AKQT9",
-                    clubs: ""
+                    spades: "A6",
+                    hearts: "T83",
+                    diamonds: "875",
+                    clubs: "AT972"
                 }
             }
         },
@@ -200,7 +200,7 @@ class BridgeQuiz {
                 dealer: "South",
                 sequence: [
                     ["", "", "", "1♣"],
-                    ["1♥", "Pass", "1♠", "?"]
+                    ["Pass", "1♦", "1♠", "?"]
                 ]
             },
             options: [
@@ -212,28 +212,28 @@ class BridgeQuiz {
             explanation: "You bid 1NT. Show a balanced hand with 12-15 hcp and a stopper in spades.",
             fullHand: {
                 north: {
-                    spades: "54",
-                    hearts: "T8632",
-                    diamonds: "87",
-                    clubs: "T862"
+                    spades: "872",
+                    hearts: "AJ",
+                    diamonds: "QT943",
+                    clubs: "AQJ"
                 },
                 east: {
                     spades: "KJT93",
-                    hearts: "K5",
-                    diamonds: "KQ94",
+                    hearts: "KQ94",
+                    diamonds: "K5",
                     clubs: "54"
                 },
                 south: {
-                    spades: "872",
-                    hearts: "AJ",
-                    diamonds: "AQJ",
-                    clubs: "QT943"
-                },
-                west: {
                     spades: "AQ6",
                     hearts: "75",
                     diamonds: "AJ62",
                     clubs: "K973"
+                },
+                west: {
+                    spades: "54",
+                    hearts: "T8632",
+                    diamonds: "87",
+                    clubs: "T862"
                 }
             }
         },
@@ -246,44 +246,43 @@ class BridgeQuiz {
                 clubs: "AK976"
             },
             bidding: {
-                dealer: "East",
+                dealer: "North",
                 sequence: [
-                    ["", "", "1NT", "Pass"],
-                    ["Pass", "2♣", "Pass", "2♥"],
-                    ["Pass", "?", "", ""]
+                    ["", "1NT", "Pass", "2♣"],
+                    ["Pass", "2♥", "Pass", "?"]
                 ]
             },
             options: [
-                { id: "a", text: "Pass" },
-                { id: "b", text: "2♠" },
-                { id: "c", text: "3♠" }
+                { id: "a", text: "3♦" },
+                { id: "b", text: "3NT" },
+                { id: "c", text: "4NT" }
             ],
             correct: "c",
-            explanation: "You bid either 3♠ (best) or 2♠. You have to try and get in the way of their bidding so that they find it harder to reach slam.",
+            explanation: "You bid 3♦. You want to tell partner that you hold 4 spades without giving up on 6NT if partner cannot fit your spades or diamonds. Bidding 3NT runs the risk of partner passing when they don't hold 4 spades.",
             fullHand: {
                 north: {
-                    spades: "J76",
-                    hearts: "543",
-                    diamonds: "KJT4",
-                    clubs: "J95"
-                },
-                east: {
                     spades: "AKT5",
                     hearts: "JT",
                     diamonds: "AQ73",
                     clubs: "Q76"
                 },
-                south: {
-                    spades: "94",
-                    hearts: "Q82",
-                    diamonds: "9862",
-                    clubs: "T432"
+                east: {
+                    spades: "J76",
+                    hearts: "543",
+                    diamonds: "KJT4",
+                    clubs: "J95"
                 },
-                west: {
+                south: {
                     spades: "Q832",
                     hearts: "AK8",
                     diamonds: "6",
                     clubs: "AK976"
+                },
+                west: {
+                    spades: "94",
+                    hearts: "Q82",
+                    diamonds: "9862",
+                    clubs: "T432"
                 }
             }
         },
@@ -297,20 +296,19 @@ class BridgeQuiz {
                 clubs: "AT"
             },
             bidding: {
-                dealer: "North",
+                dealer: "South",
                 sequence: [
-                    ["1NT", "Pass", "2♣", "Pass"],
-                    ["2♥", "Pass", "?", ""]
+                    ["", "", "", "1♠"],
+                    ["Pass", "2♦", "Pass", "?"]
                 ]
             },
             options: [
-                { id: "a", text: "2♠" },
+                { id: "a", text: "2NT" },
                 { id: "b", text: "3♦" },
-                { id: "c", text: "3NT" },
-                { id: "d", text: "4NT" }
+                { id: "c", text: "3NT" }
             ],
-            correct: "b",
-            explanation: "You bid 3♦. You want to tell partner that you hold 4 spades without giving up on 6NT if partner cannot fit your spades or diamonds. Bidding 3NT runs the risk of partner passing when they don't hold 4 spades.",
+            correct: "c",
+            explanation: "You bid 3NT. You jump to game to show 16-18 hcp with a balanced hand.",
             fullHand: {
                 north: {
                     spades: "93",
@@ -350,17 +348,17 @@ class BridgeQuiz {
             bidding: {
                 dealer: "North",
                 sequence: [
-                    ["1♣", "Pass", "1♥", "Pass"],
-                    ["1♠", "Pass", "?", ""]
+                    ["", "1♣", "Pass", "1♥"],
+                    ["Pass", "1♠", "Pass", "?"]
                 ]
             },
             options: [
-                { id: "a", text: "Pass" },
-                { id: "b", text: "3♦" },
-                { id: "c", text: "4♥" }
+                { id: "a", text: "2♠" },
+                { id: "b", text: "3♠" },
+                { id: "c", text: "4♠" }
             ],
-            correct: "a",
-            explanation: "You bid Pass. Partner has shown preference for hearts, but they have already denied three. There is no game, so stop bidding.",
+            correct: "c",
+            explanation: "You bid 4S. You have a fit, ADD in your shortage points and jump to game to show 13-15 points.",
             fullHand: {
                 north: {
                     spades: "KJ52",
@@ -375,16 +373,16 @@ class BridgeQuiz {
                     clubs: "T4"
                 },
                 south: {
-                    spades: "987",
-                    hearts: "3",
-                    diamonds: "AJ65",
-                    clubs: "98752"
-                },
-                west: {
                     spades: "AT64",
                     hearts: "AJ97",
                     diamonds: "T84",
                     clubs: "A3"
+                },
+                west: {
+                    spades: "987",
+                    hearts: "3",
+                    diamonds: "AJ65",
+                    clubs: "98752"
                 }
             }
         },
@@ -400,8 +398,8 @@ class BridgeQuiz {
             bidding: {
                 dealer: "North",
                 sequence: [
-                    ["1NT", "Pass", "2♥", "Pass"],
-                    ["2♠", "Pass", "?", ""]
+                    ["", "1NT", "Pass", "2♥"],
+                    ["Pass", "2♠", "Pass", "?"]
                 ]
             },
             options: [
@@ -413,16 +411,16 @@ class BridgeQuiz {
             explanation: "You bid Pass. Yes, you have a fit, but your hand is only worth 7 tp, so game is highly unlikely to make.",
             fullHand: {
                 north: {
+                    spades: "AKQ",
+                    hearts: "J962",
+                    diamonds: "A976",
+                    clubs: "K9"
+                },
+                east: {
                     spades: "65",
                     hearts: "QT4",
                     diamonds: "QT4",
                     clubs: "AQ876"
-                },
-                east: {
-                    spades: "42",
-                    hearts: "T5",
-                    diamonds: "K853",
-                    clubs: "A8753"
                 },
                 south: {
                     spades: "JT9873",
@@ -431,215 +429,117 @@ class BridgeQuiz {
                     clubs: "J432"
                 },
                 west: {
-                    spades: "AKQ",
-                    hearts: "J962",
-                    diamonds: "A976",
-                    clubs: "K9"
+                    spades: "42",
+                    hearts: "T5",
+                    diamonds: "K853",
+                    clubs: "A8753"
                 }
             }
         },
         // Question 9
         {
             hand: {
-                spades: "53",
-        hearts: "KQ942",
-        diamonds: "AK987",
-        clubs: "A"
-    },
-    bidding: {
-        dealer: "South",
-        sequence: [
-            ["", "", "", "1♠"],
-            ["Pass", "1NT", "Pass", "2♣"],
-            ["Pass", "2♥", "Pass", "?"]
-        ]
-    },
-    options: [
-        { id: "a", text: "Pass" },
-        { id: "b", text: "3♠" },
-        { id: "c", text: "4♠" }
-    ],
-    correct: "a",
-    explanation: "You bid Pass. Your hand only revalues to 13 tp, so there is no chance for game. You cannot double dip on the singleton ace.",
-    fullHand: {
-        north: {
-            spades: "Q962",
-            hearts: "865",
-            diamonds: "JT4",
-            clubs: "KQ8"
-        },
-        east: {
-            spades: "AJ74",
-            hearts: "J7",
-            diamonds: "53",
-            clubs: "97654"
-        },
-        south: {
-            spades: "53",
-            hearts: "KQ942",
-            diamonds: "AK987",
-            clubs: "A"
-        },
-        west: {
-            spades: "KT8",
-            hearts: "AT3",
-            diamonds: "Q62",
-            clubs: "JT32"
-        }
-    }
-},
-
-// Question 10
-{
-    hand: {
-        spades: "T8743",
-        hearts: "85",
-        diamonds: "Q5",
-        clubs: "KQ62"
-    },
-    bidding: {
-        dealer: "South",
-        sequence: [
-            ["", "", "", "1♣"],
-            ["Dbl", "1♥", "2♣", "Pass"],
-            ["?", "", "", ""]
-        ]
-    },
-    options: [
-        { id: "a", text: "Pass" },
-        { id: "b", text: "2NT" },
-        { id: "c", text: "3NT" }
-    ],
-    correct: "c",
-    explanation: "You bid 3NT. West jumps to game to show 16-18 hcp with a balanced hand.",
-    fullHand: {
-        north: {
-            spades: "QJ5",
-            hearts: "J9",
-            diamonds: "K9764",
-            clubs: "J93"
-        },
-        east: {
-            spades: "T8743",
-            hearts: "85",
-            diamonds: "Q5",
-            clubs: "KQ62"
-        },
-        south: {
-            spades: "K",
-            hearts: "Q32",
-            diamonds: "T74",
-            clubs: "AKT842"
-        },
-        west: {
-            spades: "A962",
-            hearts: "AJT",
-            diamonds: "A853",
-            clubs: "76"
-        }
-    }
-},
-
-// Question 11
-{
-    hand: {
-        spades: "AK93",
-        hearts: "Q654",
-        diamonds: "AJT86",
-        clubs: ""
-    },
-    bidding: {
-        dealer: "South",
-        sequence: [
-            ["Pass", "1♣", "Pass", "1♥"],
-            ["Pass", "?", "", ""]
-        ]
-    },
-    options: [
-        { id: "a", text: "2♥" },
-        { id: "b", text: "3♥" },
-        { id: "c", text: "4♥" }
-    ],
-    correct: "c",
-    explanation: "You bid 4♥. With the heart fit your hand revalues to 19 tp, so bid game!",
-    fullHand: {
-        north: {
-            spades: "AK93",
-            hearts: "Q654",
-            diamonds: "AJT86",
-            clubs: ""
-        },
-        east: {
-            spades: "4",
-            hearts: "953",
-            diamonds: "KJT92",
-            clubs: "AQ84"
-        },
-        south: {
-            spades: "4",
-            hearts: "A87",
-            diamonds: "QT752",
-            clubs: "JT75"
-        },
-        west: {
-            spades: "3",
-            hearts: "J86",
-            diamonds: "KQ72",
-            clubs: "K9632"
-        }
-    }
-},
-
-// Question 12
-{
-    hand: {
-        spades: "K",
-        hearts: "K9",
-        diamonds: "J9754",
-        clubs: "KQT64"
-    },
-    bidding: {
-        dealer: "South",
-        sequence: [
-            ["Pass", "3♥", "Pass", "?"]
-        ]
-    },
-    options: [
-        { id: "a", text: "Pass" },
-        { id: "b", text: "3♠" },
-        { id: "c", text: "4♥" }
-    ],
-    correct: "a",
-    explanation: "You bid Pass. You have a definite fit, so add in your shortage points. Your hand is now worth 14 tp, but this is not enough for game when partner's range is 8-11.",
-    fullHand: {
-        north: {
-            spades: "AQ8",
-            hearts: "J",
-            diamonds: "87432",
-            clubs: "QT32"
-        },
-        east: {
-            spades: "J654",
-            hearts: "T32",
-            diamonds: "QT96",
-            clubs: "A92"
-        },
-        south: {
-            spades: "K",
-            hearts: "K9",
-            diamonds: "J9754",
-            clubs: "KQT64"
-        },
-        west: {
-            spades: "K6",
-            hearts: "AJ5",
-            diamonds: "8753",
-            clubs: "A87"
+                spades: "AJ74",
+                hearts: "J7",
+                diamonds: "53",
+                clubs: "97654"
+            },
+            bidding: {
+                dealer: "North",
+                sequence: [
+                    ["", "1♥", "Pass", "1♠"],
+                    ["Pass", "2♦", "Pass", "?"]
+                ]
+            },
+            options: [
+                { id: "a", text: "Pass" },
+                { id: "b", text: "3♠" },
+                { id: "c", text: "4♠" }
+            ],
+            correct: "a",
+            explanation: "You bid Pass. Your hand only revalues to 13 tp, so there is no chance for game. You cannot double dip on the singleton ace.",
+            fullHand: {
+                north: {
+                    spades: "53",
+                    hearts: "KQ942",
+                    diamonds: "AK987",
+                    clubs: "A"
+                },
+                east: {
+                    spades: "Q962",
+                    hearts: "865",
+                    diamonds: "JT4",
+                    clubs: "KQ8"
+                },
+                south: {
+                    spades: "AJ74",
+                    hearts: "J7",
+                    diamonds: "53",
+                    clubs: "97654"
+                },
+                west: {
+                    spades: "KT8",
+                    hearts: "AT3",
+                    diamonds: "Q62",
+                    clubs: "JT32"
                 }
             }
-        }
-    ];
-}
+        },
+
+        // Question 10
+        {
+            hand: {
+                spades: "A962",
+                hearts: "AJT",
+                diamonds: "A853",
+                clubs: "76"
+            },
+            bidding: {
+                dealer: "East",
+                sequence: [
+                    ["", "", "1♣", "Dble"],
+                    ["1♦", "2♠", "Pass", "?"],
+
+               ]
+            },
+            options: [
+                { id: "a", text: "Pass" },
+                { id: "b", text: "3♠" },
+                { id: "c", text: "4♠" }
+            ],
+            correct: "a",
+            explanation: "You bid Pass. You have a definite fit, so add in your shortage points. Your hand is now worth 14 tp, but this is not enough for game when partner's range is 8-11.",
+            fullHand: {
+                north: {
+                    spades: "T8743",
+                    hearts: "85",
+                    diamonds: "Q5",
+                    clubs: "KQ62"
+                },
+                east: {
+                    spades: "K",
+                    hearts: "Q32",
+                    diamonds: "T74",
+                    clubs: "AKT842"
+                },
+                south: {
+                    spades: "A962",
+                    hearts: "AJT",
+                    diamonds: "A853",
+                    clubs: "76"
+                },
+                west: {
+                    spades: "QJ5",
+                    hearts: "J9",
+                    diamonds: "K9764",
+                    clubs: "J93"
+                }
+            }
+        },
+
+
+        ];
+    }
 
 
     initializeElements() {
