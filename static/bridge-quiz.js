@@ -49,7 +49,7 @@ class BridgeQuiz {
                     }
                 }
             }
-            // Add other questions following the same structure
+            // Add other questions here following the same structure
         ];
         this.currentQuestion = 0;
         this.score = 0;
@@ -57,7 +57,6 @@ class BridgeQuiz {
         this.currentlyShowingAnswer = false;
         this.initializeElements();
         this.attachEventListeners();
-        this.addStyles();
     }
 
     initializeElements() {
@@ -72,9 +71,14 @@ class BridgeQuiz {
         this.lastNameInput = document.getElementById('lastName');
 
         // Quiz elements
-        this.questionText = document.getElementById('questionText');
+        this.currentHandDisplay = document.getElementById('currentHand');
+        this.dealer = document.getElementById('dealer');
+        this.biddingSequence = document.getElementById('biddingSequence');
         this.optionsContainer = document.getElementById('optionsContainer');
-        this.nextButton = document.getElementById('nextButton');
+        this.submitButton = document.getElementById('submitButton');
+        this.answerFeedback = document.getElementById('answerFeedback');
+        this.fullHandDisplay = document.getElementById('fullHand');
+        this.continueButton = document.getElementById('continueButton');
         this.progressBar = document.getElementById('progressBar');
 
         // Results elements
@@ -89,7 +93,8 @@ class BridgeQuiz {
             this.startQuiz();
         });
 
-        this.nextButton.addEventListener('click', () => this.handleNextButton());
+        this.submitButton.addEventListener('click', () => this.handleSubmit());
+        this.continueButton.addEventListener('click', () => this.handleContinue());
         this.retryButton.addEventListener('click', () => this.resetQuiz());
         this.closeButton.addEventListener('click', () => this.closeQuiz());
     }
@@ -120,45 +125,32 @@ class BridgeQuiz {
         // Create radio options
         this.createRadioOptions(question.options);
         
-        // Reset answer feedback and full hand
-        document.getElementById('answerFeedback').style.display = 'none';
-        document.getElementById('fullHand').style.display = 'none';
+        // Reset displays
+        this.answerFeedback.style.display = 'none';
+        this.fullHandDisplay.classList.add('hidden');
         
         // Update progress
         this.updateProgressBar();
         
-        // Update next button
-        this.nextButton.textContent = 'Submit Answer';
-        this.nextButton.disabled = true;
+        // Update button
+        this.submitButton.textContent = 'Submit Answer';
+        this.submitButton.disabled = true;
         this.currentlyShowingAnswer = false;
     }
 
     displayBridgeHand(hand) {
         const suits = ['spades', 'hearts', 'diamonds', 'clubs'];
-        const symbols = {
-            spades: '♠',
-            hearts: '♥',
-            diamonds: '♦',
-            clubs: '♣'
-        };
-
+        
         suits.forEach(suit => {
-            const cardSpan = document.querySelector(`.suit.${suit} .cards`);
+            const cardSpan = this.currentHandDisplay.querySelector(`.suit.${suit} .cards`);
             cardSpan.textContent = hand[suit] || '—';
         });
     }
 
     displayBiddingSequence(bidding) {
-        const biddingTable = document.getElementById('biddingSequence');
-        const dealer = document.getElementById('dealer');
-        
-        // Set dealer
-        dealer.textContent = bidding.dealer;
+        this.dealer.textContent = bidding.dealer;
+        this.biddingSequence.innerHTML = '';
 
-        // Clear existing bidding
-        biddingTable.innerHTML = '';
-
-        // Add bidding rows
         bidding.sequence.forEach(row => {
             const tr = document.createElement('tr');
             row.forEach(bid => {
@@ -166,13 +158,12 @@ class BridgeQuiz {
                 td.textContent = bid;
                 tr.appendChild(td);
             });
-            biddingTable.appendChild(tr);
+            this.biddingSequence.appendChild(tr);
         });
     }
 
     createRadioOptions(options) {
-        const container = document.getElementById('optionsContainer');
-        container.innerHTML = '';
+        this.optionsContainer.innerHTML = '';
 
         options.forEach(option => {
             const div = document.createElement('div');
@@ -186,71 +177,21 @@ class BridgeQuiz {
 
             const label = document.createElement('label');
             label.htmlFor = `option${option.id}`;
-            label.textContent = `${option.text}`;
+            label.textContent = option.text;
 
             div.appendChild(input);
             div.appendChild(label);
-            container.appendChild(div);
+            this.optionsContainer.appendChild(div);
 
             input.addEventListener('change', () => {
-                this.nextButton.disabled = false;
+                this.submitButton.disabled = false;
             });
         });
     }
 
-    displayFullHand(fullHand) {
-        const fullHandDiv = document.getElementById('fullHand');
-        fullHandDiv.innerHTML = `
-            <h3>Full Hand:</h3>
-            <div class="all-hands">
-                <div class="hand north">
-                    <h4>North</h4>
-                    ${this.formatHand(fullHand.north)}
-                </div>
-                <div class="hand-row">
-                    <div class="hand west">
-                        <h4>West</h4>
-                        ${this.formatHand(fullHand.west)}
-                    </div>
-                    <div class="hand east">
-                        <h4>East</h4>
-                        ${this.formatHand(fullHand.east)}
-                    </div>
-                </div>
-                <div class="hand south">
-                    <h4>South</h4>
-                    ${this.formatHand(fullHand.south)}
-                </div>
-            </div>
-        `;
-        fullHandDiv.style.display = 'block';
-    }
+    handleSubmit() {
+        if (this.currentlyShowingAnswer) return;
 
-    formatHand(hand) {
-        return `
-            <div class="suit spades">♠ ${hand.spades || '—'}</div>
-            <div class="suit hearts">♥ ${hand.hearts || '—'}</div>
-            <div class="suit diamonds">♦ ${hand.diamonds || '—'}</div>
-            <div class="suit clubs">♣ ${hand.clubs || '—'}</div>
-        `;
-    }
-
-    handleNextButton() {
-        if (!this.currentlyShowingAnswer) {
-            // Handle answer submission
-            this.checkAnswer();
-        } else {
-            // Move to next question
-            if (this.currentQuestion < this.questions.length - 1) {
-                this.currentQuestion++;
-                this.displayQuestion();
-            } else {
-                this.showResults();
-            }
-        }
-    }
-
-    checkAnswer() {
         const selectedAnswer = document.querySelector('input[name="answer"]:checked');
         if (!selectedAnswer) return;
 
@@ -258,24 +199,57 @@ class BridgeQuiz {
         const isCorrect = selectedAnswer.value === question.correct;
         
         // Display feedback
-        const feedbackDiv = document.getElementById('answerFeedback');
-        feedbackDiv.className = `answer-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-        feedbackDiv.innerHTML = `
+        this.answerFeedback.className = `answer-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        this.answerFeedback.innerHTML = `
             <h4>${isCorrect ? 'Correct!' : 'Incorrect'}</h4>
             <p>${question.explanation}</p>
         `;
-        feedbackDiv.style.display = 'block';
+        this.answerFeedback.style.display = 'block';
 
         // Show full hand
         this.displayFullHand(question.fullHand);
-
-        // Update button and tracking
-        this.nextButton.textContent = this.currentQuestion < this.questions.length - 1 ? 'Next Question' : 'Show Results';
-        this.currentlyShowingAnswer = true;
+        this.fullHandDisplay.classList.remove('hidden');
 
         // Update score
         if (isCorrect) {
             this.score++;
+        }
+
+        this.currentlyShowingAnswer = true;
+        this.submitButton.disabled = true;
+    }
+
+    displayFullHand(fullHand) {
+        const positions = ['north', 'south', 'east', 'west'];
+        
+        positions.forEach(position => {
+            const handContent = this.fullHandDisplay.querySelector(`.${position} .hand-content`);
+            handContent.innerHTML = this.formatHandContent(fullHand[position]);
+        });
+    }
+
+    formatHandContent(hand) {
+        const suits = [
+            { symbol: '♠', name: 'spades' },
+            { symbol: '♥', name: 'hearts' },
+            { symbol: '♦', name: 'diamonds' },
+            { symbol: '♣', name: 'clubs' }
+        ];
+
+        return suits.map(suit => `
+            <div class="suit-line">
+                <span class="suit-symbol ${suit.name}">${suit.symbol}</span>
+                <span class="cards">${hand[suit.name] || '—'}</span>
+            </div>
+        `).join('');
+    }
+
+    handleContinue() {
+        if (this.currentQuestion < this.questions.length - 1) {
+            this.currentQuestion++;
+            this.displayQuestion();
+        } else {
+            this.showResults();
         }
     }
 
@@ -288,14 +262,13 @@ class BridgeQuiz {
         this.quizSection.classList.add('hidden');
         this.resultsSection.classList.remove('hidden');
         
-        const finalScore = this.score;
-        this.scoreDisplay.textContent = `${this.firstName} ${this.lastName}, you scored ${finalScore} out of ${this.questions.length}`;
+        this.scoreDisplay.textContent = `${this.firstName} ${this.lastName}, you scored ${this.score} out of ${this.questions.length}`;
         
         // Save score to leaderboard
         await window.leaderboard.addScore({
             firstName: this.firstName,
             lastName: this.lastName,
-            score: finalScore,
+            score: this.score,
             date: new Date()
         });
     }
@@ -319,49 +292,6 @@ class BridgeQuiz {
             // Fallback if window.close() doesn't work
             document.body.innerHTML = '<h1>Quiz Closed</h1><p>You can close this tab now.</p>';
         }
-    }
-
-    addStyles() {
-        const styles = `
-            .all-hands {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-                margin-top: 20px;
-            }
-
-            .hand {
-                background: white;
-                padding: 15px;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-
-            .hand h4 {
-                margin: 0 0 10px 0;
-                text-align: center;
-            }
-
-            .hand-row {
-                display: flex;
-                gap: 40px;
-                width: 100%;
-                justify-content: center;
-            }
-
-            .suit.spades, .suit.clubs {
-                color: black;
-            }
-
-            .suit.hearts, .suit.diamonds {
-                color: red;
-            }
-        `;
-
-        const styleSheet = document.createElement("style");
-        styleSheet.textContent = styles;
-        document.head.appendChild(styleSheet);
     }
 }
 
