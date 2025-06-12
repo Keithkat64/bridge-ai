@@ -35,7 +35,7 @@ class BridgeQuiz {
     }
 
     initializeQuizData() {
-    this.currentQuestion = 0;
+    this.currentQuestion = 1;
     this.score = 0;
     this.userAnswers = [];
     this.currentlyShowingAnswer = false;
