@@ -1,5 +1,9 @@
 class BridgeQuiz {
     constructor() {
+        // Add debugging at the start
+        console.log('QUIZ: Constructor called');
+        console.log('QUIZ: Window quizData:', window.quizData);
+        
         // Wait for DOM to be fully loaded before initializing
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.init());
@@ -35,40 +39,26 @@ class BridgeQuiz {
     }
 
     initializeQuizData() {
-    this.currentQuestion = 1;
-    this.score = 0;
-    this.userAnswers = [];
-    this.currentlyShowingAnswer = false;
+        // Add debugging
+        console.log('QUIZ: Initializing quiz data');
+        console.log('QUIZ: Available quizData:', window.quizData);
+        
+        this.currentQuestion = 0;
+        this.score = 0;
+        this.userAnswers = [];
+        this.currentlyShowingAnswer = false;
 
-    this.questions = [
-        // Question 1
-
-        // Question 2
-
-
-        // Question 3
-
-
-        // Question 4
-
-        // Question 5
-
-
-        // Question 6
-
-
-        // Question 7
-
-
-        // Question 8
-
-        // Question 9
-
-
-
-        ];
+        if (typeof window.quizData !== 'undefined' && window.quizData.questions) {
+            console.log('QUIZ: Found quiz data, loading questions');
+            this.questions = window.quizData.questions;
+        } else {
+            console.error('QUIZ: No quiz data found in window.quizData');
+            this.questions = [];
+        }
+        
+        // Log the final questions array
+        console.log('QUIZ: Final questions array:', this.questions);
     }
-
 
     initializeElements() {
         try {
@@ -248,6 +238,7 @@ class BridgeQuiz {
             });
         });
     }
+
     handleSubmit() {
         if (this.currentlyShowingAnswer) return;
 
@@ -290,7 +281,7 @@ class BridgeQuiz {
             }
         });
 
-        // Make sure continue button is visible and properly connected
+        // Make sure continue button is visible
         if (this.continueButton) {
             this.continueButton.style.display = 'block';
         }
