@@ -65,8 +65,7 @@ class BridgeQuiz {
         // Question 9
 
 
-        // Question 10
- 
+
         ];
     }
 
