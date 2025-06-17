@@ -36,11 +36,6 @@ class BridgeQuiz {
         if (this.questions.length === 0) {
             throw new Error('No questions loaded. Please check the quiz data file.');
         }
-        
-        // Get quiz ID from hidden input
-        const quizIdElement = document.getElementById('quiz-id');
-        this.quizId = quizIdElement ? parseInt(quizIdElement.value) : 0;
-        console.log('Quiz ID:', this.quizId);
     }
 
     initializeElements() {
@@ -244,96 +239,139 @@ class BridgeQuiz {
 
         this.scoreDisplay.textContent = `${this.firstName} ${this.lastName}, you scored ${this.score} out of ${this.questions.length}`;
 
-        // Submit score to WordPress backend
-        this.submitScoreToServer();
+        // MODIFIED: Submit score to WordPress instead of localStorage
+        this.submitScoreToWordPress();
     }
 
-    submitScoreToServer() {
-        console.log('Submitting score to server...');
+    // NEW METHOD: Submit score to WordPress
+    submitScoreToWordPress() {
+        console.log('Submitting score to WordPress...');
         
-        // Check if bridgeQuizAjax is defined
-        if (typeof bridgeQuizAjax === 'undefined') {
-            console.error('bridgeQuizAjax is not defined');
-            this.displayLeaderboardError('Error: Could not submit score. AJAX configuration is missing.');
-            return;
-        }
+        // Get quiz ID from hidden input
+        const quizIdElement = document.getElementById('quiz-id');
+        const quizId = quizIdElement ? parseInt(quizIdElement.value) : 0;
+        
+        // Create XHR request
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/wp-admin/admin-ajax.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+                console.log('Response status:', xhr.status);
+                console.log('Response text:', xhr.responseText);
+                
+                if (xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        console.log('Parsed response:', response);
+                        
+                        if (response.success) {
+                            console.log('Score saved successfully!');
+                            this.loadLeaderboardFromWordPress(quizId);
+                        } else {
+                            console.error('Error saving score:', response.data ? response.data.message : 'Unknown error');
+                            // Fall back to local leaderboard if WordPress fails
+                            this.displayLocalLeaderboard();
+                        }
+                    } catch (e) {
+                        console.error('Error parsing response:', e);
+                        // Fall back to local leaderboard if parsing fails
+                        this.displayLocalLeaderboard();
+                    }
+                } else {
+                    // Fall back to local leaderboard if request fails
+                    this.displayLocalLeaderboard();
+                }
+            }
+        };
         
         const playerName = `${this.firstName} ${this.lastName}`;
+        const data = 'action=submit_bridge_quiz_score' + 
+                    '&quiz_id=' + encodeURIComponent(quizId) + 
+                    '&player_name=' + encodeURIComponent(playerName) + 
+                    '&score=' + encodeURIComponent(this.score) + 
+                    '&max_score=' + encodeURIComponent(this.questions.length);
         
-        // Create form data
-        const formData = new FormData();
-        formData.append('action', 'submit_bridge_quiz_score');
-        formData.append('nonce', bridgeQuizAjax.nonce);
-        formData.append('quiz_id', this.quizId);
-        formData.append('player_name', playerName);
-        formData.append('score', this.score);
-        formData.append('max_score', this.questions.length);
-        
-        // Send AJAX request
-        fetch(bridgeQuizAjax.ajaxurl, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Score submission response:', data);
-            if (data.success) {
-                this.loadLeaderboard();
-            } else {
-                this.displayLeaderboardError('Error submitting score: ' + (data.data ? data.data.message : 'Unknown error'));
-            }
-        })
-        .catch(error => {
-            console.error('Error submitting score:', error);
-            this.displayLeaderboardError('Error submitting score. Please try again.');
-        });
+        xhr.send(data);
     }
     
-    loadLeaderboard() {
-        console.log('Loading leaderboard...');
+    // NEW METHOD: Load leaderboard from WordPress
+    loadLeaderboardFromWordPress(quizId) {
+        console.log('Loading TablePress leaderboard...');
         
-        // Check if bridgeQuizAjax is defined
-        if (typeof bridgeQuizAjax === 'undefined') {
-            console.error('bridgeQuizAjax is not defined');
-            this.displayLeaderboardError('Error: Could not load leaderboard. AJAX configuration is missing.');
-            return;
-        }
+        // Create XHR request
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/wp-admin/admin-ajax.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         
-        // Create form data
-        const formData = new FormData();
-        formData.append('action', 'get_bridge_quiz_leaderboard');
-        formData.append('nonce', bridgeQuizAjax.nonce);
-        formData.append('quiz_id', this.quizId);
-        
-        // Send AJAX request
-        fetch(bridgeQuizAjax.ajaxurl, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Leaderboard response:', data);
-            if (data.success) {
-                document.getElementById('leaderboard-container').innerHTML = data.data.leaderboard;
-            } else {
-                this.displayLeaderboardError('Error loading leaderboard: ' + (data.data ? data.data.message : 'Unknown error'));
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+                console.log('Leaderboard response status:', xhr.status);
+                console.log('Leaderboard response text:', xhr.responseText);
+                
+                if (xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        console.log('Parsed leaderboard response:', response);
+                        
+                        if (response.success) {
+                            // Replace the leaderboard container
+                            const leaderboardContainer = document.getElementById('leaderboard-container');
+                            if (leaderboardContainer) {
+                                leaderboardContainer.innerHTML = response.data.leaderboard;
+                                console.log('Replaced leaderboard with TablePress data');
+                            }
+                        } else {
+                            console.error('Error loading leaderboard:', response.data ? response.data.message : 'Unknown error');
+                            // Fall back to local leaderboard
+                            this.displayLocalLeaderboard();
+                        }
+                    } catch (e) {
+                        console.error('Error parsing leaderboard response:', e);
+                        // Fall back to local leaderboard
+                        this.displayLocalLeaderboard();
+                    }
+                } else {
+                    // Fall back to local leaderboard
+                    this.displayLocalLeaderboard();
+                }
             }
-        })
-        .catch(error => {
-            console.error('Error loading leaderboard:', error);
-            this.displayLeaderboardError('Error loading leaderboard. Please try again.');
-        });
+        };
+        
+        const data = 'action=get_bridge_quiz_leaderboard' + 
+                    '&quiz_id=' + encodeURIComponent(quizId);
+        
+        xhr.send(data);
     }
-    
-    displayLeaderboardError(message) {
-        const leaderboardContainer = document.getElementById('leaderboard-container');
-        if (leaderboardContainer) {
-            leaderboardContainer.innerHTML = `
-                <h3>Leaderboard</h3>
-                <div style="color: #721c24; background-color: #f8d7da; padding: 10px; border: 1px solid #f5c6cb; border-radius: 4px;">
-                    ${message}
-                </div>
-            `;
+
+    // RENAMED: Original displayLeaderboard method renamed to displayLocalLeaderboard
+    displayLocalLeaderboard() {
+        console.log('Falling back to local leaderboard');
+        
+        // Get quiz ID from hidden input
+        const quizIdElement = document.getElementById('quiz-id');
+        const quizId = quizIdElement ? parseInt(quizIdElement.value) : 0;
+        
+        const key = `${quizId}-scores`;
+        const scores = JSON.parse(localStorage.getItem(key) || '[]');
+        scores.push({
+            firstName: this.firstName,
+            lastName: this.lastName,
+            score: this.score,
+            date: new Date().toISOString()
+        });
+        scores.sort((a, b) => b.score - a.score);
+        localStorage.setItem(key, JSON.stringify(scores));
+
+        const leaderboardBody = document.getElementById('leaderboardBody');
+        if (leaderboardBody) {
+            leaderboardBody.innerHTML = '';
+            scores.slice(0, 10).forEach((s, i) => {
+                leaderboardBody.innerHTML += `
+                    <tr><td>${i + 1}</td><td>${s.firstName} ${s.lastName}</td><td>${s.score}</td><td>${new Date(s.date).toLocaleDateString()}</td></tr>
+                `;
+            });
         }
     }
 

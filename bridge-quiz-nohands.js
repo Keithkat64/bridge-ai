@@ -337,28 +337,38 @@ class BridgeQuiz {
         
         this.scoreDisplay.textContent = `${this.firstName} ${this.lastName}, you scored ${this.score} out of ${this.questions.length}`;
         
-        // Save score to localStorage
+        // Get quiz ID from window.quizData
+        const quizId = window.quizData && window.quizData.quizId ? window.quizData.quizId : 'default';
+        
+        // Save score to localStorage with quiz ID
         const scores = JSON.parse(localStorage.getItem('bridgeQuizScores') || '[]');
         scores.push({
             firstName: this.firstName,
             lastName: this.lastName,
             score: this.score,
-            date: new Date().toISOString()
+            date: new Date().toISOString(),
+            quizId: quizId // Add quiz ID to the score
         });
         scores.sort((a, b) => b.score - a.score);
         localStorage.setItem('bridgeQuizScores', JSON.stringify(scores));
         
-        // Display leaderboard
-        this.displayLeaderboard(scores);
+        // Display leaderboard for this quiz
+        this.displayLeaderboard(scores, quizId);
+        
+        // Save score to server
+        this.saveScoreToServer(quizId);
     }
 
-    displayLeaderboard(scores) {
+    displayLeaderboard(scores, quizId) {
         const leaderboardBody = document.getElementById('leaderboardBody');
         if (!leaderboardBody) return;
 
         leaderboardBody.innerHTML = '';
         
-        scores.slice(0, 10).forEach((score, index) => {
+        // Filter scores for current quiz
+        const filteredScores = scores.filter(score => score.quizId === quizId);
+        
+        filteredScores.slice(0, 10).forEach((score, index) => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${index + 1}</td>
@@ -367,6 +377,34 @@ class BridgeQuiz {
                 <td>${new Date(score.date).toLocaleDateString()}</td>
             `;
             leaderboardBody.appendChild(row);
+        });
+    }
+
+    // New method to save scores to the server
+    saveScoreToServer(quizId) {
+        // Check if AJAX variables are available
+        if (!window.quizAjax || !window.quizAjax.ajaxurl || !window.quizAjax.nonce) {
+            console.error('AJAX variables not found. Score not saved to server.');
+            return;
+        }
+        
+        const data = new FormData();
+        data.append('action', 'save_quiz_score');
+        data.append('security', window.quizAjax.nonce);
+        data.append('quiz_id', quizId);
+        data.append('user_name', `${this.firstName} ${this.lastName}`);
+        data.append('score', this.score);
+        
+        fetch(window.quizAjax.ajaxurl, {
+            method: 'POST',
+            body: data
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Score saved to server:', data);
+        })
+        .catch(error => {
+            console.error('Error saving score to server:', error);
         });
     }
 
@@ -432,3 +470,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(errorMessage);
     }
 });
+
+<script>
+
+    :root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --error-color: #e74c3c;
+    --background-color: #ecf0f1;
+    --text-color: #2c3e50;
+}
+</script>

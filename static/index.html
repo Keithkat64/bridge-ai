@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bridge Hand Extractor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .progress {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bridge Hand Extractor</h1>
+        <p>Upload a PDF file containing bridge hands to extract and format them.</p>
+        
+        <input type="file" id="pdfUpload" accept=".pdf">
+        <button id="processButton" class="button">Process PDF</button>
+        <button id="downloadButton" class="button" disabled>Download Text File</button>
+        <button id="downloadRawButton" class="button" disabled>Download Raw Text</button>
+        
+        <div id="status"></div>
+    </div>
+
+    <script>
+        document.getElementById('processButton').addEventListener('click', async () => {
+            const file = document.getElementById('pdfUpload').files[0];
+            if (!file) {
+                setStatus('Please select a PDF file first', 'error');
+                return;
+            }
+            
+            setStatus('Processing PDF...', 'progress');
+            
+            // Create FormData to send the file
+            const formData = new FormData();
+            formData.append('pdf', file);
+            
+            try {
+                // Send the file to the server for processing
+                const response = await fetch('/process-pdf', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Server error: ' + response.statusText);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    setStatus('PDF processed successfully!', 'success');
+                    document.getElementById('downloadButton').disabled = false;
+                    document.getElementById('downloadRawButton').disabled = false;
+                } else {
+                    setStatus('Error: ' + result.error, 'error');
+                }
+            } catch (error) {
+                setStatus('Error: ' + error.message, 'error');
+            }
+        });
+        
+        document.getElementById('downloadButton').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/download-result');
+                if (!response.ok) {
+                    throw new Error('Server error: ' + response.statusText);
+                }
+                
+                const blob = await response.blob();
+                
+                // Create a download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'bridge_hands.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } catch (error) {
+                setStatus('Error downloading file: ' + error.message, 'error');
+            }
+        });
+        
+        document.getElementById('downloadRawButton').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/download-raw');
+                if (!response.ok) {
+                    throw new Error('Server error: ' + response.statusText);
+                }
+                
+                const blob = await response.blob();
+                
+                // Create a download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'raw_pdf_text.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } catch (error) {
+                setStatus('Error downloading raw text: ' + error.message, 'error');
+            }
+        });
+        
+        function setStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = type;
+        }
+    </script>
+</body>
+</html>

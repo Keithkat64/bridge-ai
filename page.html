@@ -1,0 +1,46 @@
+<div id="bridge-quiz" class="bridge-quiz-container">
+    <div class="quiz-progress">
+        Question <span id="current-question">1</span> of <span id="total-questions">10</span>
+    </div>
+    
+    <div class="question-container">
+        <div class="south-hand">
+            <h3>South Hand</h3>
+            <div id="south-hand-display" class="hand-display"></div>
+        </div>
+        
+        <div class="bidding">
+            <h3>Bidding</h3>
+            <div id="bidding-display" class="bidding-display"></div>
+        </div>
+        
+        <div class="question">
+            <h3>Question</h3>
+            <p id="question-text"></p>
+            
+            <div id="options-container" class="options-container">
+                <!-- Options will be inserted here -->
+            </div>
+        </div>
+        
+        <div id="solution-container" class="solution-container hidden">
+            <h3>Solution</h3>
+            <div id="solution-text"></div>
+            
+            <div class="all-hands">
+                <h3>All Hands</h3>
+                <div id="all-hands-display"></div>
+            </div>
+            
+            <button id="next-question" class="next-button">Next Question</button>
+        </div>
+    </div>
+    
+    <div id="quiz-complete" class="quiz-complete hidden">
+        <h2>Quiz Complete!</h2>
+        <p>Your score: <span id="final-score">0</span> out of <span id="max-score">0</span></p>
+        <div id="leaderboard-container">
+            <!-- Leaderboard will be inserted here -->
+        </div>
+    </div>
+</div>

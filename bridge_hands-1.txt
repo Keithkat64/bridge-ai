@@ -1,0 +1,474 @@
+Hand 1:
+
+Cards:
+North: AJT84
+KT53
+94
+AJ
+
+East: 76
+762
+K63
+KQ963
+
+South: 9532
+4
+AQJ5
+T842
+
+West: KQ
+AQJ98
+T872
+75
+
+Dealer: North
+
+Bidding:
+North: 1♠
+East: 2♥
+South: ?
+
+Question:
+Does South bid a) 2S or b) 3S
+
+Solution:
+South bids b) 3S. ADD in your shortage points when you hold 4 card support for partner's 5 card suit.
+
+----------------------------------------
+
+Hand 2:
+
+Cards:
+North: T9654
+9
+KQ63
+T86
+
+East: KJ7
+AKJT53
+A97
+7
+
+South: AQ8
+Q872
+84
+AJ53
+
+West: 32
+64
+JT52
+KQ942
+
+Dealer: East
+
+Bidding:
+East: 1♥
+South: ?
+
+Question:
+Does South bid a) Dble b) Pass or c) 2C
+
+Solution:
+South bids b) Pass. You have too many hearts for a takeout double, and not enough clubs for an overcall of 2C.
+
+----------------------------------------
+
+Hand 3:
+
+Cards:
+North: KQJ5
+AK852
+JT9
+Q
+
+East: T6
+J73
+A53
+KT862
+
+South: A974
+96
+KQ876
+73
+
+West: 832
+QT4
+42
+AJ954
+
+Dealer: South
+
+Bidding:
+South: Pass
+West: Pass
+North: 1♥
+East: Pass
+South: ?
+
+Question:
+Does South bid a) 1S b) 1NT or c) 2D
+
+Solution:
+South bids a) 1S. Bidding 1NT denies four spades and bidding at the 2 level shows 10+ hcp.
+
+----------------------------------------
+
+Hand 4:
+
+Cards:
+North: AT96
+AK653
+Q8
+T8
+
+East: Q53
+J
+A6543
+KQ63
+
+South: 84
+Q8742
+K2
+A975
+
+West: KJ72
+T9
+JT97
+J42
+
+Dealer: North
+
+Bidding:
+North: 1♥
+East: Pass
+South: ?
+
+Question:
+Does South bid a) 2H b) 3H or c) 4H
+
+Solution:
+South bids b) 3H. ADD in your shortage points when you hold 5 card support for partner's 5 card suit.
+
+----------------------------------------
+
+Hand 5:
+
+Cards:
+North: A8653
+KT632
+K7
+3
+
+East: QJ7
+AJ84
+T6
+Q876
+
+South: KT42
+void
+AQ8542
+KJ5
+
+West: 9
+Q975
+J93
+AT942
+
+Dealer: South
+
+Bidding:
+South: 1♦
+West: Pass
+North: 1♠
+East: Pass
+South: ?
+
+Question:
+Does South bid a) 2S b) 3S or c) 4S
+
+Solution:
+South bids b) 3S. When you have a fit, ADD in your shortage points. Your hand is now worth 18 tp, so jump to 3S to show 16-18. North will have no trouble going onto game.
+
+----------------------------------------
+
+Hand 6:
+
+Cards:
+North: JT63
+JT82
+T5
+K82
+
+East: KQ87542
+63
+Q9
+Q5
+
+South: void
+AK54
+AJ84
+AJT43
+
+West: A9
+Q97
+976
+K7632
+
+Dealer: East
+
+Bidding:
+East: 3♠
+South: Dbl
+West: Pass
+North: 4♥
+East: Pass
+South: ?
+
+Question:
+Does South bid a) Pass b) 4NT or c) 6H
+
+Solution:
+South bids a) Pass. Partner is not promising any points for their 4H bid, so it's too risky to try for slam.
+
+----------------------------------------
+
+Hand 7:
+
+Cards:
+North: AQJ97
+Q7
+Q73
+K92
+
+East: T654
+J54
+J6
+K954
+
+South: K3
+AKT83
+T2
+AQ74
+
+West: 82
+962
+AJ86
+T853
+
+Dealer: North
+
+Bidding:
+North: 1♠
+East: Pass
+South: 2♥
+West: Pass
+North: 2NT
+East: Pass
+South: ?
+
+Question:
+Does South bid a) 3C b) 3NT or c) 4NT
+
+Solution:
+South bids either a) 3C or b) 3NT. North is not promising a balanced hand, so bidding 3C covers all contingencies.
+
+----------------------------------------
+
+Hand 8:
+
+Cards:
+North: AKQ9
+A6
+Q93
+J852
+
+East: 65
+8532
+T
+AQT643
+
+South: T873
+KJT9
+AJ75
+9
+
+West: J42
+Q74
+K8642
+K7
+
+Dealer: North
+
+Bidding:
+North: 1NT
+East: 2♣
+South: ?
+
+Question:
+Does South bid a) Dble b) 2NT c) 3C or d) 3NT
+
+Solution:
+South bids c) 3C best or b) 2NT. 3C is a cue bid and promises a 4 card major. If North holds a 4 card major, they will bid it.
+
+----------------------------------------
+
+Hand 9:
+
+Cards:
+North: 96
+J652
+J9642
+97
+
+East: AK4
+T984
+J3
+AQT7
+
+South: QJT872
+KQ7
+K8
+T8
+
+West: 53
+A3
+53
+AKQ6542
+
+Dealer: East
+
+Bidding:
+East: 1♦
+South: ?
+
+Question:
+Does South bid a) Pass b) 1S or c) 2S
+
+Solution:
+South bids b) 1S. You have too many points to overcall 2S and you want partner to lead a spade if they are on lead.
+
+----------------------------------------
+
+Hand 10:
+
+Cards:
+North: AJ3
+KQ8
+KQJ52
+K2
+
+East: K72
+632
+9763
+A65
+
+South: Q9854
+AT75
+T4
+Q8
+
+West: T6
+J94
+A8
+JT9743
+
+Dealer: North
+
+Bidding:
+North: 1♦
+East: Pass
+South:  1♠
+West: Pass
+North: 2NT
+East: Pass
+South: ?
+
+Question:
+Does South bid a) Pass b) 3H c) 3S or d) 3NT
+
+Solution:
+South bids b) 3H. This shows 5 spades and 4 hearts and offers West a choice of 3 contracts: 3NT, 4H or 4S.
+
+----------------------------------------
+
+Hand 11:
+
+Cards:
+North: J
+AJ5
+A95
+AJ8643
+
+East: K543
+9863
+QT6
+Q2
+
+South: AT72
+KT74
+82
+K95
+
+West: Q986
+Q2
+KJ743
+T7
+
+Bidding:
+South: Pass
+West: Pass
+North: 1♣
+East: Pass
+South: 1♥
+West: Pass
+North: 2♣
+East: Pass
+South: ?
+
+Question:
+Does South bid a) 2S b) 2NT or c) 3D
+
+Solution:
+South bids b) 2NT to show a minimum hand with a spade stopper. This does not promise a balanced hand though.
+
+----------------------------------------
+
+Hand 12:
+
+Cards:
+North: 8
+A8432
+A97
+KQJ4
+
+East: 432
+KQT9
+J83
+T82
+
+South: AJ75
+65
+KT542
+A3
+
+West: KQT96
+J7
+Q6
+9765
+
+Dealer: South
+
+Bidding:
+South: 1♦
+West: 1♠
+North: 2♥
+East: Pass
+South: ?
+
+Question:
+Does South bid a) Pass b) 2NT or c) 3C
+
+Solution:
+South bids b) 2NT. This shows 10-12 points and invites opener to bid game if they hold 14 or 15 points.
+
+----------------------------------------

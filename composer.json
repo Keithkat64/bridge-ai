@@ -1,0 +1,15 @@
+{
+    "name": "keith/bridge-ai",
+    "autoload": {
+        "psr-4": {
+            "Keith\\BridgeAi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Keithkat64",
+            "email": "keithkat64@gmail.com"
+        }
+    ],
+    "require": {}
+}

@@ -1,0 +1,78 @@
+ridge Hand Extractor - Summary Guide
+Overview
+This application extracts bridge hands from PDF files using a hardcoded approach. It creates a web interface where you can upload a PDF, process it, and download the extracted hands as a text file.
+
+How the Hardcoding Approach Works
+Basic Structure: The app uses Flask to create a web server with routes for uploading PDFs and downloading results.
+
+The Key Function: extract_bridge_hands() contains manually defined data for each bridge hand.
+
+Hand Format: Each hand is defined as a dictionary with:
+
+number: The hand number (1-12)
+cards: Card distributions for North, East, South, and West (each with suits in SHDC order)
+dealer: Who is the dealer
+bidding: The bidding sequence
+question: The bidding question
+solution: The correct answer and explanation
+Example Hand Definition:
+
+python
+
+
+{
+    'number': 1,
+    'cards': {
+        'north': "AJT84\nKT53\n94\nAJ",
+        'east': "76\n762\nK63\nKQ963",
+        'south': "9532\n4\nAQJ5\nT842",
+        'west': "KQ\nAQJ98\nT872\n75"
+    },
+    'dealer': "North",
+    'bidding': "North: 1♠\nEast: 2♥\nSouth: ?",
+    'question': "Does South bid a) 2S or b) 3S",
+    'solution': "South bids b) 3S. ADD in your shortage points when you hold 4 card support for partner's 5 card suit."
+}
+How to Add a New PDF
+Analyze the PDF: Look at the PDF to identify the hands, card distributions, bidding sequences, questions, and solutions.
+
+Update the extract_bridge_hands() Function: Replace the existing hand definitions with new ones based on your PDF.
+
+Maintain the Format: Keep the same dictionary structure for each hand.
+
+Card Format: Maintain the SHDC order (Spades, Hearts, Diamonds, Clubs) for each player's cards.
+
+Common Issues to Watch For
+Card Order: Make sure cards are in the correct order for each player.
+
+Player Positions: Ensure North, East, South, and West cards are correctly assigned.
+
+Line Breaks: Use \n to separate suits within a player's hand.
+
+Special Characters: Replace any special characters in the PDF text (like ©) with standard characters.
+
+Running the Application
+Save the code as app.py
+Make sure you have Flask and PyPDF2 installed:
+code
+
+
+pip install flask PyPDF2 flask-cors
+Run the application:
+code
+
+
+python app.py
+Open a web browser and go to:
+code
+
+
+http://127.0.0.1:5000/
+Upload your PDF, process it, and download the results
+For Future Reference
+When asking for help with a new PDF, provide:
+
+The new PDF file
+Any specific requirements or changes needed
+Mention that you need help updating the hardcoded bridge hand extractor
+This approach is best for PDFs with consistent formatting where automatic extraction is challenging.
